@@ -7,11 +7,11 @@ A place where talent meets opportunity.
 
 # Team
 
-Bhavana Chowdary
-Thanmai
-Prasanna
-Vijayashree
-Baijun Jiang
+- Bhavana Chowdary
+- Thanmai Gajam
+- Prasanna
+- Vijayashree
+- Baijun Jiang
 
 # Concept and Advisory
 
