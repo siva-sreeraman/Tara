@@ -42,6 +42,12 @@ class Navbar extends React.Component {
                 {" "}
                 Tasks
               </Link>
+              <Link className="nav-item nav-link" to="/su-dashboard">
+                SU
+              </Link>
+              <Link className="nav-item nav-link" to="/admin-dashboard">
+                Admin
+              </Link>
             </div>
           </div>
 

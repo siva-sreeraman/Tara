@@ -32,13 +32,13 @@ class MyProjects extends React.Component {
                   <h5>My Projects</h5>
                   <ul>
                     <li>
-                      <Link to="/project">Project 1</Link>
+                      <Link to="/project-overview">Project 1</Link>
                     </li>
                     <li>
-                      <Link to="/project">Project 2</Link>
+                      <Link to="/project-overview">Project 2</Link>
                     </li>
                     <li>
-                      <Link to="/project">Project 3</Link>
+                      <Link to="/project-overview">Project 3</Link>
                     </li>
                   </ul>
                 </section>
@@ -50,6 +50,38 @@ class MyProjects extends React.Component {
                     </li>
                     <li>
                       <Link to="/project">Project 6</Link>
+                    </li>
+                  </ul>
+                </section>
+                <section>
+                  <h5>Features</h5>
+                  <ul>
+                    <li>
+                      <Link to="/project">Address book</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">Actors</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">Search (users)</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">Costumes</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">Props</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">My Notifications</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">My Profile</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">Terms of Use</Link>
+                    </li>
+                    <li>
+                      <Link to="/project">Privacy Agreement</Link>
                     </li>
                   </ul>
                 </section>
