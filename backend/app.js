@@ -3,6 +3,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 var loginRouter = require("./routes/login.route");
+var admin = require("firebase-admin");
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,6 +12,10 @@ app.use(
     extended: true
   })
 );
+
+admin.initializeApp({
+  credential: admin.credential.applicationDefault()
+});
 
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");

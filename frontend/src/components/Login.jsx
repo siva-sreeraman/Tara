@@ -1,6 +1,9 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
+
+import * as firebase from "firebase/app";
+// Add the Firebase products that you want to use
+import "firebase/auth";
 
 class Login extends React.Component {
   constructor(props) {
@@ -22,7 +25,26 @@ class Login extends React.Component {
     });
   };
 
-  submitForm = async () => {};
+  submitForm = async () => {
+    firebase
+      .auth()
+      // .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(res => {
+        console.log(
+          "createUserWithEmailAndPassword res: " + JSON.stringify(res)
+        );
+      })
+      .catch(function(error) {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        // ...
+        console.log(
+          "createUserWithEmailAndPassword error: " + JSON.stringify(error)
+        );
+      });
+  };
 
   render() {
     return (
@@ -67,15 +89,15 @@ class Login extends React.Component {
                     />
                   </Form.Group>
                 </Form>
-                {/* <button
+                <button
                   onClick={this.submitForm}
                   className="btn btn-primary btn-login"
                 >
                   Login
-                </button> */}
-                <Link className="btn btn-primary btn-login" to="/">
+                </button>
+                {/* <Link className="btn btn-primary btn-login" to="/">
                   Login
-                </Link>
+                </Link> */}
               </div>
             </div>
           </div>
