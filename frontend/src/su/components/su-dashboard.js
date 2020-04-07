@@ -31,7 +31,7 @@ class SuDashboard extends React.Component {
                   <h5></h5>
                   <ul>
                     <li>
-                      <Link to="/project">Onboard Admin</Link>
+                      <Link to="/project">Onboard Members</Link>
                     </li>
                     <li>
                       <Link to="/project">Approvals</Link>

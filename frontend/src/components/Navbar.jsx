@@ -77,10 +77,6 @@ class Navbar extends React.Component {
 
               <Link className="nav-item nav-link" to="/">
                 {" "}
-                Events
-              </Link>
-              <Link className="nav-item nav-link" to="/">
-                {" "}
                 Tasks
               </Link>
               <Link className="nav-item nav-link" to="/su-dashboard">

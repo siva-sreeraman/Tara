@@ -23,3 +23,7 @@ code {
 .projects ul li {
   list-style: none;
 }
+
+.app-project-overview .nav-panel .btn {
+  display: block;
+}
