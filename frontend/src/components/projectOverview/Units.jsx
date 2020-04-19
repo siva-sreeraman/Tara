@@ -1,128 +1,106 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import axios from "axios";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import { Form } from "react-bootstrap";
+import Paper from "@material-ui/core/Paper";
+import { Component } from "react";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
+import Env from "../../helpers/Env";
 
-const columns = [
-  { id: "index", label: "Index", minWidth: 170 },
-  { id: "unit", label: "Unit", minWidth: 170 },
-  { id: "location", label: "Location", minWidth: 100 },
-];
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
-function createData(index, unit, location) {
-  return { index, unit, location };
-}
-
-const rows = [
-  createData(1, "Unit 1", "Italy", "Fight Scene 1"),
-  createData(2, "Unit 2", "Paris", "Song 5"),
-  // createData(3, "Robert Downy", "456789678"),
-  // createData(4, "Chris Evans", "456789678"),
-  // createData(5, "Tom Holland", "456789909"),
-  // createData(6, "Bennedict", "567890"),
-  // createData(7, "Scarllet Johanson", "456789789"),
-  // createData(8, "Mark Ruffalo", "4567890"),
-  // createData(9, "Elizabeth", "567890789"),
-  // createData(10, "Ross", "567890"),
-  // createData(11, "Tom Hiddles", "4567890"),
-  // createData(12, "Vin Diesel", "4567890"),
-  // createData(13, "Zoe Saldana", "3456789"),
-  // createData(14, "Sebastian", "3456789"),
-  // createData(15, "Carrie Coon", "456789"),
-];
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
+  },
+}))(TableRow);
 
 const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-  container: {
-    maxHeight: 440,
+  table: {
+    minWidth: 900,
   },
 });
 
-export default function Units() {
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+class Units extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      units: [],
+    };
+  }
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  componentDidMount() {
+    axios.get(Env.host + "/project-overview/getunits").then((response) => {
+      console.log(response);
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+      this.setState({
+        units: this.state.units.concat(response.data),
+      });
+    });
+  }
 
-  // const handleOnChange = (event) => {
-  //   this.setState({
-  //     [event.target.name]: event.target.value,
-  //   });
-  // };
+  render() {
+    const displayform = this.state.units.map((cast) => {
+      return (
+        <TableRow>
+          <StyledTableCell>{cast.UnitId}</StyledTableCell>
 
-  return (
-    <div>
-      <button className="btn btn-outline-primary">Add Unit</button>
-      <Paper className={classes.root}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
+          <StyledTableCell align="right">{cast.UnitName}</StyledTableCell>
+          {/* <StyledTableCell align="right">{cast.phonenumber}</StyledTableCell> */}
+        </TableRow>
+      );
+    });
+    return (
+      <div>
+        <div class="paddingleft15">
+          <div class="form-group row" paddingleft>
+            <div class="col-lg-10"> </div>
+            <div class="col-lg-1">
+              <Link to="/" className="btn btn-primary">
+                Add Unit
+              </Link>{" "}
+            </div>
+          </div>
+
+          <div class="form-group row" paddingleft>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-9">
+              {" "}
+              <h2></h2>
+              <TableContainer component={Paper}>
+                <Table aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>UnitId</StyledTableCell>
+                      <StyledTableCell>UnitName</StyledTableCell>
+                      {/* <StyledTableCell>PhoneNumber</StyledTableCell> */}
                     </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
-  );
+                  </TableHead>
+                  <TableBody>{displayform}</TableBody>
+                </Table>
+              </TableContainer>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
+
+export default Units;

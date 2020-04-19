@@ -3,21 +3,25 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 var loginRouter = require("./routes/login.route");
+var adminRouter = require("./routes/admin.route");
 var admin = require("firebase-admin");
+var companyDB = require("./routes/companyDB.route");
+var projectOverview = require("./routes/projectOverview.route");
+var projectCreateRoute = require("./routes/project.create.route");
 
 const app = express();
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
-    extended: true
+    extended: true,
   })
 );
 
 admin.initializeApp({
-  credential: admin.credential.applicationDefault()
+  credential: admin.credential.applicationDefault(),
 });
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "POST, GET, PUT, DELETE, OPTIONS");
   res.header(
@@ -35,6 +39,10 @@ const port = 4000;
 // const query = require("./helpers/query");
 
 app.use("/login", loginRouter);
+app.use("/admin", adminRouter);
+app.use("/companydb", companyDB);
+app.use("/project-overview", projectOverview);
+app.use("/project-create", projectCreateRoute);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 

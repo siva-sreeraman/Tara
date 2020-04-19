@@ -1,128 +1,190 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import axios from "axios";
+import { Form, Col } from "react-bootstrap";
+
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import { Form } from "react-bootstrap";
+import Paper from "@material-ui/core/Paper";
+import { Component } from "react";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
+import Env from "../../helpers/Env";
 
-const columns = [
-  { id: "index", label: "Index", minWidth: 170 },
-  { id: "userGroup", label: "User Group", minWidth: 170 },
-];
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
 
-function createData(index, userGroup) {
-  return { index, userGroup };
-}
-
-const rows = [
-  createData(1, "Heads Of"),
-  createData(2, "Direction"),
-  createData(2, "Production"),
-  // createData(3, "Robert Downy", "456789678"),
-  // createData(4, "Chris Evans", "456789678"),
-  // createData(5, "Tom Holland", "456789909"),
-  // createData(6, "Bennedict", "567890"),
-  // createData(7, "Scarllet Johanson", "456789789"),
-  // createData(8, "Mark Ruffalo", "4567890"),
-  // createData(9, "Elizabeth", "567890789"),
-  // createData(10, "Ross", "567890"),
-  // createData(11, "Tom Hiddles", "4567890"),
-  // createData(12, "Vin Diesel", "4567890"),
-  // createData(13, "Zoe Saldana", "3456789"),
-  // createData(14, "Sebastian", "3456789"),
-  // createData(15, "Carrie Coon", "456789"),
-];
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
+  },
+}))(TableRow);
 
 const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-  container: {
-    maxHeight: 440,
+  table: {
+    minWidth: 700,
   },
 });
 
-export default function UserGroups() {
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+class UserGroups extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      usergroups: [],
+      ugname: "",
+      displaycrewform: false,
+      sucessmsg: "",
+    };
+    this.submitForm = this.submitForm.bind(this);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+    this.handleOnChange = this.handleOnChange.bind(this);
+    this.handlenamechange = this.handlenamechange.bind(this);
+  }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  handlenamechange(e) {
+    console.log("in handle name change");
+    console.log("the value is", e.target.value);
+    this.setState({
+      ugname: e.target.value,
+    });
+  }
 
-  // const handleOnChange = (event) => {
-  //   this.setState({
-  //     [event.target.name]: event.target.value,
-  //   });
-  // };
+  handleOnChange() {
+    console.log("in crew form handlechange");
+    this.setState({
+      displaycrewform: true,
+    });
+  }
 
-  return (
-    <div>
-      <button className="btn btn-outline-primary">Add User Group</button>
-      <Paper className={classes.root}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
+  componentDidMount() {
+    axios.get(Env.host + "/project-overview/getusergroups").then((response) => {
+      console.log(response);
+
+      this.setState({
+        usergroups: this.state.usergroups.concat(response.data),
+      });
+    });
+  }
+
+  async submitForm(e) {
+    const data = {
+      ugname: this.state.ugname,
+    };
+    await axios
+      .post(Env.host + "/project-overview/addusergroup", data)
+      .then((response) => {
+        console.log(response);
+        console.log("data", data);
+        this.setState({
+          usergroups: this.state.usergroups.concat(response.data),
+          sucessmsg: response.data,
+        });
+      });
+  }
+
+  render() {
+    var ugform;
+
+    if (this.state.displaycrewform) {
+      ugform = (
+        <div className="student-profile-form">
+          <Form>
+            {/* <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Label>Crew </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Email"
+                      name="email"
+                      onChange={this.handleNameChange}
+                    />
+                  </Form.Group> */}
+            <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Label>UserGroup Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter Usergroup Name"
+                name="ugname"
+                // onKeyDown={this.onKeyUp}
+                onChange={this.handlenamechange}
+              />
+            </Form.Group>
+          </Form>
+          <button
+            onClick={this.submitForm}
+            className="btn btn-primary btn-login"
+          >
+            Add UserGroup
+          </button>
+        </div>
+      );
+    }
+
+    const displayform = this.state.usergroups.map((crew) => {
+      return (
+        <TableRow>
+          <StyledTableCell>{crew.UserGroupId}</StyledTableCell>
+
+          <StyledTableCell align="right">{crew.UserGroup}</StyledTableCell>
+          {/* <StyledTableCell align="right">{crew.is_actor}</StyledTableCell> */}
+        </TableRow>
+      );
+    });
+    return (
+      <div>
+        <div class="paddingleft15">
+          <div class="form-group row" paddingleft>
+            <div class="col-lg-10"> </div>
+            <div class="col-lg-1">
+              <a className="btn btn-primary" onClick={this.handleOnChange}>
+                Add UserGroup
+              </a>{" "}
+            </div>
+          </div>
+          <div>{this.state.sucessmsg}</div>
+
+          <div class="form-group row" paddingleft>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-9">
+              {" "}
+              <h2></h2>
+              <TableContainer component={Paper}>
+                <Table aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>UserGroupId</StyledTableCell>
+                      <StyledTableCell>UserGroup</StyledTableCell>
                     </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
-  );
+                  </TableHead>
+                  <TableBody>{displayform}</TableBody>
+                </Table>
+              </TableContainer>
+              <br></br>
+              <div>
+                <TableContainer component={Paper}>
+                  <Table aria-label="customized table">
+                    <TableBody>{ugform}</TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
+
+export default UserGroups;

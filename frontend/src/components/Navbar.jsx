@@ -7,12 +7,12 @@ class Navbar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      user: null
+      user: null,
     };
   }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged(user => {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         // User is signed in.
         var displayName = user.displayName;
@@ -42,7 +42,7 @@ class Navbar extends React.Component {
         this.setState({ user: null });
         console.log("handleLogout: Sign-out successful!");
       })
-      .catch(error => {
+      .catch((error) => {
         // An error happened.
         console.log("handleLogout: error: " + error);
       });
@@ -68,7 +68,7 @@ class Navbar extends React.Component {
           </button>
           <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div className="navbar-nav w-100">
-              <Link className="nav-item nav-link" to="/">
+              <Link className="nav-item nav-link" to="/calendar">
                 Calendar
               </Link>
               <Link className="nav-item nav-link" to="/my-projects">
@@ -85,6 +85,9 @@ class Navbar extends React.Component {
               <Link className="nav-item nav-link" to="/admin-dashboard">
                 Admin
               </Link>
+              <Link className="nav-item nav-link" to="/company-db">
+                Company Data Base
+              </Link>
             </div>
           </div>
           {!!this.state?.auth?.uid ? (
@@ -96,7 +99,7 @@ class Navbar extends React.Component {
             </button>
           ) : (
             <Link
-              className="pull-right btn btn-sm btn-outline-primary"
+              className="pull-right btn btn-sm btn btn-outline-dark"
               to="/login"
             >
               Login

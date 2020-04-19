@@ -1,10 +1,11 @@
 var express = require("express");
 var router = express.Router();
+const pool = require("../dbConfig");
 
 var admin = require("firebase-admin");
 
 /* GET student test. */
-router.get("/", function(req, res, next) {
+router.get("/", function (req, res, next) {
   res.send("Hi from TARA login");
 });
 
@@ -13,7 +14,7 @@ const validate = async (req, res, next) => {
   await admin
     .auth()
     .verifyIdToken(idToken)
-    .then(function(decodedToken) {
+    .then(function (decodedToken) {
       let uid = decodedToken.uid;
       responseData = decodedToken;
       // console.log("/verify decodedToken: " + JSON.stringify(decodedToken));
@@ -21,7 +22,7 @@ const validate = async (req, res, next) => {
       next();
       // res.send("from validate: " + idToken);
     })
-    .catch(function(error) {
+    .catch(function (error) {
       // Handle error
       responseData = error;
       // console.log("/verify error: " + JSON.stringify(error));
@@ -33,10 +34,27 @@ const validate = async (req, res, next) => {
     });
 };
 
-/* POST student test. */
-router.post("/verify", validate, async (req, res) => {
-  let responseData = null;
-  res.send(req.decodedToken);
+// /* POST student test. */
+// router.post("/verify", validate, async (req, res) => {
+//   let responseData = null;
+//   res.send(req.decodedToken);
+// });
+
+router.route("/getalllocations").get((req, res) => {
+  console.log("Inside get all locations ");
+
+  const getalllocations = "select * from locations ";
+  pool.query(getalllocations, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.status(400).json({ responseMessage: "Error Occurred" });
+    } else if (result.length > 0) {
+      res.status(200).send(result);
+    } else {
+      console.log("student does not exist");
+      res.status(400).send("student does not exist");
+    }
+  });
 });
 
 module.exports = router;

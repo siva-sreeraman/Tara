@@ -6,6 +6,8 @@ import MyProjects from "./components/MyProjects";
 import AdminDashboard from "./components/AdminDashboard";
 import ProjectOverview from "./components/ProjectOverview";
 import SuDashboard from "./su/components/su-dashboard";
+import CompanyDB from "./components/companyDB";
+import Calendar from "./components/Calendar";
 
 class Routes extends React.Component {
   constructor(props) {
@@ -24,6 +26,8 @@ class Routes extends React.Component {
           <Route path="/su-dashboard" component={SuDashboard} />
           <Route path="/admin-dashboard" component={AdminDashboard} />
           <Route path="/project-overview" component={ProjectOverview} />
+          <Route path="/company-db" component={CompanyDB} />
+          <Route path="/calendar" component={Calendar} />
         </Router>
       </div>
     );

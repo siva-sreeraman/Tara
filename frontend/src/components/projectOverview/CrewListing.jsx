@@ -1,143 +1,184 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
+import axios from "axios";
+import { Form, Col } from "react-bootstrap";
+import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
-import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import { Component } from "react";
+import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
+import appStyles from "./appStyles.css";
+import Env from "../../helpers/Env";
 
-const columns = [
-  { id: "name", label: "Crew\u00a0Member", minWidth: 170 },
-  { id: "contact", label: "Contact", minWidth: 100 },
-  // {
-  //   id: "population",
-  //   label: "Population",
-  //   minWidth: 170,
-  //   align: "right",
-  //   format: (value) => value.toLocaleString(),
-  // },
-  // {
-  //   id: "size",
-  //   label: "Size\u00a0(km\u00b2)",
-  //   minWidth: 170,
-  //   align: "right",
-  //   format: (value) => value.toLocaleString(),
-  // },
-  // {
-  //   id: "density",
-  //   label: "Density",
-  //   minWidth: 100,
-  //   align: "right",
-  //   // format: (value) => value.toFixed(2),
-  // },
-];
+import purple from "@material-ui/core/colors/purple";
+import red from "@material-ui/core/colors/red";
 
-function createData(name, contact) {
-  // const density = population / size;
-  return { name, contact };
-}
+const primary = red.A700; // #F44336
+const accent = purple.A200; // #E040FB (alternative method)
 
-const rows = [
-  createData("India", "9908678761"),
-  createData("China", "9908678762"),
-  createData("Italy", "9908678763"),
-  createData("United States", "9908678764"),
-  createData("Canada", "9908678765", 37602103, 9984670),
-  createData("Australia", "9908678766", 25475400, 7692024),
-  createData("Germany", "9908678767", 83019200, 357578),
-  createData("Ireland", "9908678768", 4857000, 70273),
-  createData("Mexico", "9908678769", 126577691, 1972550),
-  createData("Japan", "9908678711", 126317000, 377973),
-  createData("France", "9908678721", 67022000, 640679),
-  createData("United Kingdom", "9908678731", 67545757, 242495),
-  createData("Russia", "9908678741", 146793744, 17098246),
-  createData("Nigeria", "9908678751", 200962417, 923768),
-  createData("Brazil", "9908678761", 210147125, 8515767),
-];
+const StyledTableCell = withStyles((theme) => ({
+  head: {
+    backgroundColor: primary,
+    color: theme.palette.common.white,
+  },
+  body: {
+    fontSize: 14,
+  },
+}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
+  },
+}))(TableRow);
 
 const useStyles = makeStyles({
-  root: {
-    width: "100%",
-  },
-  container: {
-    maxHeight: 440,
+  table: {
+    minWidth: 700,
   },
 });
 
-export default function CrewListing() {
-  const classes = useStyles();
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+class CrewListing extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      crewlist: [],
+      users: [],
+      displaycrewform: false,
+    };
+    this.handleOnChange = this.handleOnChange.bind(this);
+  }
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  handleOnChange() {
+    console.log("in crew form handlechange");
+    this.setState({
+      displaycrewform: true,
+    });
+  }
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  submitForm() {}
 
-  return (
-    <div>
-      <button className="btn btn-outline-primary">Add Crew</button>
-      <br />
-      <Paper className={classes.root}>
-        <TableContainer className={classes.container}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row) => {
-                  return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
-                      {columns.map((column) => {
-                        const value = row[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.format && typeof value === "number"
-                              ? column.format(value)
-                              : value}
-                          </TableCell>
-                        );
-                      })}
+  componentDidMount() {
+    axios.get(Env.host + "/project-overview/getcrewlist").then((response) => {
+      console.log(response);
+
+      this.setState({
+        crewlist: this.state.crewlist.concat(response.data),
+      });
+    });
+
+    axios.get(Env.host + "/project-overview/getusers").then((response) => {
+      console.log(response);
+
+      this.setState({
+        users: this.state.users.concat(response.data),
+      });
+    });
+  }
+
+  render() {
+    const displayform = this.state.crewlist.map((crew) => {
+      return (
+        <TableRow>
+          <StyledTableCell align="right">{crew.crewid}</StyledTableCell>
+          <StyledTableCell align="right">{crew.name}</StyledTableCell>
+          <StyledTableCell align="right">{crew.phonenumber}</StyledTableCell>
+        </TableRow>
+      );
+    });
+    var crewform;
+    if (this.state.displaycrewform) {
+      crewform = (
+        <div className="student-profile-form">
+          <Form>
+            {/* <Form.Group controlId="exampleForm.ControlInput1">
+                    <Form.Label>Crew </Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Email"
+                      name="email"
+                      onChange={this.handleNameChange}
+                    />
+                  </Form.Group> */}
+            <Form.Group controlId="exampleForm.ControlInput1">
+              <Form.Label>Project Id</Form.Label>
+              <Form.Control
+                type="select"
+                placeholder="password"
+                name="actor"
+                // onKeyDown={this.onKeyUp}
+                onChange={this.handleprojectchange}
+              />
+            </Form.Group>
+
+            <Form.Group>
+              <label>Is an Actor</label>
+              <select class="form-control" onSelect={this.handleactorchange}>
+                <option>True</option>
+                <option>False</option>
+              </select>
+            </Form.Group>
+          </Form>
+          <button
+            onClick={this.submitForm}
+            className="btn btn-primary btn-login"
+          >
+            Login
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <div>
+        <div class="paddingleft15">
+          <div class="form-group row" paddingleft>
+            <div class="col-lg-10"> </div>
+            <div class="col-lg-1">
+              <a className="btn btn-primary" onClick={this.handleOnChange}>
+                Add Crew
+              </a>{" "}
+            </div>
+          </div>
+
+          <div class="form-group row" paddingleft>
+            <div class="col-lg-2"></div>
+            <div class="col-lg-9" style={{ maxwidth: "100%" }}>
+              {" "}
+              <h2></h2>
+              <TableContainer component={Paper}>
+                <Table aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell>Crew Id</StyledTableCell>
+                      <StyledTableCell> Name</StyledTableCell>
+                      <StyledTableCell>Phone Number</StyledTableCell>
                     </TableRow>
-                  );
-                })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
-      </Paper>
-    </div>
-  );
+                  </TableHead>
+                  <TableBody>{displayform}</TableBody>
+                </Table>
+              </TableContainer>
+              <br></br>
+              <div>
+                <TableContainer component={Paper}>
+                  <Table aria-label="customized table">
+                    <TableBody>{crewform}</TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 }
+
+export default CrewListing;
