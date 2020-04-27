@@ -8,6 +8,7 @@ import ProjectOverview from "./components/ProjectOverview";
 import SuDashboard from "./su/components/su-dashboard";
 import CompanyDB from "./components/companyDB";
 import Calendar from "./components/Calendar";
+import Example from "./components/samplepopup";
 
 class Routes extends React.Component {
   constructor(props) {
@@ -25,9 +26,10 @@ class Routes extends React.Component {
           <Route path="/my-projects" component={MyProjects} />
           <Route path="/su-dashboard" component={SuDashboard} />
           <Route path="/admin-dashboard" component={AdminDashboard} />
-          <Route path="/project-overview" component={ProjectOverview} />
+          <Route path="/project-overview/:id" component={ProjectOverview} />
           <Route path="/company-db" component={CompanyDB} />
           <Route path="/calendar" component={Calendar} />
+          <Route path="/samplepopup" component= {Example}/>
         </Router>
       </div>
     );

@@ -30,6 +30,7 @@ class MyProjects extends React.Component {
       projectTemplate: "",
       productionType: "",
       productionTypes: "",
+      allprojects : []
     };
   }
 
@@ -85,6 +86,16 @@ class MyProjects extends React.Component {
       });
       console.log("productionTypes:::", this.state.productionTypes);
     });
+
+    axios.get(Env.host + "/project-create/allprojects").then((response) =>
+    {
+      console.log("response from all projects",response);
+      this.setState({
+        allprojects : this.state.allprojects.concat(response.data)
+      })
+      console.log("all projects",this.state.allprojects);
+    }
+    )
   }
 
   createProject = () => {
@@ -108,27 +119,28 @@ class MyProjects extends React.Component {
   };
 
   render() {
-    return (
+   
+      let projects = this.state.allprojects.map((project) => {
+        return(
+                  
+                    <ul>
+                      <Link className="links" to={"/project-overview/"+ project.id}>
+                      {project.name}
+                      </Link>
+                    </ul>
+                  
+              )
+            }
+           )
+ return (
       <div>
         <div className="row">
           <div className="col-3">
             <section className="card projects">
               <div className="card-body">
-                <section>
-                  <h5>My Projects</h5>
-                  <ul>
-                    <li>
-                      <Link className="links" to="/project-overview">
-                        Project 1
-                      </Link>
-                    </li>
-                    <li>
-                      <Link to="/project-overview">Project 2</Link>
-                    </li>
-                    <li>
-                      <Link to="/project-overview">Project 3</Link>
-                    </li>
-                  </ul>
+     <section>
+    <h5>My Projects</h5>
+                {projects}
                 </section>
                 <section>
                   <h6>Hidden Projects</h6>
@@ -365,6 +377,7 @@ class MyProjects extends React.Component {
         </div>
       </div>
     );
+                
   }
 }
 

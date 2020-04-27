@@ -9,6 +9,22 @@ router.get("/product-types", async function (req, res) {
   res.status(201).send(result);
 });
 
+router.get("/allprojects", async function (req, res) {
+  const getallprojects = `SELECT name,id FROM projects`;
+  result = await query(pool, getallprojects).catch(console.log);
+  res.status(201).send(result);
+});
+
+
+router.get("/project_by_id/", async function (req, res) {
+  console.log(req.params)
+  console.log("the query",req.query.projectid)
+  const getprojectbyid = `SELECT * FROM projects where id = ?`;
+  result = await query(pool, getprojectbyid,[req.query.projectid] ).catch(console.log);
+  console.log("result from found project",result)
+  res.status(201).send(result);
+});
+
 router.post("/template", async function (req, res) {
   const { companyId, templateName, description, productId } = req.body.template;
   const { coreFunIds, deptFunIds } = req.body;

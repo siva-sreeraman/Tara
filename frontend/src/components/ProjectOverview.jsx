@@ -8,6 +8,9 @@ import Actors from "./projectOverview/Actors";
 import Units from "./projectOverview/Units";
 import UserGroups from "./projectOverview/UserGroups";
 import ProjectBasic from "./projectOverview/ProjectBasic";
+import axios from "axios";
+import Env from "../helpers/Env";
+
 
 class MyProjects extends React.Component {
   constructor(props) {
@@ -17,6 +20,8 @@ class MyProjects extends React.Component {
       isShowCreateProjectTemplate: false,
       projectTypes: ["Type1", "Type2"],
       view: "",
+      project_id : this.props.match.params.id,
+     projectdetails : []
     };
   }
 
@@ -28,10 +33,29 @@ class MyProjects extends React.Component {
   //   setValue(newValue);
   // };
 
+  async componentDidMount(props)
+  {
+
+    const data = 
+    {
+      projectid : this.state.project_id
+    }
+    
+    console.log("the project_id is",this.state.project_id)
+    await axios.get(Env.host +'/project-create/project_by_id/?projectid='+this.state.project_id).then(response =>
+      {
+        console.log(response.data)
+this.setState({
+  projectdetails:this.state.projectdetails.concat(response.data)
+})
+      })
+      console.log(this.state.projectdetails,"are")
+  }
+
   renderSwitch = (param) => {
     switch (param) {
       case "crew":
-        return <CrewListing />;
+        return <CrewListing projectid={this.state.project_id}/>;
       case "actor":
         return <Actors />;
       case "character":
@@ -39,9 +63,9 @@ class MyProjects extends React.Component {
       case "unit":
         return <Units />;
       case "userGroup":
-        return <UserGroups />;
+        return <UserGroups projectid={this.state.project_id}/>;
       default:
-        return <ProjectBasic />;
+        return <ProjectBasic projectid={this.state.project_id} />;
     }
   };
 
