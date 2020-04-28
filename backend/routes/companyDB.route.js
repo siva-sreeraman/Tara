@@ -99,11 +99,17 @@ router.post("/assigntoproject", async (request, response) => {
     const users = request.body.usernames;
     const projectid = request.body.project_id;
     console.log("users",users);
-    
     console.log("projectid",projectid)
     
     for(var i=0;i<users.length;i++)
     {
+
+      var dbquery = "select * from project_users where project_Id = ? and user_Id = ?";
+      result = await query(pool, dbquery , [projectid,users[i]]).catch(console.log);
+      console.log("users",result)
+
+if(!result.length > 0)
+{
     var dbquery = "INSERT INTO `project_users`(`project_Id`, `user_Id`) VALUES (?,?)";
     var values = [projectid,users[i]]
     console.log(values)
@@ -113,15 +119,8 @@ router.post("/assigntoproject", async (request, response) => {
       // response.status(200).send(result);
     });
   }
-  
-  for(var i=0;i<users.length;i++)
-  {
-    var dbquery = 'INSERT INTO `crew`(`projectid`, `fk_userid`) VALUES '+ '(' + values + ')';
-   var result = await query(pool, dbquery).catch(console.log);
   }
   
-
-
       response.status(200).send("added to project successfully");
 
 }catch (ex) {

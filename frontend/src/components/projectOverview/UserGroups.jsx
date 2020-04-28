@@ -113,7 +113,10 @@ class UserGroups extends Component
      editugname:"",
      edit_userdata:[],
      edit_accessrightsdata:[],
-     ugid : 0
+     viewaccessrights : [],
+     viewusers:[],
+     ugid : 0,
+     showview : false
 
          
     }
@@ -145,6 +148,13 @@ this.submitugform = this.submitugform.bind(this);
       console.log("the value is",e.target.value);
       this.setState({
         ugname : e.target.value
+      })
+    }
+
+    closeviewform = (e) =>
+    {
+      this.setState({
+        showview : false
       })
     }
 
@@ -193,6 +203,8 @@ this.submitugform = this.submitugform.bind(this);
             accessdata : this.state.edit_accessrightsdata,
             ugid : this.state.ugid
           }
+
+          console.log("The edit data",data)
           
       await axios.post('http://localhost:4000/project-overview/update_project_usergroup_details?projectid='+this.state.projectid,data)
       .then((response) => {
@@ -229,8 +241,40 @@ this.submitugform = this.submitugform.bind(this);
       })
     }
     
+    showviewfun = async (value) =>
+    {
+      console.log(value,'in show view fun')
+      await axios.get('http://localhost:4000/project-overview/get_project_usergroup_details?projectid='+this.state.projectid+'&ugid='+value.UserGroupId)
+      .then((response) => {
+                  console.log("in subresponse",response.data)
+                  
+                    this.setState({  viewusers :  response.data["userdetails"],
+                    viewaccessrights : response.data["accessrights"]
+                   });                 
+                  
+          }); 
+      
+      await this.setState({
+        ugname : value.UserGroup,
+        ugdescription : value.description,
+        showview : true
+      })
+    }
 
     handleAccessrightSkills = async (event,values) =>
+    {
+      console.log("in handle on change skills");
+
+      await this.setState({
+        accessdata: values
+      }, () => {
+        // This will output an array of objects
+        // given by Autocompelte options property.
+        console.log(this.state.accessdata);
+      });
+    }
+
+    handleEditAccessrightSkills = async (event,values) =>
     {
       console.log("in handle on change skills");
 
@@ -243,7 +287,21 @@ this.submitugform = this.submitugform.bind(this);
       });
     }
 
+
     handleOnChangeSkills = async (event,values) =>
+    {
+    console.log("in handle on change skills");
+     await this.setState({
+      userstougs: values
+      }, () => {
+        // This will output an array of objects
+        // given by Autocompelte options property.
+        console.log(this.state.userstougs);
+      });
+    }
+
+
+    handleEditOnChangeSkills = async (event,values) =>
     {
     console.log("in handle on change skills");
      await this.setState({
@@ -254,7 +312,6 @@ this.submitugform = this.submitugform.bind(this);
         console.log(this.state.edit_userdata);
       });
     }
-
 
     handleOnChange()
     {
@@ -338,8 +395,90 @@ this.submitugform = this.submitugform.bind(this);
   render() 
   {
 
-    var ugform;
-    var editugform;
+var ugform;
+var editugform;
+var showug;
+var usersandartable;
+var accesstable;
+var usertable;
+
+accesstable = (
+  this.state.viewaccessrights.map(access => {
+    return(<div>
+    <table>
+      <tr>
+        <td>{access.accessRight}</td>
+      </tr>
+    </table>
+    </div>)
+      })
+)
+usertable = (
+
+  this.state.viewusers.map(user => {
+return(<div>
+<table>
+  <tr>
+    <td>{user.name}</td>
+  </tr>
+</table>
+</div>)
+  }))
+usersandartable = <table class="table table-striped">
+<thead>
+<tr>
+   Users and AccessRights
+    </tr>
+</thead>
+<tr>
+  <td>
+  <table>
+  <thead align="center">
+    Users
+  </thead>
+    <body>
+      {usertable}
+    </body>
+  </table>
+  </td>
+  <td>
+  <table>
+  <thead align = "center">
+    Access Rights
+  </thead>
+    <body>
+      {accesstable}
+    </body>
+  </table>
+  </td>
+</tr>
+</table>
+ 
+showug = <Modal show={this.state.showview} onHide={this.handleugformClose}>
+<Modal.Header closeButton>
+  <Modal.Title> UserGroup Details</Modal.Title>
+</Modal.Header>
+<Modal.Body>
+               <Form.Group controlId="exampleForm.ControlInput1">
+               <Form.Label>UserGroup Name :</Form.Label>
+               <Form.Label>{this.state.ugname}</Form.Label>
+              </Form.Group>
+              <Form.Group controlId="exampleForm.ControlInput1">
+                <Form.Label>UserGroup Description :</Form.Label>
+                <Form.Label>{this.state.ugdescription}</Form.Label>
+              </Form.Group>
+              <Form.Group controlId="exampleForm.ControlInput1">
+                {/* <Form.Label>UserGroup Users and AccessRights :</Form.Label> */}
+               {usersandartable}
+              </Form.Group>
+              
+</Modal.Body>
+<Modal.Footer>
+  <Button variant="secondary" onClick={this.closeviewform}>
+    Close
+  </Button>
+</Modal.Footer>
+</Modal>
 
     ugform =  <Modal show={this.state.displaycrewform} onHide={this.handleugformClose}>
     <Modal.Header closeButton>
@@ -473,7 +612,7 @@ editugform =  <Modal show={this.state.showeditug} onHide={this.closeeditugs}>
                 style={{ width: 300 }}
                 getOptionLabel={each => each.name}
                 defaultValue={this.state.edit_userdata}
-                onChange={this.handleOnChangeSkills}
+                onChange={this.handleEditOnChangeSkills}
                 // defaultValue={this.props?.studentSkills}
                 renderInput={params => (
                   <TextField
@@ -502,7 +641,7 @@ editugform =  <Modal show={this.state.showeditug} onHide={this.closeeditugs}>
                 style={{ width: 300 }}
                 getOptionLabel={each => each.accessRight}
                 defaultValue={this.state.edit_accessrightsdata}
-                onChange={this.handleAccessrightSkills}
+                onChange={this.handleEditAccessrightSkills}
                 // defaultValue={this.props?.studentSkills}
                 renderInput={params => (
                   <TextField
@@ -540,7 +679,8 @@ editugform =  <Modal show={this.state.showeditug} onHide={this.closeeditugs}>
       return(      
            <TableRow>
                          <StyledTableCell><Checkbox name={crew.UserGroupId} onChange={e => this.showeditugs(crew)} /></StyledTableCell>
-                   
+                         <StyledTableCell align="right"><Link onClick={e => this.showviewfun(crew)}>View</Link></StyledTableCell>
+
               <StyledTableCell>
                 {crew.UserGroupId}
               </StyledTableCell>
@@ -579,6 +719,8 @@ return (
         <TableHead>
           <TableRow>
           <StyledTableCell></StyledTableCell>
+          <StyledTableCell></StyledTableCell>
+
             <StyledTableCell>UserGroupId</StyledTableCell>
             <StyledTableCell>UserGroup</StyledTableCell>
           <StyledTableCell>Description</StyledTableCell>
@@ -609,6 +751,16 @@ return (
       <Table  aria-label="customized table">
       <TableBody>
         {editugform}
+      </TableBody>
+      </Table>
+      </TableContainer>
+      </div>
+
+      <div>
+       <TableContainer component={Paper}>
+      <Table  aria-label="customized table">
+      <TableBody>
+        {showug}
       </TableBody>
       </Table>
       </TableContainer>

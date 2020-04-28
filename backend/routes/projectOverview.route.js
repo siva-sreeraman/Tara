@@ -243,6 +243,7 @@ for(let i=0 ; i<request.body.usernames.length;i++)
 
 
 router.get("/get_project_usergroup_details", async function (request, response) {
+  console.log("in get project usergrp details")
 console.log(request.query)
 var sqlquery = 'select * from users where userid in (SELECT fk_UserId FROM userwithusergroup where fk_UserGroupId = ?)';
 result = await query(pool, sqlquery , [request.query.ugid]).catch(console.log);
