@@ -1,0 +1,17 @@
+#container {
+    width: 80px;
+    height: 80px;
+    border-radius: 100px;
+    background:rgb(230, 177, 184) ;
+  }
+  #name {
+    width: 80px;
+    text-align: center;
+    color:rgb(39, 46, 66);
+    font-size: 20px;
+    line-height: 80px;
+  }
+  card1:hover{
+    background-color: yellow;
+
+  }

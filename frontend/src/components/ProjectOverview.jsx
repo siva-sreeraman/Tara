@@ -8,6 +8,7 @@ import Actors from "./projectOverview/Actors";
 import Units from "./projectOverview/Units";
 import UserGroups from "./projectOverview/UserGroups";
 import ProjectBasic from "./projectOverview/ProjectBasic";
+
 import axios from "axios";
 import Env from "../helpers/Env";
 
@@ -24,15 +25,6 @@ class MyProjects extends React.Component {
      projectdetails : []
     };
   }
-
-  // showCreateProjectTemplate = () => {
-  //   this.setState({ isShowCreateProject });
-  // };
-
-  // handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
-
   async componentDidMount(props)
   {
 
@@ -64,6 +56,7 @@ this.setState({
         return <Units />;
       case "userGroup":
         return <UserGroups projectid={this.state.project_id}/>;
+       
       default:
         return <ProjectBasic projectid={this.state.project_id} />;
     }
@@ -125,6 +118,22 @@ this.setState({
                   }}
                 >
                   Units
+                </button>
+                <button
+                  className="btn btn-link btn-logout"
+                  onClick={() => {
+                    this.setState({ view: "ProjectEvents" });
+                  }}
+                >
+                  Events
+                </button>
+                <button
+                  className="btn btn-link btn-logout"
+                  onClick={() => {
+                    this.setState({ view: "ProjectTasks" });
+                  }}
+                >
+                  Tasks
                 </button>
                 {/* <ul>
                   <li>

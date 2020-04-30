@@ -48,43 +48,58 @@ router.post("/add_rolesto_project", async (request, response) => {
 })
 
 router.get("/getcrewlist", async function (req, res) {
-  var users;
-  console.log("Inside  getcrewlist ");
+var users;
+console.log("Inside  getcrewlist ");
 console.log(req.query,"in get crewlist")
-  // const getcast = 'SELECT users.*, crew.* FROM users INNER JOIN crew ON crew.fk_userid=users.userid';
- const getprojectcrew = "select distinct user_Id,role from project_users where project_Id = ?"
+const getprojectcrew = "select distinct user_Id,role from project_users where project_Id = ?"
 var result;
 var values = [];
-
-
  result = await query(pool,getprojectcrew, [req.query.projectid]).catch(console.log);
-
 console.log("the results ",result[0].user_Id)
-
 for(var i=0;i<result.length;i++)
 {
   values.push(result[i].user_Id)
 }
 console.log("values are",values)
-
-//    var sqlquery = 'select * from crew where fk_userid in '+ '(' + values + ')';
-
-//    result = await query(pool, sqlquery).catch(console.log);
-//    console.log("the crew results are",result)
-// values = []
-//    for(var i=0;i<result.length;i++)
-// {
-//   values.push(result[i].fk_userid)
-// }
-
 var sqlquery = 'select * from users where userid in '+ '(' + values + ')';
-
 result = await query(pool, sqlquery).catch(console.log);
 console.log("the users are",result)
 res.status(200).send(result);
-
-
 });
+
+router.get("/geteventusers/:id", async function (req, res) {
+  var users;
+  const getprojectcrew = "select distinct userid from userevents where eventid = ?"
+  var result;
+  var values = [];
+   result = await query(pool,getprojectcrew, [req.params.id])
+  for(var i=0;i<result.length;i++)
+  {
+    values.push(result[i].userid)
+  }
+  console.log("values are",values)
+  var sqlquery = 'select * from users where userid in '+ '(' + values + ')';
+  result = await query(pool, sqlquery)
+  console.log("the users are",result)
+  res.status(200).send(result);
+  });
+
+  router.get("/gettaskusers/:id", async function (req, res) {
+    var users;
+    const getprojectcrew = "select distinct userid from usertasks where taskid = ?"
+    var result;
+    var values = [];
+     result = await query(pool,getprojectcrew, [req.params.id])
+    for(var i=0;i<result.length;i++)
+    {
+      values.push(result[i].userid)
+    }
+    console.log("values are",values)
+    var sqlquery = 'select * from users where userid in '+ '(' + values + ')';
+    result = await query(pool, sqlquery).catch(console.log);
+    console.log("the users are",result)
+    res.status(200).send(result);
+    });
 
 
 
@@ -198,14 +213,95 @@ res.status(201).send(result);
 
 
 
-router.get("/getusers_fromproject", async function (req, res) {
+router.get("/getusers_fromproject/:id", async function (req, res) {
   console.log("Inside get users from project ");
 
   const sqlquery = "select * from users where userid in (SELECT distinct user_Id FROM taradatabase.project_users where project_Id = ?)";
-  result = await query(pool, sqlquery,[req.query.projectid] ).catch(console.log);
+  result = await query(pool, sqlquery,[req.params.id] ).catch(console.log);
 // console.log("all users of given project" ,result)
 res.status(201).send(result);
 });
+
+router.get("/getevents_fromproject/:id", async function (req, res) {
+  console.log("Inside get events from project ");
+  console.log(req.params.id);
+  const sqlquery = "select * from  Events where eventid in (SELECT distinct eventid FROM projectevents where projectid = ?)";
+  result = await query(pool, sqlquery,[req.params.id] ).catch(console.log);
+res.status(201).send(result);
+});
+
+router.get("/gettasks_fromproject/:id", async function (req, res) {
+  console.log("Inside get events from project ");
+  console.log(req.params.id);
+  const sqlquery = "select * from Tasks where taskid in (SELECT distinct taskid FROM projecttasks where projectid = ?)";
+  result = await query(pool, sqlquery,[req.params.id] ).catch(console.log);
+res.status(201).send(result);
+});
+
+
+router.post("/postevents_toproject", async function (req, res) {
+  console.log("Inside get events from project ");
+  console.log(req.body)
+
+  const sqlquery = "insert into Events(title,date,time,eventdescription,eventlocation) values (?,?,?,?,?)";
+  const sqlquery1 = "insert into projectevents(projectid,eventid) values (?,?)";
+    result1 = await query(pool, sqlquery,[req.body.title,req.body.date,req.body.time,req.body.description,req.body.location])
+    result2 = await query(pool, sqlquery1,[req.body.projectid,result1.insertId])
+    res.status(201).send(result1);
+});
+
+router.post("/posttasks_toproject", async function (req, res) {
+  console.log("Inside get events from project ");
+  console.log(req.body)
+
+  const sqlquery = "insert into Tasks(name,description,date) values (?,?,?)";
+  const sqlquery1 = "insert into projecttasks(projectid,taskid) values (?,?)";
+    result1 = await query(pool, sqlquery,[req.body.name,req.body.description, req.body.date])
+    result2 = await query(pool, sqlquery1,[req.body.projectid,result1.insertId])
+    res.status(201).send(result2);
+});
+
+
+
+router.post("/assigntoevents", async (request, response) => {
+  try {
+    var err;
+    const users = request.body.userids;
+    const projectid = request.body.projectid;
+    console.log(projectid)
+    for(var i=0;i<users.length;i++)
+    {
+    var dbquery = "INSERT INTO userevents (userid,eventid) VALUES (?,?)";
+    console.log(users[i])
+    result = await query(pool, dbquery,[users[i],projectid])
+    console.log(result)
+    response.status(200).send("added");
+    }
+}catch (ex) {
+    console.log(ex)
+    return response.status(500).send(err);
+  }
+});
+
+router.post("/assigntotasks", async (request, response) => {
+  try {
+    var err;
+    const users = request.body.userids;
+    const projectid = request.body.projectid;
+    for(var i=0;i<users.length;i++)
+    {
+      console.log("hi")
+      console.log(users.length)
+    var dbquery = "INSERT INTO usertasks (userid,taskid) VALUES (?,?)";
+    result = await query(pool, dbquery,[users[i],projectid])
+    res.status(200).send("added");
+    }
+}catch (ex) {
+    return response.status(500).send(err);
+  }
+});
+
+
 
 
 router.get("/getaccessrights_forproject", async function (req, res) {
@@ -216,6 +312,9 @@ router.get("/getaccessrights_forproject", async function (req, res) {
 // console.log("all users of given project" ,result)
 res.status(201).send(result);
 });
+
+
+
 
 router.post("/create_new_usergroup", async function (request, response) {
   console.log("Inside get users from project ");
@@ -240,6 +339,8 @@ for(let i=0 ; i<request.body.usernames.length;i++)
 
   response.status(201).send("successfully created usergroup");
 });
+
+
 
 
 router.get("/get_project_usergroup_details", async function (request, response) {
