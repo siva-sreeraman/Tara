@@ -61,6 +61,19 @@ router.get("/allcostumes", async (request, response) => {
     return response.status(500).send(err);
   }
 });
+router.get("/allevents", async (request, response) => {
+  try {
+    const dbquery = "select * from Events ";
+
+    await pool.query(dbquery, (err, result) => {
+      if (err) throw new Error(err);
+      // console.log(result);
+      response.status(200).send(result);
+    });
+  } catch (ex) {
+    return response.status(500).send(err);
+  }
+});
 
 router.get("/allusers", async (request, response) => {
   try {
