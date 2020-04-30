@@ -1,4 +1,4 @@
-import React from "react";
+import React,{Fragment} from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Modal from 'react-bootstrap/Modal';
@@ -20,6 +20,7 @@ import Env from "../helpers/Env";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
+import JwPagination from 'jw-react-pagination';
 
 // import SimpleMap from "../components/SimpleMap";
 // import "./CompanyDB.css";
@@ -46,6 +47,16 @@ const classes = makeStyles(theme => ({
   }
 }));
 
+const customStyles = {
+  li : {
+      first : { 
+        display : 'none'
+      },
+      last : {
+        display : 'none'
+      }
+  }
+};
 
 var rolesdata = [];
 var projectsdata=[];
@@ -70,7 +81,9 @@ class CompanyDB extends Component {
       userval : [],
       enableaddproject:false,
         checkedItems: new Map(),
-        projects:[]
+        projects:[],
+        pageOfItems:[]        
+
       
     };
     this.handleUsers = this.handleUsers.bind(this);
@@ -87,6 +100,7 @@ class CompanyDB extends Component {
     this.handleprojects = this.handleprojects.bind(this);
     this.handleclosemodal = this.handleclosemodal.bind(this);
     this.handleprojectclosemodal = this.handleprojectclosemodal.bind(this);
+    this.onChangePage = this.onChangePage.bind(this);
 
 
   }
@@ -106,6 +120,11 @@ class CompanyDB extends Component {
      projectsdata = response.data;
     });
     
+  }
+
+  onChangePage(pageOfItems) {
+    // update local state with new page of items
+    this.setState({ pageOfItems });
   }
 
   handleclosemodal = () =>
@@ -348,7 +367,7 @@ console.log("checked items",this.state.checkedItems[i])
      
     }
     if (this.state.usercheck) {
-      const formdetails = this.state.userdetails.map((userdetails) => {
+      const formdetails = this.state.pageOfItems.map((userdetails) => {
         if(userdetails.roles < 4)
         {
             console.log("no role defined");
@@ -480,9 +499,15 @@ console.log("checked items",this.state.checkedItems[i])
                     </TableHead>
 
                     {formdetails}
-            
+
                   </Table>
                 </TableContainer>
+                <br></br>
+               <div align="center">
+               <JwPagination items={this.state.userdetails} onChangePage={this.onChangePage} styles={customStyles}/>
+
+               </div>
+
               </div>
             </div>
           </div>
@@ -662,6 +687,7 @@ console.log("checked items",this.state.checkedItems[i])
         </div>
         <div id="textdisplay" class="tabcontent">
           {displaydetails}
+
         </div>
       </div>
     );
