@@ -1,4 +1,7 @@
 import React from "react";
+import axios from "axios";
+import Env from "../../helpers/Env";
+
 
 class ProjectBasic extends React.Component {
   constructor(props) {
@@ -8,6 +11,8 @@ class ProjectBasic extends React.Component {
       showForm: false,
       character: "",
       actor: "",
+      projectid : this.props.projectid,
+      projectdetails : []
     };
   }
 
@@ -22,7 +27,17 @@ class ProjectBasic extends React.Component {
     return { index, character, actor };
   };
 
-  componentDidMount() {
+  async componentDidMount() {
+    console.log("project id is",this.state.projectid)
+    console.log("the project name is", this.state.projectname)
+
+    await axios.get(Env.host +'/project-create/project_by_id/?projectid='+this.state.projectid).then(response =>
+      {
+        console.log("in project basic",response.data)
+        this.setState({
+        projectdetails:this.state.projectdetails.concat(response.data)
+      })
+      })
     this.setState({
       rows: [
         this.createData(1, "Thanos", "Josh Brolin"),
@@ -65,9 +80,20 @@ class ProjectBasic extends React.Component {
   };
 
   render() {
+
+let projectdetails = this.state.projectdetails.map((projectdetails) =>
+{
+
+  return(
+
+        <h1>{projectdetails.name}</h1>
+
+  )
+}
+)
     return (
       <div>
-        <h1>Infinity War</h1>
+        {projectdetails}
         <div>
           <p>Project type: Movie</p>
         </div>

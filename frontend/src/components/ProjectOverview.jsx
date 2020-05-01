@@ -10,6 +10,9 @@ import UserGroups from "./projectOverview/UserGroups";
 import ProjectBasic from "./projectOverview/ProjectBasic";
 import Documents from "./Documents";
 
+import axios from "axios";
+import Env from "../helpers/Env";
+
 class MyProjects extends React.Component {
   constructor(props) {
     super(props);
@@ -18,21 +21,35 @@ class MyProjects extends React.Component {
       isShowCreateProjectTemplate: false,
       projectTypes: ["Type1", "Type2"],
       view: "",
+      project_id: this.props.match.params.id,
+      projectdetails: [],
     };
   }
+  async componentDidMount(props) {
+    const data = {
+      projectid: this.state.project_id,
+    };
 
-  // showCreateProjectTemplate = () => {
-  //   this.setState({ isShowCreateProject });
-  // };
-
-  // handleChange = (event, newValue) => {
-  //   setValue(newValue);
-  // };
+    console.log("the project_id is", this.state.project_id);
+    await axios
+      .get(
+        Env.host +
+          "/project-create/project_by_id/?projectid=" +
+          this.state.project_id
+      )
+      .then((response) => {
+        console.log(response.data);
+        this.setState({
+          projectdetails: this.state.projectdetails.concat(response.data),
+        });
+      });
+    console.log(this.state.projectdetails, "are");
+  }
 
   renderSwitch = (param) => {
     switch (param) {
       case "crew":
-        return <CrewListing />;
+        return <CrewListing projectid={this.state.project_id} />;
       case "actor":
         return <Actors />;
       case "character":
@@ -40,11 +57,12 @@ class MyProjects extends React.Component {
       case "unit":
         return <Units />;
       case "userGroup":
-        return <UserGroups />;
+        return <UserGroups projectid={this.state.project_id} />;
       case "documents":
         return <Documents />;
+
       default:
-        return <ProjectBasic />;
+        return <ProjectBasic projectid={this.state.project_id} />;
     }
   };
 
@@ -113,10 +131,26 @@ class MyProjects extends React.Component {
                 >
                   Documents
                 </button>
+
                 {/* <Link className="btn btn-link btn-logout" to="/documents">
                   Documents
                 </Link> */}
-
+                <button
+                  className="btn btn-link btn-logout"
+                  onClick={() => {
+                    this.setState({ view: "ProjectEvents" });
+                  }}
+                >
+                  Events
+                </button>
+                <button
+                  className="btn btn-link btn-logout"
+                  onClick={() => {
+                    this.setState({ view: "ProjectTasks" });
+                  }}
+                >
+                  Tasks
+                </button>
                 {/* <ul>
                   <li>
                     <button

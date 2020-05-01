@@ -21,15 +21,9 @@ class MyProjects extends React.Component {
       deptFunctions: null,
       projectName: "",
       projectTemplate: "",
-      productionType: null,
-      productionTypes: null,
-      coreFunctions: null,
-      deptFunctions: null,
-      companyId: 1,
-      templateName: "",
-      description: "",
-      coreFunIds: [],
-      deptFunIds: [],
+      productionType: "",
+      productionTypes: "",
+      allprojects: [],
     };
   }
 
@@ -86,6 +80,14 @@ class MyProjects extends React.Component {
       this.setState({
         deptFunctions: response.data,
       });
+    });
+
+    axios.get(Env.host + "/project-create/allprojects").then((response) => {
+      console.log("response from all projects", response);
+      this.setState({
+        allprojects: this.state.allprojects.concat(response.data),
+      });
+      console.log("all projects", this.state.allprojects);
     });
   }
 
@@ -150,6 +152,15 @@ class MyProjects extends React.Component {
   };
 
   render() {
+    let projects = this.state.allprojects.map((project) => {
+      return (
+        <ul>
+          <Link className="links" to={"/project-overview/" + project.id}>
+            {project.name}
+          </Link>
+        </ul>
+      );
+    });
     return (
       <div>
         <div className="row">
