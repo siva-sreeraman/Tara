@@ -8,6 +8,10 @@ import ProjectOverview from "./components/ProjectOverview";
 import SuDashboard from "./su/components/su-dashboard";
 import CompanyDB from "./components/companyDB";
 import Calendar from "./components/Calendar";
+import FileUpload from "./components/FileUpload";
+import CreateProject from "./components/CreateProject";
+import CreateProjectTemplate from "./components/CreateProjectTemplate";
+import Documents from "./components/Documents";
 
 class Routes extends React.Component {
   constructor(props) {
@@ -28,6 +32,13 @@ class Routes extends React.Component {
           <Route path="/project-overview" component={ProjectOverview} />
           <Route path="/company-db" component={CompanyDB} />
           <Route path="/calendar" component={Calendar} />
+          <Route path="/file-upload" component={FileUpload} />
+          <Route path="/create-project" component={CreateProject} />
+          <Route
+            path="/create-project-template"
+            component={CreateProjectTemplate}
+          />
+          <Route path="/documents" component={Documents} />
         </Router>
       </div>
     );

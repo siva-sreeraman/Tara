@@ -1,5 +1,5 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // import TabPanel from "./TabPanel";
 import CrewListing from "./projectOverview/CrewListing";
@@ -8,6 +8,7 @@ import Actors from "./projectOverview/Actors";
 import Units from "./projectOverview/Units";
 import UserGroups from "./projectOverview/UserGroups";
 import ProjectBasic from "./projectOverview/ProjectBasic";
+import Documents from "./Documents";
 
 class MyProjects extends React.Component {
   constructor(props) {
@@ -40,6 +41,8 @@ class MyProjects extends React.Component {
         return <Units />;
       case "userGroup":
         return <UserGroups />;
+      case "documents":
+        return <Documents />;
       default:
         return <ProjectBasic />;
     }
@@ -102,6 +105,18 @@ class MyProjects extends React.Component {
                 >
                   Units
                 </button>
+                <button
+                  className="btn btn-link btn-logout"
+                  onClick={() => {
+                    this.setState({ view: "documents" });
+                  }}
+                >
+                  Documents
+                </button>
+                {/* <Link className="btn btn-link btn-logout" to="/documents">
+                  Documents
+                </Link> */}
+
                 {/* <ul>
                   <li>
                     <button

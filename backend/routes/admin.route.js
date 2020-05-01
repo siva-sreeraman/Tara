@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
+
 const pool = require("../dbConfig");
+const fileUploadController = require("../controllers/file-upload.controller");
 
 /* GET student test. */
 router.get("/", function (req, res, next) {
@@ -34,5 +36,13 @@ router.get("/get-projects", async function (req, res) {
     }
   });
 });
+
+router.post("/file-upload", fileUploadController.uploadFile);
+
+router.get("/create-upload-url", fileUploadController.createUploadUrl);
+
+router.get("/get-presigned-url", fileUploadController.createPresignedGetUrl);
+
+router.get("/get-files", fileUploadController.getFiles);
 
 module.exports = router;

@@ -88,6 +88,9 @@ class Navbar extends React.Component {
               <Link className="nav-item nav-link" to="/company-db">
                 Company Data Base
               </Link>
+              <Link className="nav-item nav-link" to="/file-upload">
+                File Upload
+              </Link>
             </div>
           </div>
           {!!this.state?.auth?.uid ? (
