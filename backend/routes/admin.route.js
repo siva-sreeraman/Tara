@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+const query = require("../helpers/query");
 
 const pool = require("../dbConfig");
 const fileUploadController = require("../controllers/file-upload.controller");
@@ -35,6 +36,37 @@ router.get("/get-projects", async function (req, res) {
       res.status(400).send("crew does not exist");
     }
   });
+});
+
+router.get("/pending-requests/:companyId", async function (req, res) {
+  const companyId = req.params.companyId;
+  const userQuery = `SELECT name, profile_pic, uid FROM users where company_id=${companyId} AND status="pending";`;
+  const adminQuery = `SELECT name, profile_pic, uid FROM admin where company_id=${companyId} AND status="pendingByCompanyAdmin";`;
+  const userRequests = await query(pool, userQuery).catch(console.log);
+  const adminRequests = await query(pool, adminQuery).catch(console.log);
+  let result = {
+    userRequests,
+    adminRequests,
+  };
+  res.status(200).send(result);
+});
+
+router.get("/super-user/pending-requests", async function (req, res) {
+  const sql = `SELECT name, profile_pic, uid, company_name FROM admin WHERE status="pendingBySuperUser";`;
+  const result = await query(pool, sql).catch(console.log);
+  res.status(200).send(result);
+});
+
+router.put("/super-user/approve-requests", async function (req, res) {
+  const { companyName, uid } = req.body;
+  const createCompany = `INSERT INTO companies (name) VALUES ("${companyName}");`;
+  const updateStatus = `UPDATE admin SET status = "accepted", company_id=? WHERE uid="${uid}";`;
+  await query(pool, createCompany)
+    .then(async (result) => {
+      await query(pool, updateStatus, [result.insertId]);
+      res.status(200).send(result);
+    })
+    .catch(console.log);
 });
 
 router.post("/file-upload", fileUploadController.uploadFile);

@@ -17,6 +17,7 @@ import Navbarpage from "./components/Navbarpage";
 import Eventdetails from "./components/Eventdetails";
 import Taskdetails from "./components/Taskdetails";
 import Mycalender from "./components/Mycalender";
+import Registration from "./components/Registration";
 import Projectpage from "./components/Projectpage";
 import Projectmainpage from "./components/Projectmainpage";
 import Costumepage from "./components/Costumepage";
@@ -36,6 +37,7 @@ class Routes extends React.Component {
       <div>
         <Router>
           <Navbarpage></Navbarpage>
+          <Route path="/Registration" component={Registration} />
           <Route path="/login" component={Login} />
           <Route path="/my-projects" component={MyProjects} />
           <Route path="/su-dashboard" component={SuDashboard} />
