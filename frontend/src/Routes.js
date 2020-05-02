@@ -23,12 +23,18 @@ import Projectmainpage from "./components/Projectmainpage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
+
 import CrewListing from "./components/projectOverview/ProjectContacts";
 import CompanyUsers from './components/CompanyUsers';
 import CompanyCostumes from './components/CompanyCostumes';
 import Costume from "./components/projectOverview/CostumePage";
 import UserGroups from "./components/projectOverview/UserGroups";
 import CompanyLocation from './components/CompanyLocations'
+
+import Allevents from "./components/Allevents";
+import Alltasks from "./components/Alltasks";
+import Fullcalender from "./components/Fullcalender";
+
 
 class Routes extends React.Component {
   constructor(props) {
@@ -73,8 +79,9 @@ class Routes extends React.Component {
           <Route path="/companyCostumes" component={CompanyCostumes}/>
           <Route path="/Costumepage" component={Costume}/>
           <Route path="/companylocations" component={CompanyLocation}/>
-
-  
+          <Route path="/Allevents" component={Allevents} />
+          <Route path="/Alltasks" component={Alltasks} /> 
+   
         </Router>
       </div>
     );
