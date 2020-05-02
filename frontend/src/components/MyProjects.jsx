@@ -170,9 +170,9 @@ class MyProjects extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col-3">
+          {/* <div className="col-3">
             <NavigationPanel />
-          </div>
+          </div> */}
           <div className="col">
             <section>
               <h3></h3>
