@@ -30,9 +30,11 @@ const storage = multer.diskStorage({
   const AWS = require('aws-sdk');
 
   
-  const s3 = new AWS.S3({
-    accessKeyId: 'AKIAI72XJ4B436BWHDZA',
-    secretAccessKey: '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',
+  const s3 = new AWS.S3({ 
+     accessKeyId: process.env.ACC,
+    secretAccessKey: process.env.SACC,
+
+   
   });
 
 
@@ -70,7 +72,7 @@ router.post('/:id', async(req, res) => {
             const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
             // console.log(fileContent)
             const params = {
-              Bucket: 'handshakeresume-273',
+              Bucket:process.env.Bucket,
               Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
               Body: fileContent,
               ContentType: request.file.mimetype,
