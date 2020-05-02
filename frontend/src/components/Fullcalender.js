@@ -2,42 +2,45 @@ import React from "react";
 import axios from 'axios';
 import { Component } from "react";
 import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import '../App.css';
 import Env from "../helpers/Env";
+import dayGridPlugin from '@fullcalendar/daygrid';
+import '../App.css'
 
-class Mycalender extends Component {
+class Fullcalender extends Component {
     constructor(props) {
-     super(props);
 
-    const { match: { params } } = this.props
-    const data = {
-        id: params.id
-    }
-
+        super(props);
         this.state =
         {
             events: "",
-            projectid:data.id
         }
     }
+    componentDidMount() {
+        if(sessionStorage.getItem('persona')=="admin")
+        {
+            let id=sessionStorage.getItem('companyid')
+            axios.get(Env.host+"/calender/admin/allevents/"+id).then((response) => {
+                this.setState({
+                       events: response.data
+                    })
+                })
 
-componentDidMount() {
+        }
+        else
+        {
+            let id=sessionStorage.getItem('id')
+            axios.get(Env.host+"/calender/allevents/"+id).then((response) => {
+                this.setState({
+                       events: response.data
+                    })
+                })
 
-    const { match: { params } } = this.props
-    const data = {
-        id: params.id
-    }
-    console.log(data.id)
-    console.log(this.state.projectid)
-    axios.get(Env.host +"/project-overview/getevents_fromproject/"+data.id).then((response) => {
-      console.log(response);
-        this.setState({
-           events: response.data,
-       });
-    });
-        
-    }
+            }   
+   
+}
+
+
+
   
     eventdateChangeHandler(e) {
         this.setState({ eventdate: e.target.value });
@@ -72,4 +75,4 @@ componentDidMount() {
 
 
 
-export default Mycalender;
+export default Fullcalender;

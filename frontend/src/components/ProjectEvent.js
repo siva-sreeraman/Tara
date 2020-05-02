@@ -17,6 +17,10 @@ import Env from "../helpers/Env";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Link } from 'react-router-dom';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/core/Icon';
+import {Edit} from '@material-ui/icons';
+import {Delete} from '@material-ui/icons';
 
 
 
@@ -53,7 +57,7 @@ class ProjectEvent extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      
+      role:sessionStorage.getItem('role'),
       projectid: "",
       eventcheck: true,
       usercheck: false,
@@ -68,9 +72,12 @@ class ProjectEvent extends Component {
       show: false,
       projectshow: false,
       userval: [],
+      access:false,
+      edit:false,
       enableaddproject: false,
       checkedItems: new Map(),
-      projects: []
+      projects: [],
+      eventid:""
 
     };
     this.handleUsers = this.handleUsers.bind(this);
@@ -85,23 +92,47 @@ class ProjectEvent extends Component {
     this.handleaddeventclose = this.handleaddeventclose.bind(this);
     this.handleaddeventclosemodal = this.handleaddeventclosemodal.bind(this);
     this.handleaddEvents=this.handleaddEvents.bind(this)
+    this.handleedit=this.handleedit.bind(this)
+    
+
   }
 
   componentDidMount(props) {
+
     const { match: { params } } = this.props
     const data = {
         id: params.id
+    }
+    if(sessionStorage.getItem('persona')!=="admin")
+    {
+       let userid=sessionStorage.getItem('id');
+       const data={
+         usergroup:"create event"
+       }
+       axios.get(Env.host+"/accessright/user/"+userid,data).then((response) => {
+         this.setState({
+             access:response.data
+         })
+        this.getevents();
+     })
+    }
+    else
+    {
+            this.setState({
+                access:true
+              })
 
     }
+
+    
    
-    axios.get(Env.host + "/project-overview/getevents_fromproject/"+data.id).then((response) => {
-      eventsdata = response.data;
-    })
+     this.getevents();
     this.setState({
         projectid:data.id
     })
 
   }
+
 
   handleprojectclosemodal = () => {
     this.setState({
@@ -111,6 +142,11 @@ class ProjectEvent extends Component {
   handleaddeventclosemodal = () => {
     this.setState({
        addeventshow: false
+    })
+  }
+  handleeditclosemodal = () => {
+    this.setState({
+        edit: false
     })
   }
 
@@ -143,6 +179,31 @@ class ProjectEvent extends Component {
     });
 
   }
+  handleeditclose = () => {
+    this.setState({
+        edit: false
+    })
+    const data={
+      title: this.state.title,
+      date: this.state.date,
+      time:this.state.time,
+      description: this.state.description,
+      location: this.state.location,
+    }
+    axios.post(Env.host+"/calender/event/"+this.state.eventid,data).then((response) => {
+       this.getevents();
+       this.setState({
+        title:"",
+      time:"",
+      date:"",
+      location:"",
+      description:"",
+    })
+
+      
+    });
+
+  }
   handleaddeventclose = () => {
     
     const data={
@@ -156,7 +217,7 @@ class ProjectEvent extends Component {
     }
 
    
-    axios.post(Env.host + "/project-overview/postevents_toproject", data).then((response) => {
+    axios.post(Env.host +"/project-overview/postevents_toproject",data).then((response) => {
       console.log("dta in add event", data);
       this.getevents();
       this.setState({
@@ -183,7 +244,7 @@ class ProjectEvent extends Component {
       projectid: this.state.projectid,
     }
 
-    axios.get(Env.host + "/project-overview/getusers_fromproject/" + data1.projectid).then((response) => {
+    axios.get(Env.host+"/project-overview/getusers_fromproject/"+data1.projectid).then((response) => {
       this.setState({
         userdetails: response.data
       })
@@ -191,12 +252,15 @@ class ProjectEvent extends Component {
     });
   };
   getevents = () => {
-    let id = this.state.projectid;
-    axios.get(Env.host + "/project-overview/getevents_fromproject/" + id).then((response) => {
+    const { match: { params } } = this.props
+    const data = {
+        id: params.id
+    }
+    axios.get(Env.host +"/project-overview/getevents_fromproject/"+data.id).then((response) => {
       console.log(response);
-      this.setState({
-        eventlist: response.data,
-      });
+        this.setState({
+           eventlist: response.data,
+       });
     });
   };
 
@@ -255,22 +319,88 @@ class ProjectEvent extends Component {
   }
   handleaddEvents =(e) =>
   {
-    this.setState({
-      addeventshow: true
-    })
+   
+     
+      this.setState({
+        addeventshow: true
+      })
 
+  }
+  handledelete =(id) =>
+  { 
+   
+      console.log("delete")
+      console.log(id)
+  
+      axios.post(Env.host+"/calender/deleteevent/"+id).then((response) => {
+             this.getevents();
+      })
+
+    
+  
   }
   onChange = (e) => {
     this.setState({
         [e.target.name]: e.target.value
     })
 }
+handleedit = (id) => {
+  console.log("edit")
+ 
+  this.setState({
+      edit: !this.state.edit,
+      eventid:id
 
+  })
+}
   render() {
     let details=null;
     let displaydetails = null;
     let projectmodel = null;
-    let addeventbutton
+    let addeventbutton;
+    let editform=null;
+    if(this.state.edit)
+    {
+      editform=( <Modal show={this.state.edit} onHide={this.handleeditclose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Event </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <form>
+                                      <label for="title">Title:</label>
+                                      <input type="text" name="title" id="title" value={this.state.title} onChange={this.onChange} class="form-control" required />
+                                      <br></br>
+                                      <label for="time"> Time</label>
+                                      <input type="text" name="time" id="time" value={this.state.time} onChange={this.onChange} class="form-control" required />
+                                      <br></br><label for="date">  Date</label>
+                                      <input type="date" name="date" id="date" value={this.state.date} onChange={this.onChange} class="form-control" required />
+                                      <br></br> <label for="locatio"> Location</label>
+                                      <input type="text" name="location" id="location" value={this.state.location} onChange={this.onChange} class="form-control" required />
+              
+                                      <br></br><label for="description"> description</label>
+                                      <input type="text" name="description" id="description" value={this.state.description} onChange={this.onChange} class="form-control" required />
+                                      <br></br>
+                                    
+                                    
+                                  </form>
+      
+         
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={this.handleeditclosemodal}>
+            Close
+   </Button>
+          <Button variant="primary" onClick={()=>this.handleeditclose()}>
+            Save Changes
+   </Button>
+        </Modal.Footer>
+      </Modal>
+  
+            
+          )
+    }
+
+
 
     if (this.state.checkedItems.size > 1) {
       this.state.enableaddproject = true
@@ -371,23 +501,37 @@ class ProjectEvent extends Component {
         return (<div>
         <div class="card" style={{width:"1000px", height:"200px", "margin-top":"10px" }}>
         <div class="col-md-1"></div>
-        <div class="col-md-9">
-
-        <div style={{"margin-top":"10px","fontSize":"25px"}}><Link to ={"/Eventdetails/"+el.eventid} style={{color:"black"}} >{el.title}</Link> </div>
+        <div class="col-md-12">
         <div class="row">
-        <div class="col-md-3">
-        <div style={{"fontSize":"25px"}}>  <span class="glyphicon glyphicon-map-marker">{el.eventlocation}</span></div>
+        <div class="col-md-10">
+        <div style={{"margin-top":"10px","fontSize":"25px"}}><Link to ={"/Eventdetails/"+el.eventid} style={{color:"black"}} >{el.title}</Link></div>
 
         </div>
-        <div class="col-md-3">
+        <div class="col-md-1" style={{marginright:"0px"}}>
+        {this.state.access?<div>
+        <IconButton style={{fontSize:30}} onClick={()=>this.handleedit(el.eventid)}><Edit/></IconButton>
+        <IconButton style={{fontSize:30}} onClick={()=>this.handledelete(el.eventid)}><Delete/></IconButton></div>:""}
+
+        
+        </div>
+        </div>
+
+        
+        <div class="row">
+        <div class="col-md-1">
+        <div style={{"fontSize":" 15px"}}>  <span class="glyphicon glyphicon-map-marker">{el.eventlocation}</span></div>
+
+        </div>
+        <div class="col-md-1">
         <div style={{"fontSize":"15px"}}><span class="glyphicon glyphicon-time">{el.time}</span></div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-2">
         <div style={{"fontSize":"15px"}}>  <span class="glyphicon glyphicon-calendar">{el.date.substr(0,10)}</span></div>
         </div>
-        <div class="col-md-1"></div>
+       
         <div class="col-md-2">
         <div style={{"fontSize":"15px"}}> <Link to={"/Eventdetails/"+el.eventid}  style={{color:"black"}}>View Users</Link></div>
+       
         </div>
         </div>
       
@@ -396,12 +540,21 @@ class ProjectEvent extends Component {
         <div  style={{"fontSize":"15px","margin-top":"20px"}}>{el.eventdescription}</div>
     
         </div>
+      
+        <div class="col-md-1">
+      
+     
+       
+        </div>
         </div>
       
         </div>
           );
       })
-      console.log("hi")
+
+
+      
+      
     }
      
     addeventbutton = ( <Modal show={this.state.addeventshow} onHide={this.handleaddeventclose}>
@@ -455,12 +608,13 @@ class ProjectEvent extends Component {
             onClick={() => this.handleUsers()}>
             Users
           </button>
+          {this.state.access==="true"?
           <button disabled={!this.state.enableaddproject}
             class="btn btn-outline-dark mr-1" style={{"font-size":"20px" }}
             onClick={() => this.AssignEvent()}
           >
             Assign To Event
-          </button>
+          </button>:""}
         
           <button style={{"font-size":"20px" }}
             class="btn btn-outline-dark mr-1"
@@ -468,14 +622,15 @@ class ProjectEvent extends Component {
           >
             Events
           </button>
+          {this.state.access==="true"?
           <button style={{"font-size":"20px" }}
             class="btn btn-outline-dark mr-1"
             onClick={() => this.handleaddEvents()}
           >
              Add Event
-          </button>
+          </button> :""}
           
-   
+          {editform}    
         
         </div>
         
@@ -485,10 +640,11 @@ class ProjectEvent extends Component {
         <div id="textdisplay" class="tabcontent">
         <div class="col-md-2"></div>
         <div class="col-md-9" style={{"margin-top":"30px"}} >
+       
           {displaydetails}
           {details}
           </div>
-            
+     
     {addeventbutton}
         </div>
       </div>

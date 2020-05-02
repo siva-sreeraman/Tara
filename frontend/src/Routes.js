@@ -24,6 +24,10 @@ import Costumepage from "./components/Costumepage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
+import Allevents from "./components/Allevents";
+import Alltasks from "./components/Alltasks";
+import Fullcalender from "./components/Fullcalender";
+
 
 class Routes extends React.Component {
   constructor(props) {
@@ -55,7 +59,8 @@ class Routes extends React.Component {
           <Route path="/samplepopup" component={Example} />
           <Route path="/eventdetails/:id" component={Eventdetails} />
           <Route path="/taskdetails/:id" component={Taskdetails} />
-          <Route path="/mycalender" component={Mycalender} />
+          <Route path="/Mycalender" component={Mycalender} />
+          <Route path="/Fullcalender" component={Fullcalender} />
           <Route path="/navbarpage" component={Navbarpage} />
           <Route path="/Projectpage" component={Projectpage} />
           <Route path="/Projectmainpage/:id" component={Projectmainpage} />
@@ -63,6 +68,8 @@ class Routes extends React.Component {
           <Route path="/Adminprofilepage" component={Adminprofilepage} />
           <Route path="/ProjectEvent/:id" component={ProjectEvent} />
           <Route path="/ProjectTasks/:id" component={ProjectTasks} />
+          <Route path="/Allevents" component={Allevents} />
+          <Route path="/Alltasks" component={Alltasks} />
         </Router>
       </div>
     );
