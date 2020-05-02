@@ -1,6 +1,10 @@
 const Constants = {
   /** Key for localstorage */
   Auth: "auth",
+  Role: {
+    Admin: "admin",
+    User: "user",
+  },
   ProjectTypes: [
     { value: "Feature movie (Cinema)" },
     { value: "Short Film" },

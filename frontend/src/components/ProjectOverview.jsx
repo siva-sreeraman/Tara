@@ -1,5 +1,5 @@
 import React from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // import TabPanel from "./TabPanel";
 import CrewListing from "./projectOverview/CrewListing";
@@ -8,10 +8,10 @@ import Actors from "./projectOverview/Actors";
 import Units from "./projectOverview/Units";
 import UserGroups from "./projectOverview/UserGroups";
 import ProjectBasic from "./projectOverview/ProjectBasic";
+import Documents from "./Documents";
 
 import axios from "axios";
 import Env from "../helpers/Env";
-
 
 class MyProjects extends React.Component {
   constructor(props) {
@@ -21,33 +21,35 @@ class MyProjects extends React.Component {
       isShowCreateProjectTemplate: false,
       projectTypes: ["Type1", "Type2"],
       view: "",
-      project_id : this.props.match.params.id,
-     projectdetails : []
+      project_id: this.props.match.params.id,
+      projectdetails: [],
     };
   }
-  async componentDidMount(props)
-  {
+  async componentDidMount(props) {
+    const data = {
+      projectid: this.state.project_id,
+    };
 
-    const data = 
-    {
-      projectid : this.state.project_id
-    }
-    
-    console.log("the project_id is",this.state.project_id)
-    await axios.get(Env.host +'/project-create/project_by_id/?projectid='+this.state.project_id).then(response =>
-      {
-        console.log(response.data)
-this.setState({
-  projectdetails:this.state.projectdetails.concat(response.data)
-})
-      })
-      console.log(this.state.projectdetails,"are")
+    console.log("the project_id is", this.state.project_id);
+    await axios
+      .get(
+        Env.host +
+          "/project-create/project_by_id/?projectid=" +
+          this.state.project_id
+      )
+      .then((response) => {
+        console.log(response.data);
+        this.setState({
+          projectdetails: this.state.projectdetails.concat(response.data),
+        });
+      });
+    console.log(this.state.projectdetails, "are");
   }
 
   renderSwitch = (param) => {
     switch (param) {
       case "crew":
-        return <CrewListing projectid={this.state.project_id}/>;
+        return <CrewListing projectid={this.state.project_id} />;
       case "actor":
         return <Actors />;
       case "character":
@@ -55,8 +57,10 @@ this.setState({
       case "unit":
         return <Units />;
       case "userGroup":
-        return <UserGroups projectid={this.state.project_id}/>;
-       
+        return <UserGroups projectid={this.state.project_id} />;
+      case "documents":
+        return <Documents />;
+
       default:
         return <ProjectBasic projectid={this.state.project_id} />;
     }
@@ -119,6 +123,18 @@ this.setState({
                 >
                   Units
                 </button>
+                <button
+                  className="btn btn-link btn-logout"
+                  onClick={() => {
+                    this.setState({ view: "documents" });
+                  }}
+                >
+                  Documents
+                </button>
+
+                {/* <Link className="btn btn-link btn-logout" to="/documents">
+                  Documents
+                </Link> */}
                 <button
                   className="btn btn-link btn-logout"
                   onClick={() => {
