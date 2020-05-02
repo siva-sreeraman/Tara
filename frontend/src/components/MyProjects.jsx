@@ -13,7 +13,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Constants from "../helpers/Constants";
 
-const primary = red[500]; // #F44336
+// const primary = red[500]; // #F44336
 const accent = purple.A200; // #E040FB
 class MyProjects extends React.Component {
   constructor(props) {

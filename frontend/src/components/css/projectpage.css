@@ -3,6 +3,7 @@
     height: 80px;
     border-radius: 100px;
     background:rgb(230, 177, 184) ;
+    margin-left: 300;
   }
   #name {
     width: 80px;
@@ -15,3 +16,8 @@
     background-color: yellow;
 
   }
+
+  /* .card
+  {
+    width:600px
+  } */

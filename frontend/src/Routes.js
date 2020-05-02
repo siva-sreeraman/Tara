@@ -14,13 +14,15 @@ import Taskdetails from "./components/Taskdetails";
 import Mycalender from "./components/Mycalender";
 import Projectpage from "./components/Projectpage";
 import Projectmainpage from "./components/Projectmainpage";
-import Costumepage from "./components/Costumepage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
-
-
-
+import CrewListing from "./components/projectOverview/ProjectContacts";
+import CompanyUsers from './components/CompanyUsers';
+import CompanyCostumes from './components/CompanyCostumes';
+import Costume from "./components/projectOverview/CostumePage";
+import UserGroups from "./components/projectOverview/UserGroups";
+import CompanyLocation from './components/CompanyLocations'
 class Routes extends React.Component {
   constructor(props) {
     super(props);
@@ -32,7 +34,7 @@ class Routes extends React.Component {
     return (
       <div>
         <Router>
-           <Navbarpage></Navbarpage>
+           <Route path="/" component={Navbarpage}/>
           <Route path="/login" component={Login} />
           <Route path="/my-projects" component={MyProjects} />
           <Route path="/su-dashboard" component={SuDashboard} />
@@ -45,11 +47,16 @@ class Routes extends React.Component {
           <Route path="/mycalender" component={Mycalender}/>
           <Route  path="/navbarpage" component={Navbarpage}/>
           <Route  path="/Projectpage" component={Projectpage}/>
+          <Route path="/usergroups" component={UserGroups}/>
           <Route  path="/Projectmainpage/:id" component={Projectmainpage}/>
-          <Route  path="/Costumepage" component={Costumepage}/>
           <Route  path="/Adminprofilepage" component={Adminprofilepage}/>
           <Route  path="/ProjectEvent/:id" component={ProjectEvent}/>
           <Route  path="/ProjectTasks/:id" component={ProjectTasks}/>
+          <Route path="/contactspage" component={CrewListing}/>
+          <Route path="/Companyuserspage" component={CompanyUsers}/>
+          <Route path="/companyCostumes" component={CompanyCostumes}/>
+          <Route path="/Costumepage" component={Costume}/>
+          <Route path="/companylocations" component={CompanyLocation}/>
         </Router>
       </div>
     );

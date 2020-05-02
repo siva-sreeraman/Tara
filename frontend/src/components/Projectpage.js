@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import purple from "@material-ui/core/colors/purple";
 import red from "@material-ui/core/colors/red";
-
+import {  Alert,Card,Button } from "react-bootstrap";
+import Tooltip from 'react-bootstrap/Tooltip';
+import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 // import TabPanel from "./TabPanel";
 import Env from "../helpers/Env";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -42,9 +44,8 @@ class Projectpage extends Component {
     render() {
         let projects = this.state.allprojects.map((project) => {
             return(
-                <div>
-                     <div class="card" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"100px", }}>
+                         
+                     <div class="card" style={{"display": "block","border-radius": "4px","margin-top":"20px", height:"100px", }}>
                      <div class="col-md-2">
                      <div id="container" style={{marginTop:"10px"}}>
                   <div style={{"font-size":"50px"}}id="name">
@@ -54,13 +55,15 @@ class Projectpage extends Component {
                    
                      </div>
                      <div class="col-md-9" style={{marginTop:"10px"}}>
-                     <div style={{ "font-size": "15px", paddingTop: "10px"}}> <Link to={"/Projectmainpage/"+ project.id} style={{ color: "black" }}>
+                     <div style={{ "font-size": "15px", padding: "30px"}}> <Link to={"/Projectmainpage/"+ project.id} style={{ color: "black" }}>
                      {project.name}</Link></div>
                      
+                   
+
+      
                        </div>
                      </div>
-                     
-                       </div>
+                   
      
                   )
                 }
@@ -68,24 +71,42 @@ class Projectpage extends Component {
        
                               
         return (
-        <div>
+          <div>
+          <div>
+           
+          </div>
+        <div className="amazon-body container-fluid">
          <div class="row">
-         <div class="col-md-1"></div>
 
-             <div style={{marginRight:"0px"}}
-              ><h1> MY PROJECTS</h1></div>
+             <div style={{marginRight:"0px"}}>
+              <div >
+            
+                <Card style={{ width: '30rem',height : '7em' }}>
+  {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
+  <Card.Body style={{backgroundColor:"pink"}}>
+  <h1>My Projects</h1>
+    <Card.Title align="center"></Card.Title>
+    {/* <Card.Text>
+      Some quick example text to build on the card title and make up the bulk of
+      the card's content.
+    </Card.Text> */}
+    {/* <Button variant="primary">Go somewhere</Button> */}
+  </Card.Body>
+</Card>
+</div>
+             </div>
+             
+                    
          </div>
                <div class="row" style={{}}>
-                   <div class="col-md-3"></div>
                    <div class="col-md-6">
                    
                           {projects}
                     
                    </div>
-                   <div class="col-md-3"></div>
                </div>
         </div>
-
+</div>
         );
     }
 }
