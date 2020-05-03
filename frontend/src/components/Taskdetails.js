@@ -55,7 +55,7 @@ class Taskdetails extends Component {
             <StyledTableCell>{ud.name}</StyledTableCell>
             <StyledTableCell>{ud.address}</StyledTableCell>
             <StyledTableCell>{ud.phonenumber}</StyledTableCell>
-            <StyledTableCell>{ud.mail}</StyledTableCell>
+            <StyledTableCell>{ud.email}</StyledTableCell>
           </TableRow>
         );
       });
@@ -64,12 +64,12 @@ class Taskdetails extends Component {
         <div class="paddingleft15">
           <div class="form-group row" paddingleft>
             <div class="col-lg-10">
-              <h2> USERS ASSIGNED TO THIS TASK</h2>{" "}
+              <h2> USERS ASSIGNED </h2>{" "}
             </div>
           </div>
 
           <div class="form-group row" paddingleft>
-            <div class="col-lg-2"></div>
+            <div class="col-lg-1"></div>
             <div class="col-lg-9">
               <TableContainer component={Paper}>
                 <Table aria-label="customized table">
@@ -78,7 +78,7 @@ class Taskdetails extends Component {
                       <StyledTableCell> Name</StyledTableCell>
                       <StyledTableCell> address</StyledTableCell>
                       <StyledTableCell>phonenumber</StyledTableCell>
-                      <StyledTableCell>mail</StyledTableCell>
+                      <StyledTableCell>mail id</StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>{details}</TableBody>
@@ -97,7 +97,7 @@ class Taskdetails extends Component {
     }
 
     return (
-      <div style={{ marginTop: "20px", paddingLeft: "150px" }}>
+      <div style={{ marginTop: "20px" }}>
         {displayform}
       </div>
     );

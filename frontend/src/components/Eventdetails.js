@@ -82,7 +82,7 @@ class Eventdetails extends Component
                   </StyledTableCell>
                   <StyledTableCell >{ud.address}</StyledTableCell>
                   <StyledTableCell >{ud.phonenumber}</StyledTableCell>
-                  <StyledTableCell >{ud.mail}</StyledTableCell>
+                  <StyledTableCell >{ud.email}</StyledTableCell>
                 
                 </TableRow>
               
@@ -91,14 +91,14 @@ class Eventdetails extends Component
     }));
         
 
-
-        displayform=  (<div class="paddingleft15">
+    displayform = (
+      <div class="paddingleft15">
         <div class="form-group row" paddingleft>
-
-        <div class="col-lg-10" style={{"marginTop":"20px"}}><h2>  USERS ASSIGNED TO THIS EVENT</h2> </div>
-    
+          <div class="col-lg-10">
+            <h2> USERS ASSIGNED </h2>{" "}
+          </div>
         </div>
-          
+
         <div class="form-group row"  style={{"marginTop":"20px"}}>
             <div class="col-lg-1"></div>
             <div class="col-lg-9">
@@ -109,7 +109,7 @@ class Eventdetails extends Component
            <StyledTableCell> Name</StyledTableCell>
            <StyledTableCell> address</StyledTableCell>
            <StyledTableCell >phonenumber</StyledTableCell>
-           <StyledTableCell >mail</StyledTableCell>
+           <StyledTableCell >mail id</StyledTableCell>
           
          </TableRow>
        </TableHead>
@@ -134,14 +134,9 @@ class Eventdetails extends Component
 
      
 return (
-  <div style={{"paddingLeft":"150px"}}>
-
-     
-       {displayform}      
-           
-
- </div>
-
+  <div style={{ marginTop: "20px" }}>
+  {displayform}
+</div>
         
         
       
