@@ -95,7 +95,7 @@ class Eventdetails extends Component
         displayform=  (<div class="paddingleft15">
         <div class="form-group row" paddingleft>
 
-        <div class="col-lg-10" style={{"marginTop":"20px"}}><h2>  USERS ASSIGNED TO THIS EVENT</h2> </div>
+        <div class="col-lg-10" style={{"marginTop":"20px"}}><h2>  USERS ASSIGNED TO THIS EVENT </h2> </div>
     
         </div>
           

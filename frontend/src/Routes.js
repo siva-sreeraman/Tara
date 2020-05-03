@@ -20,7 +20,6 @@ import Mycalender from "./components/Mycalender";
 import Registration from "./components/Registration";
 import Projectpage from "./components/Projectpage";
 import Projectmainpage from "./components/Projectmainpage";
-import Costumepage from "./components/Costumepage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
@@ -28,7 +27,12 @@ import Allevents from "./components/Allevents";
 import Alltasks from "./components/Alltasks";
 import Fullcalender from "./components/Fullcalender";
 import Messages from "./components/Messages/Messages";
-
+import CompanyUsers from "./components/CompanyUsers";
+import CompanyCostumes from "./components/CompanyCostumes";
+import Costume from "./components/projectOverview/CostumePage";
+import CompanyLocation from "./components/CompanyLocations";
+import UserGroups from "./components/projectOverview/UserGroups";
+import CrewListing from "./components/projectOverview/CrewListing";
 
 class Routes extends React.Component {
   constructor(props) {
@@ -54,10 +58,8 @@ class Routes extends React.Component {
           <Route path="/create-project" component={CreateProject} />
           <Route
             path="/create-project-template"
-            component={CreateProjectTemplate}
-          />
-                    <Route path="/usergroups" component={UserGroups}/>
-
+            component={CreateProjectTemplate}/>
+  
           <Route path="/documents" component={Documents} />
           <Route path="/samplepopup" component= {Example}/>
           <Route path="/eventdetails/:id" component={Eventdetails}/>
