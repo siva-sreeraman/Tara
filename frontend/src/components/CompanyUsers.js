@@ -2,7 +2,9 @@ import React, { Fragment } from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import Modal from 'react-bootstrap/Modal';
-import { Button, Modal } from "react-bootstrap";
+import Button from "@material-ui/core/Button";
+
+import {  Modal } from "react-bootstrap";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -11,6 +13,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
+import { DialogContent,DialogTitle,Dialog } from "@material-ui/core";
 
 import { Component } from "react";
 import { Redirect } from "react-router";
@@ -27,12 +30,16 @@ import JwPagination from "jw-react-pagination";
 // import "./CompanyDB.css";
 // import UserCharacter from "./UserCharacter";
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+const StyledTableCell = withStyles((theme) => ({}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
   },
-}))(TableCell);
+}))(TableRow);
+
 
 const classes = makeStyles((theme) => ({
   root: {
@@ -136,13 +143,14 @@ class CompanyDB extends Component {
       .post(Env.host + "/companydb/addrolestouser", data)
       .then((response) => {
         rolesdata = response.data;
+        this.getusers();
       });
 
-    axios.get(Env.host + "/companydb/allusers").then((response) => {
-      this.setState({
-        userdetails: response.data,
-      });
-    });
+    // axios.get(Env.host + "/companydb/allusers").then((response) => {
+    //   this.setState({
+    //     userdetails: response.data,
+    //   });
+    // });
 
     this.setState({
       show: false,
@@ -186,6 +194,7 @@ class CompanyDB extends Component {
       .post(Env.host + "/companydb/assigntoproject", data)
       .then((response) => {
         console.log("dta in asign project", data);
+
       });
   };
 
@@ -354,27 +363,26 @@ class CompanyDB extends Component {
       }
 
       modelui = (
-        <Modal show={this.state.show} onHide={this.handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Roles</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <FormControl className={classes.formControl}>
+      
+        <Dialog open={this.state.show}  aria-labelledby="customized-dialog-title" onClose={this.handleClose}>
+            <DialogTitle>Add Roles</DialogTitle>
+               <DialogContent>
+               
+            <FormControl>
               <Autocomplete
                 multiple
                 id="tags-standard"
                 options={rolesdata}
+                style={{ width: 300 }}
                 getOptionLabel={(each) => each.rolename}
                 onChange={this.handleroles}
                 // defaultValue={this.props?.studentSkills}
                 renderInput={(params) => (
                   <TextField
-                    size="500"
                     {...params}
                     variant="standard"
                     label="Roles"
                     placeholder="Enter Roles"
-                    style={{ width: "120px" }}
                   />
                 )}
               />
@@ -385,24 +393,24 @@ class CompanyDB extends Component {
               </section> */}
             </FormControl>
             {/* Enter Role: <TextField>Enter Role</TextField> */}
-          </Modal.Body>
-          <Modal.Footer>
+            <DialogContent>
             <Button variant="secondary" onClick={this.handleclosemodal}>
               Close
             </Button>
             <Button variant="primary" onClick={this.handleClose}>
               Save Changes
             </Button>
-          </Modal.Footer>
-        </Modal>
+            </DialogContent>
+           
+            </DialogContent>
+
+        </Dialog>
       );
 
       projectmodel = (
-        <Modal show={this.state.projectshow} onHide={this.handleprojectclose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add Roles</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        <Dialog open={this.state.projectshow} onClose={this.handleprojectclose}>
+            <DialogTitle>Add Roles</DialogTitle>
+          <DialogContent>
             <FormControl className={classes.formControl}>
               <Autocomplete
                 multiple
@@ -429,16 +437,16 @@ class CompanyDB extends Component {
          </section> */}
             </FormControl>
             {/* Enter Role: <TextField>Enter Role</TextField> */}
-          </Modal.Body>
-          <Modal.Footer>
+          
+         </DialogContent>
             <Button variant="secondary" onClick={this.handleprojectclosemodal}>
               Close
             </Button>
             <Button variant="primary" onClick={this.handleprojectclose}>
               Save Changes
             </Button>
-          </Modal.Footer>
-        </Modal>
+         
+        </Dialog>
       );
 
       return (
@@ -472,24 +480,27 @@ class CompanyDB extends Component {
     displaydetails = (
       <div>
         <div class="paddingleft15">
-          <div class="form-group row" paddingleft>
-            <div
-              class="col-lg-12"
-              style={{ maxWidth: "90%", maxHeight: "90%" }}
-            >
-              {" "}
-              <h2>
-                {" "}
-                <div align="right">
-                  <button
-                    disabled={!this.state.enableaddproject}
-                    class="btn btn-outline-dark mr-1"
-                    onClick={() => this.AssignProject()}
-                  >
-                    AssignProject
-                  </button>
-                </div>
-              </h2>
+        <div className="form-group">
+        <div className="">
+        <div className="form-group d-flex justify-content-between">
+        <h2>Locations</h2>
+
+        <Button
+        disabled={!this.state.enableaddproject}
+                  variant="contained"
+                  color="secondary"
+                  onClick={this.AssignProject}
+                >
+                 Assign Project
+                </Button>
+              </div>
+              </div>
+             
+     </div>
+     </div>
+
+               
+             
               <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                   <TableHead>
@@ -509,6 +520,7 @@ class CompanyDB extends Component {
                 </Table>
               </TableContainer>
               <br></br>
+             
               <div align="center">
                 <JwPagination
                   items={this.state.userdetails}
@@ -516,14 +528,12 @@ class CompanyDB extends Component {
                   styles={customStyles}
                 />
               </div>
-            </div>
-          </div>
-        </div>
+          
         <div>
           {modelui}
           {projectmodel}
         </div>
-      </div>
+        </div>
     );
 
     return (
