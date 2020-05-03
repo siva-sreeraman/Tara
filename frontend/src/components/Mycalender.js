@@ -10,27 +10,17 @@ class Mycalender extends Component {
     constructor(props) {
      super(props);
 
-    const { match: { params } } = this.props
-    const data = {
-        id: params.id
-    }
 
         this.state =
         {
             events: "",
-            projectid:data.id
+            projectid:sessionStorage.getItem('projectid')
         }
     }
 
 componentDidMount() {
 
-    const { match: { params } } = this.props
-    const data = {
-        id: params.id
-    }
-    console.log(data.id)
-    console.log(this.state.projectid)
-    axios.get(Env.host +"/project-overview/getevents_fromproject/"+data.id).then((response) => {
+    axios.get(Env.host +"/project-overview/getevents_fromproject/"+this.state.projectid).then((response) => {
       console.log(response);
         this.setState({
            events: response.data,

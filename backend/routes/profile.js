@@ -38,11 +38,12 @@ const storage = multer.diskStorage({
   });
 
 
-router.post('/:id', async(req, res) => {
+router.post('/admin/:id', async(req, res) => {
     try{
-
+      console.log("admin edit")
     var dbquery  = 'UPDATE admin SET name = ?, email = ?, phonenumber = ? WHERE (id = ?)';
     result = await query(pool, dbquery , [req.body.name, req.body.email, req.body.phonenumber,req.params.id]).catch(console.log);
+    console.log(result)
     res.status(200).send(result);
    
     }
@@ -53,7 +54,7 @@ router.post('/:id', async(req, res) => {
 
 
 
-    router.get('/:id', async(req, res) => {
+    router.get('/admin/:id', async(req, res) => {
         try{
     
         var dbquery  = 'select * from admin where id=?';
@@ -65,6 +66,34 @@ router.post('/:id', async(req, res) => {
             return response.status(500).send(err);
           }
         })
+
+        router.post('/user/:id', async(req, res) => {
+          try{
+      
+          var dbquery  = 'UPDATE users SET name = ?, email = ?, phonenumber = ? WHERE (id = ?)';
+          result = await query(pool, dbquery , [req.body.name, req.body.email, req.body.phonenumber,req.params.id]).catch(console.log);
+          res.status(200).send(result);
+         
+          }
+          catch (ex) {
+              return response.status(500).send(err);
+            }
+          })
+      
+      
+      
+          router.get('/user/:id', async(req, res) => {
+              try{
+          
+              var dbquery  = 'select * from users where id=?';
+              result = await query(pool, dbquery , [req.params.id]).catch(console.log);
+              res.status(200).send(result);
+          
+              }
+              catch (ex) {
+                  return response.status(500).send(err);
+                }
+              })
   
     router.post('/uploadpic/:id', upload.single('profilepic'), async (request, response) => {
         try {
@@ -83,9 +112,21 @@ router.post('/:id', async(req, res) => {
                 if (err) {
                   return response.status(500).json({ error: err.message });
                 }
-                const dbquery = 'update admin set profilepic=? where  id=?';
-                result = await query(pool, dbquery , [data.Location,request.params.id]).catch(console.log);
-                response.status(200).send(result);
+                if(request.body.persona=="admin")
+                {
+                  const dbquery = 'update admin set profile_pic=? where  id=?';
+                  result = await query(pool, dbquery , [data.Location,request.params.id]).catch(console.log);
+                  response.status(200).send(result);
+
+                }
+                else
+                {
+                  const dbquery = 'update users set profile_pic=? where  id=?';
+                  result = await query(pool, dbquery , [data.Location,request.params.id]).catch(console.log);
+                  response.status(200).send(result);
+
+                }
+              
             })
             }
           } catch (ex) {

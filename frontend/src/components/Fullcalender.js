@@ -18,17 +18,18 @@ class Fullcalender extends Component {
     componentDidMount() {
         if(sessionStorage.getItem('persona')=="admin")
         {
-            let id=sessionStorage.getItem('companyid')
-            axios.get(Env.host+"/calender/admin/allevents/"+id).then((response) => {
+         
+        
+            axios.get(Env.host+"/calender/admin/allevents/"+sessionStorage.getItem('companyId')).then((response) => {
                 this.setState({
-                       events: response.data
+                      events: response.data
                     })
                 })
 
         }
         else
         {
-            let id=sessionStorage.getItem('id')
+            let id=sessionStorage.getItem('uid')
             axios.get(Env.host+"/calender/allevents/"+id).then((response) => {
                 this.setState({
                        events: response.data

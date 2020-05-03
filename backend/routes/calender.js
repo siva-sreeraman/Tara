@@ -112,8 +112,13 @@ router.get('/admin/alltasks/:id', async (req, res) => {
         for(temp of result)
         { 
             const sqlquery = "select * from  Tasks where taskid in (SELECT distinct taskid FROM projecttasks where projectid = ?)";
-            result = await query(pool, sqlquery,[temp.id] ).catch(console.log);
-            list.push(result)
+            result1 = await query(pool, sqlquery,[temp.id] ).catch(console.log);
+            for(temp1 of result1)
+            {
+                list.push(temp1)
+
+            }
+          
   
         }
 
@@ -130,12 +135,18 @@ router.get('/admin/allevents/:id', async (req, res) => {
 
         var dbquery = 'select id from projects  where company_id=?'
         result = await query(pool, dbquery, [req.params.id]).catch(console.log);
+        console.log(result)
         let list=[]
         for(temp of result)
         { 
             const sqlquery = "select * from  Events where eventid in (SELECT distinct eventid FROM projectevents where projectid = ?)";
-            result = await query(pool, sqlquery,[temp.id] ).catch(console.log);
-            list.push(result)
+            result1 = await query(pool, sqlquery,[temp.id] ).catch(console.log);
+            for(temp1 of result1)
+            {
+                list.push(temp1)
+
+            }
+          
   
             
 
@@ -145,7 +156,7 @@ router.get('/admin/allevents/:id', async (req, res) => {
 
     }
     catch (ex) {
-        return response.status(500).send(err);
+        return res.status(500).send(err);
     }
 })
 
