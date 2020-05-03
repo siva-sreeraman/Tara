@@ -337,7 +337,6 @@ export default function MiniDrawer(props) {
           <Route path="/companylocations" component={CompanyLocation} />
           <Route path="/Allevents" component={Allevents} />
           <Route path="/Alltasks" component={Alltasks} />
-          <Route path="/admin-requests" component={AdminRequests} />
           <Route path="/fullcalendar" component={Fullcalender} />
         </div>
       </main>
