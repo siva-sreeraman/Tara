@@ -20,20 +20,14 @@ import Mycalender from "./components/Mycalender";
 import Registration from "./components/Registration";
 import Projectpage from "./components/Projectpage";
 import Projectmainpage from "./components/Projectmainpage";
+import Costumepage from "./components/Costumepage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
-
-import CrewListing from "./components/projectOverview/ProjectContacts";
-import CompanyUsers from './components/CompanyUsers';
-import CompanyCostumes from './components/CompanyCostumes';
-import Costume from "./components/projectOverview/CostumePage";
-import UserGroups from "./components/projectOverview/UserGroups";
-import CompanyLocation from './components/CompanyLocations'
-
 import Allevents from "./components/Allevents";
 import Alltasks from "./components/Alltasks";
 import Fullcalender from "./components/Fullcalender";
+import Messages from "./components/Messages/Messages";
 
 
 class Routes extends React.Component {
@@ -47,8 +41,7 @@ class Routes extends React.Component {
     return (
       <div>
         <Router>
-           <Route path="/" component={Navbarpage}/>
-
+          <Navbarpage></Navbarpage>
           <Route path="/Registration" component={Registration} />
           <Route path="/login" component={Login} />
           <Route path="/my-projects" component={MyProjects} />
@@ -56,12 +49,15 @@ class Routes extends React.Component {
           <Route path="/admin-dashboard" component={AdminDashboard} />
           <Route path="/project-overview/:id" component={ProjectOverview} />
           <Route path="/company-db" component={CompanyDB} />
+          {/* <Route path="/calendar" component={Calendar} /> */}
           <Route path="/file-upload" component={FileUpload} />
           <Route path="/create-project" component={CreateProject} />
           <Route
             path="/create-project-template"
             component={CreateProjectTemplate}
           />
+                    <Route path="/usergroups" component={UserGroups}/>
+
           <Route path="/documents" component={Documents} />
           <Route path="/samplepopup" component= {Example}/>
           <Route path="/eventdetails/:id" component={Eventdetails}/>
@@ -83,7 +79,6 @@ class Routes extends React.Component {
           <Route path="/companylocations" component={CompanyLocation}/>
           <Route path="/allevents" component={Allevents} />
           <Route path="/alltasks" component={Alltasks} /> 
-   
         </Router>
       </div>
     );

@@ -2,13 +2,13 @@
 
 const express = require("express");
 var loginRouter = require("./routes/login.route");
-var adminRouter = require("./routes/admin.route");
+var loginRouter = require("./routes/login.route");
 var authRouter = require("./routes/auth.route");
+var adminRouter = require("./routes/admin.route");
 var admin = require("firebase-admin");
 var companyDB = require("./routes/companyDB.route");
 var projectOverview = require("./routes/projectOverview.route");
 var projectCreateRoute = require("./routes/project.create.route");
-const bodyParser = require("body-parser");
 const path = require('path');
 const fs = require('fs');
 var profile=require("./routes/profile");
