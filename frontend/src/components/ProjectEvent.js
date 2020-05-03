@@ -33,9 +33,6 @@ const StyledTableCell = withStyles((theme) => ({
     fontSize: 14,
   },
 
-    
-
-
   body: {
     fontSize: 14,
   },
@@ -102,7 +99,25 @@ class ProjectEvent extends Component {
 
     const { match: { params } } = this.props
     const data = {
-        id: params.id
+      id: params.id,
+    };
+    if (sessionStorage.getItem("persona") !== "admin") {
+      let userid = sessionStorage.getItem("id");
+      const data = {
+        usergroup: "create event",
+      };
+      axios
+        .get(Env.host + "/accessright/user/" + userid, data)
+        .then((response) => {
+          this.setState({
+            access: true,
+          });
+          this.getevents();
+        });
+    } else {
+      this.setState({
+        access: true,
+      });
     }
     if(sessionStorage.getItem('persona')!=="admin")
     {
@@ -168,10 +183,9 @@ class ProjectEvent extends Component {
     const data = {
 
       userids: temp,
-      projectid: this.state.projects[0].eventid
-
-    }
-    console.log("in checked items", data)
+      projectid: this.state.projects[0].eventid,
+    };
+    console.log("in checked items", data);
     Object.entries(this.state.checkedItems).map(([key, value]) => {
       console.log(key);
     })
@@ -415,22 +429,48 @@ handleedit = (id) => {
             <Modal.Title>Add User To Events</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <FormControl className={classes.formControl}>
-              <Autocomplete
-                multiple
-                id="tags-standard"
-                options={this.state.eventlist}
-                getOptionLabel={each => each.title}
-                onChange={this.handleprojects}
-                renderInput={params => (
-                  <TextField size="500"
-                    {...params}
-                    variant="standard"
-                    label="Events"
-                    placeholder="Enter Events"
-                    style={{ width: "150px" }}
-                  />
-                )}
+            <form>
+              <label for="title">Title:</label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                value={this.state.title}
+                onChange={this.onChange}
+                class="form-control"
+                required
+              />
+              <br></br>
+              <label for="time"> Time</label>
+              <input
+                type="text"
+                name="time"
+                id="time"
+                value={this.state.time}
+                onChange={this.onChange}
+                class="form-control"
+                required
+              />
+              <br></br>
+              <label for="date"> Date</label>
+              <input
+                type="date"
+                name="date"
+                id="date"
+                value={this.state.date}
+                onChange={this.onChange}
+                class="form-control"
+                required
+              />
+              <br></br> <label for="locatio"> Location</label>
+              <input
+                type="text"
+                name="location"
+                id="location"
+                value={this.state.location}
+                onChange={this.onChange}
+                class="form-control"
+                required
               />
             </FormControl>
           </Modal.Body>
@@ -443,6 +483,65 @@ handleedit = (id) => {
      </Button>
           </Modal.Footer>
         </Modal>
+      );
+    }
+
+    if (this.state.checkedItems.size > 1) {
+      this.state.enableaddproject = true;
+    }
+    if (this.state.usercheck) {
+      const formdetails = this.state.userdetails.map((userdetails) => {
+        projectmodel = (
+          <Modal show={this.state.projectshow} onHide={this.handleprojectclose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add User To Events</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <FormControl className={classes.formControl}>
+                <Autocomplete
+                  multiple
+                  id="tags-standard"
+                  options={this.state.eventlist}
+                  getOptionLabel={(each) => each.title}
+                  onChange={this.handleprojects}
+                  renderInput={(params) => (
+                    <TextField
+                      size="500"
+                      {...params}
+                      variant="standard"
+                      label="Events"
+                      placeholder="Enter Events"
+                      style={{ width: "150px" }}
+                    />
+                  )}
+                />
+                <br></br>
+                <label for="description"> description</label>
+                <input
+                  type="text"
+                  name="description"
+                  id="description"
+                  value={this.state.description}
+                  onChange={this.onChange}
+                  class="form-control"
+                  required
+                />
+                <br></br>
+              </FormControl>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={this.handleprojectclosemodal}
+              >
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.handleprojectclose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        );
 
         return (
           <TableBody>
@@ -500,46 +599,100 @@ handleedit = (id) => {
     if (this.state.eventcheck) {
           details = this.state.eventlist.map((el) => {
         return (
-        
-        
-          <div style={{border:"1px solid black"}} width="70%" height="30%">
+          <div style={{ border: "1px solid black" }} width="70%" height="30%">
+            <div>
+              <div class="col-md-10">
+                <div style={{ "margin-top": "10px", fontSize: "25px" }}>
+                  <Link
+                    to={"/taskdetails/" + el.taskid}
+                    style={{ color: "black" }}
+                  >
+                    {el.title}
+                  </Link>
+                </div>
+              </div>
 
-               <div>
-         
-          <div class="col-md-10" >
-          <div style={{ "margin-top": "10px", "fontSize": "25px" }}><Link to={"/taskdetails/" + el.taskid} style={{ color: "black" }} >{el.title}</Link>
-          
+              <div class="col-md-10">
+                <div style={{ "margin-top": "10px", fontSize: "15px" }}>
+                  <Link
+                    to={"/taskdetails/" + el.taskid}
+                    style={{ color: "black" }}
+                  >
+                    {el.eventdescription}
+                  </Link>
+                </div>
+              </div>
+
+              <div class="col-md-1" style={{ marginright: "0px" }}>
+                {this.state.access == true ? (
+                  <div>
+                    <IconButton
+                      style={{ fontSize: 30 }}
+                      onClick={() => this.handleedit(el.taskid)}
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      style={{ fontSize: 30 }}
+                      onClick={() => this.handledelete(el.taskid)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+
+              {/* <div style={{ "fontSize": "15px", "margin-top": "20px" }}>{el.description}</div> */}
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <span class="glyphicon glyphicon-calendar">
+                    {el.date.substr(0, 10)}
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <Link
+                    to={"/eventdetails/" + el.eventid}
+                    style={{ color: "black" }}
+                  >
+                    {el.eventlocation}
+                  </Link>
+                </div>
+
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <Link
+                    to={"/eventdetails/" + el.eventid}
+                    style={{ color: "black" }}
+                  >
+                    {el.time}
+                  </Link>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <Link
+                    to={"/eventdetails/" + el.eventid}
+                    style={{ color: "black" }}
+                  >
+                    View Users
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
-
-        </div>
-
-        <div class="col-md-10" >
-          <div style={{ "margin-top": "10px", "fontSize": "15px" }}><Link to={"/taskdetails/" + el.taskid} style={{ color: "black" }} >{el.eventdescription}</Link>
-          
-          </div>
-
-        </div>
-
-        <div class="col-md-1" style={{ marginright: "0px" }}>
-                  {this.state.access == true ? <div>
-                    <IconButton style={{ fontSize: 30 }} onClick={() => this.handleedit(el.taskid)}><Edit /></IconButton>
-                    <IconButton style={{ fontSize: 30 }} onClick={() => this.handledelete(el.taskid)}><Delete /></IconButton></div> : ""}
-
-
-                </div>
-              
-                {/* <div style={{ "fontSize": "15px", "margin-top": "20px" }}>{el.description}</div> */}
-                <div class="col-md-2">
-                  <div style={{ "fontSize": "15px" }}>  <span class="glyphicon glyphicon-calendar">{el.date.substr(0, 10)}</span></div>
-                </div>
-
-                <div class="col-md-2">
-                  <div style={{ "fontSize": "15px" }}> <Link to={"/eventdetails/" + el.eventid} style={{ color: "black" }}>{el.eventlocation}</Link></div>
-
-                </div>
-
-                <div class="col-md-2">
-                  <div style={{ "fontSize": "15px" }}> <Link to={"/eventdetails/" + el.eventid} style={{ color: "black" }}>{el.time}</Link></div>
+        );
+      });
+    }
 
                 </div>
 
@@ -606,30 +759,39 @@ handleedit = (id) => {
             onClick={() => this.handleUsers()}>
             Users
           </button>
-          {this.state.access===true?
-          <button disabled={!this.state.enableaddproject}
-            class="btn btn-outline-dark mr-1" style={{"font-size":"20px" }}
-            onClick={() => this.AssignEvent()}
-          >
-            Assign To Event
-          </button>:""}
-        
-          <button style={{"font-size":"20px" }}
+          {this.state.access === true ? (
+            <button
+              disabled={!this.state.enableaddproject}
+              class="btn btn-outline-dark mr-1"
+              style={{ "font-size": "20px" }}
+              onClick={() => this.AssignEvent()}
+            >
+              Assign To Event
+            </button>
+          ) : (
+            ""
+          )}
+
+          <button
+            style={{ "font-size": "20px" }}
             class="btn btn-outline-dark mr-1"
             onClick={() => this.handleEvents()}
           >
             Events
           </button>
-          {this.state.access===true?
-          <button style={{"font-size":"20px" }}
-            class="btn btn-outline-dark mr-1"
-            onClick={() => this.handleaddEvents()}
-          >
-             Add Event
-          </button> :""}
-          
-          {editform}    
-        
+          {this.state.access === true ? (
+            <button
+              style={{ "font-size": "20px" }}
+              class="btn btn-outline-dark mr-1"
+              onClick={() => this.handleaddEvents()}
+            >
+              Add Event
+            </button>
+          ) : (
+            ""
+          )}
+
+          {editform}
         </div>
         
         

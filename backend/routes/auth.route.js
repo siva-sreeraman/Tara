@@ -74,7 +74,7 @@ router.post("/login", async function (req, res, next) {
     tableName = "users";
   }
 
-  constructedQuery = `select uid, name, profile_pic, company_id status from ${tableName} where uid="${uid}"`;
+  constructedQuery = `select uid, name, profile_pic, company_id, status from ${tableName} where uid="${uid}"`;
   result = await query(pool, constructedQuery).catch(console.log);
 
   res.status(200).send(result);

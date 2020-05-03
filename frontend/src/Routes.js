@@ -23,29 +23,27 @@ import Mycalender from "./components/Mycalender";
 import Registration from "./components/Registration";
 import Projectpage from "./components/Projectpage";
 import Projectmainpage from "./components/Projectmainpage";
+// import Costumepage from "./components/Costumepage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
 
 import CrewListing from "./components/projectOverview/ProjectContacts";
 import CompanyUsers from "./components/CompanyUsers";
-
+import CompanyCostumes from "./components/CompanyCostumes";
+// import Costume from "./components/projectOverview/CostumePage";
+import UserGroups from "./components/projectOverview/UserGroups";
+import CompanyLocation from "./components/CompanyLocations";
 
 import Allevents from "./components/Allevents";
 import Alltasks from "./components/Alltasks";
-import Fullcalender from "./components/Fullcalender";
-import Messages from "./components/Messages/Messages";
-import CompanyCostumes from "./components/CompanyCostumes";
-import Costume from "./components/projectOverview/CostumePage";
-import CompanyLocation from "./components/CompanyLocations";
-import UserGroups from "./components/projectOverview/UserGroups";
 import MiniDrawer from "./components/MiniDrawer";
 
 class Routes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      auth: window.localStorage.getItem("auth"),
+      auth: window.sessionStorage.getItem("auth"),
     };
   }
 
@@ -101,39 +99,6 @@ class Routes extends React.Component {
           {/* {redirectTo} */}
           <Route path="/Registration" component={Registration} />
           <Route path="/login" component={Login} />
-          <Route path="/my-projects" component={MyProjects} />
-          <Route path="/su-dashboard" component={SuDashboard} />
-          <Route path="/admin-dashboard" component={AdminDashboard} />
-          <Route path="/project-overview/:id" component={ProjectOverview} />
-          <Route path="/company-db" component={CompanyDB} />
-          {/* <Route path="/calendar" component={Calendar} /> */}
-          <Route path="/file-upload" component={FileUpload} />
-          <Route path="/create-project" component={CreateProject} />
-          <Route
-            path="/create-project-template"
-            component={CreateProjectTemplate}/>
-  
-          <Route path="/documents" component={Documents} />
-          <Route path="/samplepopup" component= {Example}/>
-          <Route path="/eventdetails/:id" component={Eventdetails}/>
-          <Route path="/taskdetails/:id" component={Taskdetails}/>
-          <Route path="/Mycalender/:id" component={Mycalender}/>
-          <Route path="/Fullcalendar" component={Fullcalender}/>
-
-          <Route  path="/navbarpage" component={Navbarpage}/>
-          <Route  path="/Projectpage" component={Projectpage}/>
-          <Route path="/usergroups" component={UserGroups}/>
-          <Route  path="/Projectmainpage/:id" component={Projectmainpage}/>
-          <Route  path="/Adminprofilepage" component={Adminprofilepage}/>
-          <Route  path="/ProjectEvent/:id" component={ProjectEvent}/>
-          <Route  path="/ProjectTasks/:id" component={ProjectTasks}/>
-          <Route path="/contactspage" component={CrewListing}/>
-          <Route path="/Companyuserspage" component={CompanyUsers}/>
-          <Route path="/companyCostumes" component={CompanyCostumes}/>
-          <Route path="/Costumepage" component={Costume}/>
-          <Route path="/companylocations" component={CompanyLocation}/>
-          <Route path="/allevents" component={Allevents} />
-          <Route path="/alltasks" component={Alltasks} /> 
           {/* <div className="route-container">
             <Route path="/" component={Navbarpage} />
             <Route path="/su-dashboard" component={SuDashboard} />

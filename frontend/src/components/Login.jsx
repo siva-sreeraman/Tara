@@ -16,7 +16,7 @@ class Login extends React.Component {
     this.state = {
       email: "",
       password: "",
-      persona: "",
+      persona: "admin",
       loginFlag: false,
       invalidCredentialsMessage: "",
       redirectToReferrer: false,
@@ -45,11 +45,25 @@ class Login extends React.Component {
         axios
           .post(`${Env.host}/auth/login`, loginData)
           .then((loginResponse) => {
-            console.log("response::::", loginResponse);
-            this.setState({
-              loginFlag: true,
-            });
-            window.localStorage.setItem("auth", JSON.stringify(loginResponse));
+            console.log("response::::", loginResponse.data);
+            console.log("response::::", loginResponse.status);
+            if (loginResponse.status == 200) {
+              this.setState({
+                loginFlag: true,
+              });
+              window.sessionStorage.setItem("uid", loginResponse.data[0].uid);
+              window.sessionStorage.setItem("name", loginResponse.data[0].name);
+              window.sessionStorage.setItem(
+                "profile_pic",
+                loginResponse.data[0].profile_pic
+              );
+              window.sessionStorage.setItem(
+                "status",
+                loginResponse.data[0].status
+              );
+              window.sessionStorage.setItem("persona", this.state.persona);
+              // {"uid":"6BPwpE5kYvM0WmztztpV4MEE54t2","name":"test3","profile_pic":null,"status":"2"}
+            }
           });
         console.log(
           "createUserWithEmailAndPassword res: " + JSON.stringify(res)
@@ -70,7 +84,7 @@ class Login extends React.Component {
     let redirectVar = null;
     if (this.state.loginFlag) {
       console.log("Register is:::", this.state.loginFlag);
-      redirectVar = <Redirect to="/usergroups" />;
+      redirectVar = <Redirect to="/Projectpage" />;
     }
     return (
       <div style={{ marginTop: "20px", paddingLeft: "150px" }}>
