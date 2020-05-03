@@ -27,6 +27,7 @@ import ProjectTasks from "./components/ProjectTasks";
 import Allevents from "./components/Allevents";
 import Alltasks from "./components/Alltasks";
 import Fullcalender from "./components/Fullcalender";
+import Messages from "./components/Messages/Messages";
 
 
 class Routes extends React.Component {
@@ -70,6 +71,7 @@ class Routes extends React.Component {
           <Route path="/ProjectTasks/:id" component={ProjectTasks} />
           <Route path="/Allevents" component={Allevents} />
           <Route path="/Alltasks" component={Alltasks} />
+          <Route path="/Messages" component={Messages} />
         </Router>
       </div>
     );

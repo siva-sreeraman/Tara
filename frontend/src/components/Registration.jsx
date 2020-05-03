@@ -72,8 +72,18 @@ class Registration extends React.Component {
       .then((res) => {
         console.log(
           "createUserWithEmailAndPassword res: " + JSON.stringify(res)
+        
         );
+        const userObj={
+          email:res.user.email,
+        }
         registrationData.uid = res.user.uid;
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(this.state.email)
+          .set(userObj)
+          
         axios
           .post(`${Env.host}/auth/registration`, registrationData)
           .then((response) => {
