@@ -16,41 +16,37 @@
 .card1 {
   width: 100%;
   height: 100%;
-  background-color: rgb(144, 238, 144)
+  background-color: rgb(144, 238, 144);
 }
 
 .card2 {
   width: 100%;
   height: 100%;
-  background-color: rgb(235, 168, 52)
+  background-color: rgb(235, 168, 52);
 }
 
 .card3 {
   width: 100%;
   height: 100%;
   background-color: rgb(30, 201, 190);
-
 }
 
 .card4 {
   width: 100%;
   height: 100%;
   background-color: rgb(214, 97, 24);
-
 }
 
 .card5 {
   width: 100%;
   height: 100%;
   background-color: rgb(222, 140, 194);
-
 }
 
 .card6 {
   width: 100%;
   height: 100%;
   background-color: rgb(235, 52, 76);
-
 }
 
 .card {

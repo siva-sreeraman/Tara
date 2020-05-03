@@ -10,5 +10,5 @@ module.exports = async (conn, q, params) =>
       resolve(result);
     };
     qry = conn.query(q, params, handler);
-    console.log("SQL Query qry: " + JSON.stringify(qry.sql));
+    // console.log("SQL Query qry: " + JSON.stringify(qry.sql));
   });

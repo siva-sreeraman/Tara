@@ -73,62 +73,79 @@ class Projectmainpage extends Component {
           <div class="col-md-10">
             {project}
 
-            <div class="col-md-4" id="c1" style={{ "padding-right": "20px" }}>
-              <div
-                class="card1"
-                style={{
-                  display: "block",
-                  "border-radius": "4px",
-                  border: "1px #ddd solid",
-                  "margin-top": "20px",
-                  height: "150px",
-                  width: "300px",
-                }}
-              >
-                <div
-                  style={{
-                    "text-align": "center",
-                    "padding-top": "50px",
-                    fontSize: "20px",
-                  }}
-                >
-                  {" "}
-                  <span class="glyphicon glyphicon-user"></span>
-                  <br></br>
-                  <Link to="/Contactspage" style={{ color: "black" }}>
-                    Contacts
-                  </Link>
-                </div>
-              </div>
+            <div
+              style={{
+                "text-align": "center",
+                "padding-top": "50px",
+                fontSize: "20px",
+              }}
+            >
+              {" "}
+              <span class="glyphicon glyphicon-user"></span>
+              <br></br>
+              <Link to="/Contactspage" style={{ color: "black" }}>
+                Contacts
+              </Link>
             </div>
-            <div class="col-md-4">
-              <div
-                class="card2"
-                style={{
-                  display: "block",
-                  "border-radius": "4px",
-                  border: "1px #ddd solid",
-                  "margin-top": "20px",
-                  height: "150px",
-                  width: "300px",
-                }}
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div
+            class="card2"
+            style={{
+              display: "block",
+              "border-radius": "4px",
+              border: "1px #ddd solid",
+              "margin-top": "20px",
+              height: "150px",
+              width: "300px",
+            }}
+          >
+            <div
+              style={{
+                "text-align": "center",
+                "padding-top": "50px",
+                fontSize: "20px",
+              }}
+            >
+              {" "}
+              <span class="glyphicon glyphicon-folder-open"></span>
+              <br></br>
+              <Link to="/usergroups" style={{ color: "black" }}>
+                UserGroups
+              </Link>
+            </div>
+            >
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div
+            class="card3"
+            style={{
+              display: "block",
+              "border-radius": "4px",
+              border: "1px #ddd solid",
+              "margin-top": "20px",
+              height: "150px",
+              width: "300px",
+            }}
+          >
+            <div
+              style={{
+                "text-align": "center",
+                "padding-top": "50px",
+                fontSize: "20px",
+              }}
+            >
+              <span class="glyphicon glyphicon-calendar"></span>
+              <br></br>
+              <Link
+                to={"/Mycalender/" + this.state.projectid}
+                style={{ color: "black" }}
               >
-                <div
-                  style={{
-                    "text-align": "center",
-                    "padding-top": "50px",
-                    fontSize: "20px",
-                  }}
-                >
-                  {" "}
-                  <span class="glyphicon glyphicon-folder-open"></span>
-                  <br></br>
-                  <Link to="/usergroups" style={{ color: "black" }}>
-                    UserGroups
-                  </Link>
-                </div>
-                >
-              </div>
+                Calendar
+              </Link>
             </div>
 
             <div class="col-md-4">

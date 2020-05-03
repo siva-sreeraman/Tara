@@ -1,9 +1,8 @@
 "use strict";
 
 const express = require("express");
-const bodyParser = require("body-parser");
 var loginRouter = require("./routes/login.route");
-const authRouter = require("./routes/auth.route");
+var authRouter = require("./routes/auth.route");
 var adminRouter = require("./routes/admin.route");
 var admin = require("firebase-admin");
 var companyDB = require("./routes/companyDB.route");

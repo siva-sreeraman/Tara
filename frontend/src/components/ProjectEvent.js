@@ -61,7 +61,7 @@ class ProjectEvent extends Component {
       show: false,
       projectshow: false,
       userval: [],
-      access: false,
+      access: true,
       edit: false,
       enableaddproject: false,
       checkedItems: new Map(),
@@ -336,48 +336,23 @@ class ProjectEvent extends Component {
             <Modal.Title>Edit Event </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <form>
-              <label for="title">Title:</label>
-              <input
-                type="text"
-                name="title"
-                id="title"
-                value={this.state.title}
-                onChange={this.onChange}
-                class="form-control"
-                required
-              />
-              <br></br>
-              <label for="time"> Time</label>
-              <input
-                type="text"
-                name="time"
-                id="time"
-                value={this.state.time}
-                onChange={this.onChange}
-                class="form-control"
-                required
-              />
-              <br></br>
-              <label for="date"> Date</label>
-              <input
-                type="date"
-                name="date"
-                id="date"
-                value={this.state.date}
-                onChange={this.onChange}
-                class="form-control"
-                required
-              />
-              <br></br> <label for="locatio"> Location</label>
-              <input
-                type="text"
-                name="location"
-                id="location"
-                value={this.state.location}
-                onChange={this.onChange}
-                class="form-control"
-                required
+            <FormControl className={classes.formControl}>
+              <Autocomplete
+                multiple
+                id="tags-standard"
+                options={this.state.eventlist}
+                getOptionLabel={(each) => each.title}
+                onChange={this.handleprojects}
+                renderInput={(params) => (
+                  <TextField
+                    size="500"
+                    {...params}
+                    variant="standard"
+                    label="Events"
+                    placeholder="Enter Events"
+                    style={{ width: "150px" }}
+                  />
+                )}
               />
               <br></br>
               <label for="description"> description</label>

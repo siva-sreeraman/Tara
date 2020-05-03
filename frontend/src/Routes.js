@@ -23,6 +23,7 @@ import Mycalender from "./components/Mycalender";
 import Registration from "./components/Registration";
 import Projectpage from "./components/Projectpage";
 import Projectmainpage from "./components/Projectmainpage";
+import Costumepage from "./components/Costumepage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
