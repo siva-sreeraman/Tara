@@ -69,7 +69,7 @@ class ProjectTasks extends Component {
       show: false,
       projectshow: false,
       userval: [],
-      access: true,
+      access: false,
       edit: false,
       enableaddproject: false,
       checkedItems: new Map(),
@@ -115,9 +115,9 @@ class ProjectTasks extends Component {
         usergroup: "create task"
       }
       axios.get(Env.host + "/accessright/user/" + userid, data).then((response) => {
-        // this.setState({
-        //   access: response.data
-        // })
+        this.setState({
+          access: response.data
+        })
         this.getevents();
       })
     }

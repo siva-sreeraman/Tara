@@ -7,6 +7,14 @@ import Drawer from "@material-ui/core/Drawer";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Button from "@material-ui/core/Button";
+import PeopleIcon from '@material-ui/icons/People';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import EventIcon from '@material-ui/icons/Event';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import FaceIcon from '@material-ui/icons/Face';
+import LocalMallIcon from '@material-ui/icons/LocalMall';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+
 import List from "@material-ui/core/List";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Typography from "@material-ui/core/Typography";
@@ -43,13 +51,14 @@ import Projectmainpage from "../components/Projectmainpage";
 import Adminprofilepage from "../components/Adminprofilepage";
 import ProjectEvent from "../components/ProjectEvent";
 import ProjectTasks from "../components/ProjectTasks";
-
+import Fullcalender from "../components/Fullcalender";
 import CrewListing from "../components/projectOverview/ProjectContacts";
 import CompanyUsers from "../components/CompanyUsers";
 import CompanyCostumes from "../components/CompanyCostumes";
 import Costume from "../components/projectOverview/CostumePage";
 import UserGroups from "../components/projectOverview/UserGroups";
 import CompanyLocation from "../components/CompanyLocations";
+import RoomIcon from '@material-ui/icons/Room';
 
 import Allevents from "../components/Allevents";
 import Alltasks from "../components/Alltasks";
@@ -213,16 +222,39 @@ export default function MiniDrawer(props) {
         </div>
         <Divider />
         <List>
-          <Link className="remove-link-style" to="/usergroups">
+
+        <Link className="remove-link-style" to="/Projectpage">
             <ListItem button key="Groups">
               <ListItemIcon>
-                <GroupIcon />
+
+                <AccountTreeIcon />
               </ListItemIcon>
-              <ListItemText primary="User Groups" />
+              <ListItemText primary="Projects" />
+            </ListItem>
+          </Link>
+        
+
+          <Link className="remove-link-style" to="/Companyuserspage">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+              <PeopleIcon/>              </ListItemIcon>
+              <ListItemText primary="Users" />
             </ListItem>
           </Link>
 
-          <Link className="remove-link-style" to="/mycalender">
+          
+        <Link className="remove-link-style" to="/Allevents">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+                <EventIcon />
+              </ListItemIcon>
+              <ListItemText primary="Events" />
+            </ListItem>
+          </Link>
+
+         
+
+          <Link className="remove-link-style" to="/fullcalendar">
             <ListItem button key="Groups">
               <ListItemIcon>
                 <CalendarTodayIcon />
@@ -231,16 +263,46 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
 
-          <Divider />
-
-          <Link className="remove-link-style" to="/my-projects">
+          <Link className="remove-link-style" to="/Alltasks">
             <ListItem button key="Groups">
               <ListItemIcon>
-                <GroupIcon />
+                <AssignmentIcon />
               </ListItemIcon>
-              <ListItemText primary="My Projects" />
+              <ListItemText primary="Tasks" />
             </ListItem>
           </Link>
+
+          <Divider />
+
+         
+
+          <Link className="remove-link-style" to="/companyCostumes">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+              <LocalMallIcon/>              </ListItemIcon>
+              <ListItemText primary="Costumes" />
+            </ListItem>
+          </Link>
+
+          <Link className="remove-link-style" to="/companylocations">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+               <RoomIcon/>
+              </ListItemIcon>
+              <ListItemText primary="Locations" />
+            </ListItem>
+          </Link>
+
+          <Link className="remove-link-style" to="/Adminprofilepage">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+              <AccountCircleIcon/>            
+                </ListItemIcon>
+              <ListItemText primary="Profile" />
+            </ListItem>
+          </Link>
+
+
         </List>
       </Drawer>
       <main className={classes.content}>
@@ -283,6 +345,9 @@ export default function MiniDrawer(props) {
           <Route path="/companylocations" component={CompanyLocation} />
           <Route path="/Allevents" component={Allevents} />
           <Route path="/Alltasks" component={Alltasks} />
+          <Route path="/fullcalendar" component={Fullcalender} />
+
+          
         </div>
       </main>
     </div>
