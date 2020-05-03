@@ -8,6 +8,7 @@ import red from "@material-ui/core/colors/red";
 import { Alert, Card, Button } from "react-bootstrap";
 import Tooltip from "react-bootstrap/Tooltip";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import MediaCard from "./ProjectCardView";
 // import TabPanel from "./TabPanel";
 import Env from "../helpers/Env";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
@@ -24,85 +25,26 @@ class Projectpage extends Component {
     };
   }
   componentDidMount() {
-    axios.get(Env.host + "/project-create/allprojects").then((response) => {
-      console.log("response from all projects", response);
-      this.setState({
-        allprojects: response.data,
+    axios
+      .get(Env.host + "/project-create/allprojects")
+      .then(async (response) => {
+        console.log("response from all projects", response);
+        await this.setState({
+          allprojects: response.data,
+        });
+        console.log("all projects", this.state.allprojects);
       });
-      console.log("all projects", this.state.allprojects);
-    });
   }
 
   render() {
-    let projects = this.state.allprojects.map((project) => {
-      return (
-
-          <div>
-        <table>
-          <tr>
-            <td>
-            <div>
-            <div id="container" style={{ marginTop: "10px" }}>
-              <div style={{ "font-size": "50px" }} id="name">
-                {project.name.charAt(0)}
-              </div>
-            </div>
-            </div>
-            </td>
-            <td>
-            <div style={{padding: "30px"}}><Link
-                to={"/Projectmainpage/" + project.id}>
-                {project.name}
-              </Link>
-              </div>
-            </td>
-          </tr>
-        </table>
-        </div>
-        /* <div
-          class="card"
-          style={{
-            display: "block",
-            "border-radius": "4px",
-            "margin-top": "20px",
-            height: "100px",
-          }}
-        >
-          <div class="col-md-2">
-            <div id="container" style={{ marginTop: "10px" }}>
-              <div style={{ "font-size": "50px" }} id="name">
-                {project.name.charAt(0)}
-              </div>
-            </div>
-
-          </div>
-           <div class="col-md-3">
-             
-           <Link
-                to={"/Projectmainpage/" + project.id}>
-                {project.name}
-              </Link>
-           </div>
-       
-            </div>
-          */
-      );
-    });
-
     return (
-      <div>
-        <div></div>
-        <div className="amazon-body container-fluid">
-          <div class="row">
-            <div style={{ marginRight: "0px" }}>
-              <div>
-              </div>
-            </div>
-          </div>
-          <div class="row" style={{}}>
-            <div class="col-md-6">{projects}</div>
-          </div>
-        </div>
+      <div className="project-view-card d-flex">
+        {/* {this.state.allprojects.map((project) => {
+          <MediaCard projectName={project.name}></MediaCard>;
+        })} */}
+        {this.state?.allprojects?.map((project) => (
+          <MediaCard projectName={project.name} projectId={project.id} />
+        ))}
       </div>
     );
   }
