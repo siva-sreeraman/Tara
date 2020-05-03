@@ -4,7 +4,6 @@ import "../components/css/projectpage.css";
 import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import purple from "@material-ui/core/colors/purple";
-import red from "@material-ui/core/colors/red";
 
 // import TabPanel from "./TabPanel";
 import Env from "../helpers/Env";
@@ -15,8 +14,7 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import Constants from "../helpers/Constants";
 
 
-
-
+import "./css/adminpage.css"
 class Adminprofilepage extends Component {
     constructor(props) {
         super(props);
@@ -47,8 +45,7 @@ class Adminprofilepage extends Component {
         let projects = this.state.allprojects.map((project) => {
             return(
                 <div>
-                     <div class="card" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"600px", }}>
+                <div className="card">
                      <div class="col-md-9">
                      <div id="container" style={{marginTop:"100px",marginLeft:"300px"}}>
                   <div style={{"font-size":"50px"}}id="name">
@@ -111,22 +108,19 @@ class Adminprofilepage extends Component {
        
                               
         return (
-        <div>
+              <div className="amazon-body container-fluid">
+    
          <div class="row">
          <div class="col-md-1"></div>
 
              <div style={{marginRight:"0px"}}
               ><h1> MY PROFILE</h1></div>
          </div>
-               <div class="row" style={{}}>
-                   <div class="col-md-3"></div>
-                   <div class="col-md-6">
+              
                    
                           {projects}
                     
-                   </div>
-                   <div class="col-md-3"></div>
-               </div>
+                  
         </div>
 
         );

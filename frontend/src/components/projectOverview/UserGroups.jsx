@@ -3,8 +3,8 @@ import axios from 'axios';
 import {Form,Col} from 'react-bootstrap';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
+import {Button,Modal} from 'react-bootstrap';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -106,7 +106,7 @@ class UserGroups extends Component
         users : [],
         accessrights :[],
         displaycrewform : false,
-     projectid : this.props.projectid,
+     projectid : localStorage.getItem("projectid"),
      ugdescription:"",
      showeditug:false,
      editugdes : "",
@@ -678,17 +678,17 @@ editugform =  <Modal show={this.state.showeditug} onHide={this.closeeditugs}>
         this.state.usergroups.map(crew=> {
       return(      
            <TableRow>
-                         <StyledTableCell><Checkbox name={crew.UserGroupId} onChange={e => this.showeditugs(crew)} /></StyledTableCell>
-                         <StyledTableCell align="right"><Link onClick={e => this.showviewfun(crew)}>View</Link></StyledTableCell>
+                         <StyledTableCell align="center"><Checkbox name={crew.UserGroupId} onChange={e => this.showeditugs(crew)} /></StyledTableCell>
+                         <StyledTableCell align="center"><Link onClick={e => this.showviewfun(crew)}>View</Link></StyledTableCell>
 
-              <StyledTableCell>
+              <StyledTableCell align="center">
                 {crew.UserGroupId}
               </StyledTableCell>
       
-              <StyledTableCell align="right">{crew.UserGroup}</StyledTableCell>
-              <StyledTableCell align="right">{crew.description}</StyledTableCell>
+              <StyledTableCell align="center">{crew.UserGroup}</StyledTableCell>
+              <StyledTableCell align="center">{crew.description}</StyledTableCell>
        
-              <StyledTableCell align="right">
+              <StyledTableCell align="center">
     
               <Link onClick={this.showeditugform}>Edit Usergroup</Link></StyledTableCell>
 
@@ -718,13 +718,13 @@ return (
       <Table  aria-label="customized table">
         <TableHead>
           <TableRow>
-          <StyledTableCell></StyledTableCell>
-          <StyledTableCell></StyledTableCell>
+          <StyledTableCell align="center"></StyledTableCell>
+          <StyledTableCell align="center"></StyledTableCell>
 
-            <StyledTableCell>UserGroupId</StyledTableCell>
-            <StyledTableCell>UserGroup</StyledTableCell>
-          <StyledTableCell>Description</StyledTableCell>
-          <StyledTableCell>Edit Usergroup</StyledTableCell>
+            <StyledTableCell align="center">UserGroupId</StyledTableCell>
+            <StyledTableCell align="center">UserGroup</StyledTableCell>
+          <StyledTableCell align="center">Description</StyledTableCell>
+          <StyledTableCell align="center">Edit Usergroup</StyledTableCell>
         
 
           </TableRow>

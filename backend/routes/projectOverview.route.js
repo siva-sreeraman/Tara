@@ -143,7 +143,40 @@ router.get("/getcharactertable", async function (req, res) {
   });
 });
 
+router.get("/getprojectcostumes/:id", async function (req, res) {
+  var projectid=req.params.id;
+  console.log(projectid)
+  const sqlquery = `SELECT * FROM costume where costumeid in (select costumeid from project_costumes where projectid = ?)`;
+  result = await query(pool, sqlquery, [projectid]).catch(console.log);
+  res.status(201).send(result);
+});
 
+
+
+
+router.post("/addcostumes_toproject", async function (req, res) {
+ console.log("inside add costumes")
+  console.log(req.body)
+  var result;
+  
+  for(let i=0;i<req.body.costumes.length;i++)
+  {
+  const sqlquery = 'insert into project_costumes(projectid,costumeid) values(?,?)'
+  result = await query(pool, sqlquery, [req.body.projectid,req.body.costumes[i]]).catch(console.log);
+  }
+
+
+  res.status(201).send(result);
+});
+
+
+router.get("/getprojectcostumes/:id", async function (req, res) {
+  var projectid=req.params.id;
+  console.log(projectid)
+  const sqlquery = `SELECT * FROM costume where costumeid in (select costumeid from project_costumes where projectid = ?)`;
+  result = await query(pool, sqlquery, [projectid]).catch(console.log);
+  res.status(201).send(result);
+});
 
 
 

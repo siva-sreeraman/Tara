@@ -4,7 +4,7 @@ import "../components/css/projectmainpage.css";
 import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import purple from "@material-ui/core/colors/purple";
-import red from "@material-ui/core/colors/red";
+// import red from "@material-ui/core/colors/red";
 
 // import TabPanel from "./TabPanel";
 import Env from "../helpers/Env";
@@ -30,6 +30,9 @@ class Projectmainpage extends Component {
     }
     async componentDidMount() {
         console.log("the project_id is",this.state.projectid)
+        localStorage.setItem("projectid",this.state.projectid)
+
+        
         await axios.get(Env.host +'/project-create/project_by_id/?projectid='+this.state.projectid).then(response =>
            {
                 console.log(response.data)
@@ -38,6 +41,8 @@ class Projectmainpage extends Component {
                 })
           })
          
+          localStorage.setItem("projectname",this.state.projectdetails[0].name)
+console.log(localStorage.getItem("projectname"))
     }
       
     render() {
@@ -47,13 +52,14 @@ class Projectmainpage extends Component {
               
                 <div class="col-md-12" >
                      <div class="card" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"200px", width:"1100px"}}>
+                     "background-color": "#fff", height:"70px", maxWidth:"100%",backgroundColor:"cyan"}}>
                     
                     <div class="col-md-1"></div>
-                     <div class="col-md-9" style={{marginTop:"10px"}}>
-                     <div style={{ "font-size": "15px", }}>  
+                     <div class="col-md-3" style={{margin:"10px"}}>
+                     <div  style={{ "font-size": "15px", }}>  
+                                             <h1><b>{localStorage.getItem("projectname")}</b></h1>
+
                      </div>
-                        <h1><b>MONEY HEIST</b></h1>
                        </div>
                      </div>
                      </div>
@@ -81,7 +87,7 @@ class Projectmainpage extends Component {
                           
                           <div class="col-md-4" id="c1" style={{"padding-right":"20px"}}>
                           <div class="card1" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"150px",width:"300px" }}>
+                     height:"150px",width:"300px" }}>
   
 
                          <div style={{"text-align":"center","padding-top":"50px",fontSize:"20px"}}> <span class="glyphicon glyphicon-user"></span><br></br>
@@ -91,10 +97,10 @@ class Projectmainpage extends Component {
                           </div>
                           <div class="col-md-4">
                           <div class="card2" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"150px",width:"300px"  }}>
+                      height:"150px",width:"300px"  }}>
                          
                          <div style={{"text-align":"center","padding-top":"50px",fontSize:"20px"}}> <span class="glyphicon glyphicon-folder-open"></span><br></br>
-                         <Link to="/Documentspage" style={{ color: "black" }}>Documents</Link></div>>
+                         <Link to="/usergroups" style={{ color: "black" }}>UserGroups</Link></div>>
                          </div>
                     
                           </div>
@@ -102,16 +108,16 @@ class Projectmainpage extends Component {
                           
                           <div class="col-md-4">
                           <div class="card3" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"150px", width:"300px" }}>
+                     height:"150px", width:"300px" }}>
                      <div style={{"text-align":"center","padding-top":"50px",fontSize:"20px"}}><span class="glyphicon glyphicon-calendar"></span><br></br>
-                     <Link to="/Calenderpage" style={{ color: "black" }}>Calender</Link></div>
+                     <Link to="/Calenderpage" style={{ color: "black" }}>Calendar</Link></div>
 
                      </div>
                     
                           </div>
                           <div class="col-md-4" style={{"padding-right":"20px"}}>
                           <div class="card4" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"150px",width:"300px" }}>
+                      height:"150px",width:"300px" }}>
                          <div style={{"text-align":"center","padding-top":"50px",fontSize:"20px"}}><span class="glyphicon glyphicon-globe"></span><br></br>
                          <Link to={"/ProjectEvent/"+this.state.projectid} style={{ color: "black" }}>Events</Link></div>
                      </div>
@@ -119,7 +125,7 @@ class Projectmainpage extends Component {
                           </div>
                           <div class="col-md-4">
                           <div class="card5" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"150px",width:"300px"  }}>
+                      height:"150px",width:"300px"  }}>
                      <div style={{"text-align":"center","padding-top":"50px",fontSize:"20px"}}><span class="glyphicon glyphicon-tasks"></span><br></br>
                      <Link to={"/ProjectTasks/"+this.state.projectid} style={{ color: "black" }}>Tasks</Link></div>
                      </div>
@@ -129,7 +135,7 @@ class Projectmainpage extends Component {
                           
                           <div class="col-md-4">
                           <div class="card6" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
-                     "background-color": "#fff", height:"150px", width:"300px" }}>
+                      height:"150px", width:"300px" }}>
                          <div style={{"text-align":"center","padding-top":"50px",fontSize:"20px"}}> <span class="glyphicon glyphicon-queen"></span><br></br>
                           <Link to="/Costumepage" style={{ color: "black" }}>Costumes</Link></div>
                        

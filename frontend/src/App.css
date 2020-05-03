@@ -11,3 +11,8 @@
 }
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
+
+.amazon-body{
+  margin-left:200px;
+  min-height:425px;
+}

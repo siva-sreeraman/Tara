@@ -13,6 +13,7 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import { Component } from "react";
 import FormControl from "@material-ui/core/FormControl";
+import "../css/projectcontacts.css";
 
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
@@ -26,12 +27,12 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import purple from "@material-ui/core/colors/purple";
 import red from "@material-ui/core/colors/red";
 
-const primary = red.A700; // #F44336
+
 const accent = purple.A200; // #E040FB (alternative method)
 
 const StyledTableCell = withStyles((theme) => ({
   head: {
-    backgroundColor: primary,
+    backgroundColor: "#272E42",
     color: theme.palette.common.white,
   },
   body: {
@@ -43,6 +44,8 @@ const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.background.default,
+      textAlign : "center"
+
     },
   },
 }))(TableRow);
@@ -57,7 +60,8 @@ const useStyles = makeStyles({
 const classes = makeStyles(theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 600
+    width: 600,
+    textAlign : "center"
   },
   formControl: {
     margin: theme.spacing(1),
@@ -75,7 +79,7 @@ class CrewListing extends Component {
       crewlist: [],
       users: [],
       displaycrewform: false,
-      projectid : this.props.projectid,
+      projectid : localStorage.getItem("projectid"),
       show :false,
       usersval : [],
       rolesdata : [],
@@ -314,7 +318,7 @@ console.log("inside handleclosedata is ",data)
               <TextField size="500"
                 {...params}
                 variant="standard"
-                label="Roles"
+                label="Users"
                 placeholder="Enter User"
                 style = {{width : "120px"}}
               />
@@ -387,10 +391,10 @@ rolemodel =  <Modal show={this.state.showroles} onHide={this.handleroleclose}>
       
       return (
         <TableRow>
-          <StyledTableCell align="right">{crew.userid}</StyledTableCell>
-          <StyledTableCell align="right">{crew.name}</StyledTableCell>
-          <StyledTableCell align="right">{crew.phonenumber}</StyledTableCell>
-          <StyledTableCell align="right">{crew.role}<Link onClick={e => this.handleroleshow(crew.userid,crew.role1,crew.role2,crew.role3,crew.role4)}>Add/Edit role</Link></StyledTableCell>
+          <StyledTableCell align="center">{crew.userid}</StyledTableCell>
+          <StyledTableCell align="center">{crew.name}</StyledTableCell>
+          <StyledTableCell align="center">{crew.phonenumber}</StyledTableCell>
+          <StyledTableCell align="center">{crew.role}<Link onClick={e => this.handleroleshow(crew.userid,crew.role1,crew.role2,crew.role3,crew.role4)}>Add/Edit role</Link></StyledTableCell>
                   </TableRow>
       );
     });
@@ -443,8 +447,8 @@ rolemodel =  <Modal show={this.state.showroles} onHide={this.handleroleclose}>
           <div class="form-group row" paddingleft>
             <div class="col-lg-10"> </div>
             <div class="col-lg-1">
-              <a className="btn btn-primary" onClick={e => this.handleShow(e)}>
-                Add Crew
+              <a className="btn btn-primary" style={{padding:"10px 30px 10px 30px"}} onClick={e => this.handleShow(e)}>
+                <h5>Add Crew</h5>
               </a>{" "}
             </div>
           </div>
@@ -453,15 +457,15 @@ rolemodel =  <Modal show={this.state.showroles} onHide={this.handleroleclose}>
             <div class="col-lg-2"></div>
             <div class="col-lg-9" style={{ maxwidth: "100%" }}>
               {" "}
-              <h2></h2>
+              <h2>Contacts</h2>
               <TableContainer component={Paper}>
                 <Table aria-label="customized table">
-                  <TableHead>
+                  <TableHead style={{backgroundColor: "#272E42"}}>
                     <TableRow>
-                      <StyledTableCell>Crew Id</StyledTableCell>
-                      <StyledTableCell> Name</StyledTableCell>
-                      <StyledTableCell>Phone Number</StyledTableCell>
-                      <StyledTableCell>Add Roles</StyledTableCell>
+                      <StyledTableCell align="center">Crew Id</StyledTableCell>
+                      <StyledTableCell  align="center"> Name</StyledTableCell>
+                      <StyledTableCell  align="center">Phone Number</StyledTableCell>
+                      <StyledTableCell  align="center">Add Roles</StyledTableCell>
 
                     </TableRow>
                   </TableHead>

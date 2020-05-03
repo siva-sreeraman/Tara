@@ -223,4 +223,47 @@ router.get("/getcrewlist", async function (req, res) {
   });
 });
 
+
+
+
+router.post("/submitnewcostume", async function (req, res) {
+  console.log("Inside add new costume");
+  console.log(req.body)
+  const sqlquery = "insert into costume(costumename,source,description) values(?,?,?)";
+  result = await query(pool, sqlquery,[req.body.name,req.body.source,req.body.description] ).catch(console.log);
+console.log(result)
+res.status(201).send(result);
+});
+
+router.post("/deletecostume", async function (req, res) {
+  console.log("Inside add new costume");
+  console.log(req.body)
+
+  var sqlquery = "delete from costume where costumeid = ?";
+  result = await query(pool, sqlquery,[req.body.costumeid] ).catch(console.log);
+console.log(result)
+
+var sqlquery = "delete from project_costumes where costumeid = ?";
+result = await query(pool, sqlquery,[req.body.costumeid] ).catch(console.log);
+console.log(result)
+res.status(201).send(result);
+});
+
+
+
+
+router.post("/submitnewcostumebyproject/", async function (req, res) {
+  console.log("Inside add new costume");
+  console.log(req.body)
+  var sqlquery = "insert into costume(costumename,source,description) values(?,?,?)";
+  result1 = await query(pool, sqlquery,[req.body.name,req.body.source,req.body.description] ).catch(console.log);
+console.log(result1.insertId)
+
+    sqlquery = "insert into project_costumes(projectid,costumeid) values(?,?)";
+  result = await query(pool, sqlquery,[req.body.projectid,result1.insertId] ).catch(console.log);
+// console.log(result)
+res.status(201).send(result);
+});
+
+
 module.exports = router;

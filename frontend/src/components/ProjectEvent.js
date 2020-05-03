@@ -1,8 +1,9 @@
 import React from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
+// import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
+import {Button,Modal} from 'react-bootstrap';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";

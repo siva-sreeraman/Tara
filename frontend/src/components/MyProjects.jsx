@@ -6,8 +6,14 @@ import red from "@material-ui/core/colors/red";
 
 // import TabPanel from "./TabPanel";
 import Env from "../helpers/Env";
-import { makeStyles } from "@material-ui/core/styles";
-import NavigationPanel from "./NavigationPanel";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
+import FormControl from "@material-ui/core/FormControl";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Constants from "../helpers/Constants";
+
+// const primary = red[500]; // #F44336
+const accent = purple.A200; // #E040FB
 class MyProjects extends React.Component {
   constructor(props) {
     super(props);
@@ -164,9 +170,9 @@ class MyProjects extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col-3">
+          {/* <div className="col-3">
             <NavigationPanel />
-          </div>
+          </div> */}
           <div className="col">
             <section>
               <h3></h3>
