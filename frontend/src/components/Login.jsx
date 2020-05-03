@@ -61,6 +61,11 @@ class Login extends React.Component {
                 "status",
                 loginResponse.data[0].status
               );
+              window.sessionStorage.setItem(
+                "companyId",
+                loginResponse.data[0].company_id
+              );
+
               window.sessionStorage.setItem("persona", this.state.persona);
               // {"uid":"6BPwpE5kYvM0WmztztpV4MEE54t2","name":"test3","profile_pic":null,"status":"2"}
             }
