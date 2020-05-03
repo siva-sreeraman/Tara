@@ -50,6 +50,7 @@ import CompanyCostumes from "../components/CompanyCostumes";
 import Costume from "../components/projectOverview/CostumePage";
 import UserGroups from "../components/projectOverview/UserGroups";
 import CompanyLocation from "../components/CompanyLocations";
+import AdminRequests from "../components/admin/AdminRequests";
 
 import Allevents from "../components/Allevents";
 import Alltasks from "../components/Alltasks";
@@ -139,7 +140,7 @@ export default function MiniDrawer(props) {
       .auth()
       .signOut()
       .then(() => {
-        window.localStorage.removeItem("auth");
+        window.sessionStorage.removeItem("auth");
       });
   };
 
@@ -283,6 +284,7 @@ export default function MiniDrawer(props) {
           <Route path="/companylocations" component={CompanyLocation} />
           <Route path="/Allevents" component={Allevents} />
           <Route path="/Alltasks" component={Alltasks} />
+          <Route path="/admin-requests" component={AdminRequests} />
         </div>
       </main>
     </div>

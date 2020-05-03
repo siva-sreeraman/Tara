@@ -17,7 +17,7 @@ class Projectmainpage extends Component {
   }
   async componentDidMount() {
     console.log("the project_id is", this.state.projectid);
-    localStorage.setItem("projectid", this.state.projectid);
+    sessionStorage.setItem("projectid", this.state.projectid);
 
     await axios
       .get(
@@ -32,8 +32,8 @@ class Projectmainpage extends Component {
         });
       });
 
-    localStorage.setItem("projectname", this.state.projectdetails[0].name);
-    console.log(localStorage.getItem("projectname"));
+    sessionStorage.setItem("projectname", this.state.projectdetails[0].name);
+    console.log(sessionStorage.getItem("projectname"));
   }
 
   render() {

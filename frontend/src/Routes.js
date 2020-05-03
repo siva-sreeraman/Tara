@@ -43,7 +43,7 @@ class Routes extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      auth: window.localStorage.getItem("auth"),
+      auth: window.sessionStorage.getItem("auth"),
     };
   }
 

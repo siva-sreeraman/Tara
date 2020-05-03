@@ -366,7 +366,7 @@ class ProjectEvent extends Component {
                 required
               />
               <br></br>
-            </form>
+            </FormControl>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleeditclosemodal}>
