@@ -3,17 +3,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 var loginRouter = require("./routes/login.route");
+const authRouter = require("./routes/auth.route");
 var adminRouter = require("./routes/admin.route");
 var admin = require("firebase-admin");
 var companyDB = require("./routes/companyDB.route");
 var projectOverview = require("./routes/projectOverview.route");
 var projectCreateRoute = require("./routes/project.create.route");
-const bodyParser = require("body-parser");
-const path = require('path');
-const fs = require('fs');
-var profile=require("./routes/profile");
-var calender=require("./routes/calender");
-var accessright=require("./routes/accessright");
+const path = require("path");
+const fs = require("fs");
+var profile = require("./routes/profile");
+var calender = require("./routes/calender");
+var accessright = require("./routes/accessright");
 
 const app = express();
 app.use(bodyParser.json());
@@ -50,9 +50,9 @@ app.use("/admin", adminRouter);
 app.use("/companydb", companyDB);
 app.use("/project-overview", projectOverview);
 app.use("/project-create", projectCreateRoute);
-app.use("/profile",profile);
-app.use("/calender",calender);
-app.use("/accessright",accessright)
+app.use("/profile", profile);
+app.use("/calender", calender);
+app.use("/accessright", accessright);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 

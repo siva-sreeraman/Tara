@@ -1,4 +1,5 @@
 import React from "react";
+import { Redirect } from "react-router";
 import { Form } from "react-bootstrap";
 import axios from "axios";
 
@@ -7,6 +8,7 @@ import * as firebase from "firebase/app";
 import "firebase/auth";
 import Constants from "../helpers/Constants";
 import Env from "../helpers/Env";
+import SimpleTable from "./SimpleTable";
 
 class Registration extends React.Component {
   constructor(props) {
@@ -22,6 +24,7 @@ class Registration extends React.Component {
       redirectToReferrer: false,
       currentUser: null,
       showAddRolesForm: false,
+      registerFlag: false,
 
       roleFieldCount: 0,
       maxRoles: 4,
@@ -78,6 +81,9 @@ class Registration extends React.Component {
           .post(`${Env.host}/auth/registration`, registrationData)
           .then((response) => {
             console.log("response::::", response);
+            this.setState({
+              registerFlag: true,
+            });
           });
       })
       .catch(function (error) {
@@ -92,8 +98,13 @@ class Registration extends React.Component {
   };
 
   render() {
+    let redirectVar = null;
+    if (this.state.registerFlag) {
+      console.log("Register is:::", this.state.registerFlag);
+      redirectVar = <Redirect to="/login" />;
+    }
     return (
-      <div style={{ marginTop: "20px", paddingLeft: "150px" }}>
+      <article>
         <div className="login-page">
           <div className="row">
             <div className="col-6">
@@ -106,55 +117,56 @@ class Registration extends React.Component {
                 </p>
               </section>
             </div>
-            <div className="card login-card">
-              <div className="card-body">
-                {!this.state.loginFlag ? (
-                  <p>{this.state.invalidCredentialsMessage}</p>
-                ) : (
-                  ""
-                )}
-                {/* <div className="student-profile-form"> */}
-                <Form>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label>Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Name"
-                      name="name"
-                      onChange={this.handleOnChange}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Email"
-                      name="email"
-                      onChange={this.handleOnChange}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="password"
-                      name="password"
-                      // onKeyDown={this.onKeyUp}
-                      onChange={this.handleOnChange}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label>Company Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="company name"
-                      name="companyName"
-                      // onKeyDown={this.onKeyUp}
-                      onChange={this.handleOnChange}
-                    />
-                  </Form.Group>
+            <div className="col-6">
+              <div className="card login-card">
+                <div className="card-body">
+                  {!this.state.loginFlag ? (
+                    <p>{this.state.invalidCredentialsMessage}</p>
+                  ) : (
+                    ""
+                  )}
+                  {/* <div className="student-profile-form"> */}
+                  <Form>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label>Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="Name"
+                        name="name"
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label>Email</Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control
+                        type="password"
+                        placeholder="password"
+                        name="password"
+                        // onKeyDown={this.onKeyUp}
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label>Company Name</Form.Label>
+                      <Form.Control
+                        type="text"
+                        placeholder="company name"
+                        name="companyName"
+                        // onKeyDown={this.onKeyUp}
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
 
-                  {/* <div key={`default-radio`} className="mb-3">
+                    {/* <div key={`default-radio`} className="mb-3">
                     <Form.Check
                       type="radio"
                       id={`default-"radio`}
@@ -170,38 +182,38 @@ class Registration extends React.Component {
                     />
                   </div> */}
 
-                  <Form.Group controlId="exampleForm.ControlSelect1">
-                    <Form.Label>Sign up as</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="persona"
-                      onChange={this.iAmHandleOnChange}
-                    >
-                      <option value={Constants.Role.Admin}>Admin</option>
-                      <option value={Constants.Role.User}>User</option>
-                    </Form.Control>
-                  </Form.Group>
-
-                  {!!this.state.showAddRolesForm ? (
-                    <div>
-                      <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Role</Form.Label>
-                        <Form.Control
-                          type="text"
-                          placeholder="password"
-                          name="password"
-                          // onKeyDown={this.onKeyUp}
-                          onChange={this.handleOnChange}
-                        />
-                      </Form.Group>
-                      <button
-                        type="button"
-                        onClick={this.addAnotherRoleField}
-                        className="btn btn-outline-primary btn-login"
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                      <Form.Label>Sign up as</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="persona"
+                        onChange={this.iAmHandleOnChange}
                       >
-                        Add another role
-                      </button>
-                      {/* <Autocomplete
+                        <option value={Constants.Role.Admin}>Admin</option>
+                        <option value={Constants.Role.User}>User</option>
+                      </Form.Control>
+                    </Form.Group>
+
+                    {!!this.state.showAddRolesForm ? (
+                      <div>
+                        <Form.Group controlId="exampleForm.ControlInput1">
+                          <Form.Label>Role</Form.Label>
+                          <Form.Control
+                            type="text"
+                            placeholder="password"
+                            name="password"
+                            // onKeyDown={this.onKeyUp}
+                            onChange={this.handleOnChange}
+                          />
+                        </Form.Group>
+                        <button
+                          type="button"
+                          onClick={this.addAnotherRoleField}
+                          className="btn btn-outline-primary btn-login"
+                        >
+                          Add another role
+                        </button>
+                        {/* <Autocomplete
                           multiple
                           id="core-functions"
                           name="coreFunctions"
@@ -218,26 +230,36 @@ class Registration extends React.Component {
                             />
                           )}
                         /> */}
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                </Form>
-                <button
-                  onClick={this.submitForm}
-                  className="btn btn-primary btn-login"
-                >
-                  SignUp
-                </button>
-                {/* <Link className="btn btn-primary btn-login" to="/">
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </Form>
+                  <button
+                    onClick={this.submitForm}
+                    className="btn btn-primary btn-login"
+                  >
+                    Sign up
+                  </button>
+                  <div>
+                    Already have an account?
+                    <button
+                      onClick={this.submitForm}
+                      className="btn btn-outline-primary btn-login"
+                    >
+                      Sign in
+                    </button>
+                  </div>
+                  {/* <Link className="btn btn-primary btn-login" to="/">
                   Login
                 </Link> */}
-                {/* </div> */}
+                  {/* </div> */}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </article>
     );
   }
 }
