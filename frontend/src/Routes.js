@@ -29,21 +29,16 @@ import ProjectTasks from "./components/ProjectTasks";
 
 import CrewListing from "./components/projectOverview/ProjectContacts";
 import CompanyUsers from "./components/CompanyUsers";
-import CompanyCostumes from "./components/CompanyCostumes";
-import Costume from "./components/projectOverview/CostumePage";
-import UserGroups from "./components/projectOverview/UserGroups";
-import CompanyLocation from "./components/CompanyLocations";
+
 
 import Allevents from "./components/Allevents";
 import Alltasks from "./components/Alltasks";
 import Fullcalender from "./components/Fullcalender";
 import Messages from "./components/Messages/Messages";
-import CompanyUsers from "./components/CompanyUsers";
 import CompanyCostumes from "./components/CompanyCostumes";
 import Costume from "./components/projectOverview/CostumePage";
 import CompanyLocation from "./components/CompanyLocations";
 import UserGroups from "./components/projectOverview/UserGroups";
-import CrewListing from "./components/projectOverview/CrewListing";
 import MiniDrawer from "./components/MiniDrawer";
 
 class Routes extends React.Component {
