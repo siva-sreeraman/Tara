@@ -110,7 +110,7 @@ console.log(localStorage.getItem("projectname"))
                           <div class="card3" style={{"display": "block","border-radius": "4px", "border": "1px #ddd solid","margin-top":"20px", 
                      height:"150px", width:"300px" }}>
                      <div style={{"text-align":"center","padding-top":"50px",fontSize:"20px"}}><span class="glyphicon glyphicon-calendar"></span><br></br>
-                     <Link to="/Calenderpage" style={{ color: "black" }}>Calendar</Link></div>
+                     <Link to={"/Mycalender/"+this.state.projectid} style={{ color: "black" }}>Calendar</Link></div>
 
                      </div>
                     

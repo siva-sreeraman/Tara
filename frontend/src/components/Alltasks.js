@@ -26,11 +26,6 @@ import {Edit, ContactlessOutlined} from '@material-ui/icons';
 import {Delete} from '@material-ui/icons';
 
 
-    
-
-
-
-
 class Alltasks extends Component {
     constructor(props) {
         super(props);
@@ -38,8 +33,6 @@ class Alltasks extends Component {
            allprojects:[],
 
         }
-  
-
     }
     componentDidMount() {
         if(sessionStorage.getItem('persona')=="admin")
@@ -79,9 +72,9 @@ class Alltasks extends Component {
     </Card.Text>
   </Card.Body>
   <ListGroup className="list-group-flush">
-    <ListGroupItem>Cras justo odio</ListGroupItem>
-    <ListGroupItem>Dapibus ac facilisis in</ListGroupItem>
-    <ListGroupItem>Vestibulum at eros</ListGroupItem>
+    <ListGroupItem></ListGroupItem>
+    <ListGroupItem></ListGroupItem>
+    <ListGroupItem></ListGroupItem>
   </ListGroup>
   <Card.Body>
     <Card.Link href="#">Card Link</Card.Link>

@@ -72,9 +72,11 @@ class Navbarpage extends Component {
         <CustomTooltip title="Home" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link style={{ fontSize: 15, color: "white" }} to="/Projectpage"><span className="glyphicon glyphicon-briefcase"  ></span></Link></CustomTooltip><br></br>
         <CustomTooltip title="Company Users" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/Companyuserspage"><span className="glyphicon glyphicon-book" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
         <CustomTooltip title="Admin Profile" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/Adminprofilepage"><span className="glyphicon glyphicon-user" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
-        <CustomTooltip title="Calendar" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/Admincalenderpage"><span className="glyphicon glyphicon-calendar" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
+        <CustomTooltip title="Calendar" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/Fullcalendar"><span className="glyphicon glyphicon-calendar" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
         <CustomTooltip title="Company Costumes" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/companycostumes"><span className="glyphicon glyphicon-queen" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
         <CustomTooltip title="Location" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/companylocations"><span className="glyphicon glyphicon-map-marker" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
+        <CustomTooltip title="Company Events" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/allevents"><span className="glyphicon glyphicon-globe" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
+        <CustomTooltip title="Company Tasks" classes={{ tooltip: classes.customWidth }} placement="right" arrow><Link to="/alltasks"><span className="glyphicon glyphicon-tasks" style={{ fontSize: 15, color: "white" }}></span></Link></CustomTooltip><br></br>
 
 
       </ul>

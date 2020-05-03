@@ -66,7 +66,9 @@ class Routes extends React.Component {
           <Route path="/samplepopup" component= {Example}/>
           <Route path="/eventdetails/:id" component={Eventdetails}/>
           <Route path="/taskdetails/:id" component={Taskdetails}/>
-          <Route path="/mycalender" component={Mycalender}/>
+          <Route path="/Mycalender/:id" component={Mycalender}/>
+          <Route path="/Fullcalendar" component={Fullcalender}/>
+
           <Route  path="/navbarpage" component={Navbarpage}/>
           <Route  path="/Projectpage" component={Projectpage}/>
           <Route path="/usergroups" component={UserGroups}/>
@@ -79,8 +81,8 @@ class Routes extends React.Component {
           <Route path="/companyCostumes" component={CompanyCostumes}/>
           <Route path="/Costumepage" component={Costume}/>
           <Route path="/companylocations" component={CompanyLocation}/>
-          <Route path="/Allevents" component={Allevents} />
-          <Route path="/Alltasks" component={Alltasks} /> 
+          <Route path="/allevents" component={Allevents} />
+          <Route path="/alltasks" component={Alltasks} /> 
    
         </Router>
       </div>

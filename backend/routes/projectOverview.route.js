@@ -71,8 +71,12 @@ router.get("/geteventusers/:id", async function (req, res) {
   var users;
   const getprojectcrew = "select distinct userid from userevents where eventid = ?"
   var result;
+  console.log("inside get event users")
   var values = [];
-   result = await query(pool,getprojectcrew, [req.params.id])
+  console.log(req.body)
+  console.log(req.params.id)
+   result = await query(pool,getprojectcrew, [req.params.id]).catch(console.log);
+   console.log(result)
   for(var i=0;i<result.length;i++)
   {
     values.push(result[i].userid)
@@ -308,8 +312,9 @@ router.post("/assigntoevents", async (request, response) => {
     console.log(users[i])
     result = await query(pool, dbquery,[users[i],projectid])
     console.log(result)
-    response.status(200).send("added");
     }
+    response.status(200).send("added");
+
 }catch (ex) {
     console.log(ex)
     return response.status(500).send(err);
@@ -320,6 +325,7 @@ router.post("/assigntotasks", async (request, response) => {
   try {
     var err;
     const users = request.body.userids;
+    console.log(request.body)
     const projectid = request.body.projectid;
     for(var i=0;i<users.length;i++)
     {
@@ -327,8 +333,10 @@ router.post("/assigntotasks", async (request, response) => {
       console.log(users.length)
     var dbquery = "INSERT INTO usertasks (userid,taskid) VALUES (?,?)";
     result = await query(pool, dbquery,[users[i],projectid])
-    res.status(200).send("added");
     }
+
+    res.status(200).send("added");
+
 }catch (ex) {
     return response.status(500).send(err);
   }
