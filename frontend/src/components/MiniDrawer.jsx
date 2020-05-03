@@ -287,6 +287,16 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
 
+          <Link className="remove-link-style" to="/create-project">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+                <RoomIcon />
+              </ListItemIcon>
+              <ListItemText primary="Locations" />
+            </ListItem>
+          </Link>
+          
+
           <Link className="remove-link-style" to="/Adminprofilepage">
             <ListItem button key="Groups">
               <ListItemIcon>

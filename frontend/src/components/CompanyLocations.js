@@ -2,7 +2,7 @@ import React, { Fragment } from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import Modal from 'react-bootstrap/Modal';
-import { Button, Modal } from "react-bootstrap";
+import {  Modal } from "react-bootstrap";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -15,7 +15,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import FormControl from "@material-ui/core/FormControl";
 import Env from "../helpers/Env";
-import { TextField } from "@material-ui/core";
+import { TextField,Button } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Form, Col } from "react-bootstrap";
@@ -27,12 +27,16 @@ import JwPagination from "jw-react-pagination";
 // import "./CompanyDB.css";
 // import UserCharacter from "./UserCharacter";
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+const StyledTableCell = withStyles((theme) => ({}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
   },
-}))(TableCell);
+}))(TableRow);
+
 
 const classes = makeStyles((theme) => ({
   root: {
@@ -264,20 +268,22 @@ class CompanyLocation extends Component {
     displaydetails = (
       <div>
         <div class="paddingleft15">
-          <div class="form-group row" paddingleft>
-            <div class="col-lg-12" style={{ maxWidth: "90%" }}>
-              {" "}
-              <h2>Locations</h2>
-              <div align="right">
-                <button
-                  align="right"
-                  className="btn btn-outline-primary"
+        <div className="form-group">
+        <div className="">
+        <div className="form-group d-flex justify-content-between">
+        <h2>Locations</h2>
+
+        <Button
+                  variant="contained"
+                  color="secondary"
                   onClick={this.showCostumeModal}
                 >
-                  Add New Location
-                </button>
+                 Add New Location
+                </Button>
+              </div>
               </div>
               <br></br>
+     
               <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                   <TableHead>
@@ -297,7 +303,6 @@ class CompanyLocation extends Component {
             </div>
           </div>
         </div>
-      </div>
     );
     return (
       <div>

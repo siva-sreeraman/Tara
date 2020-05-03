@@ -17,6 +17,7 @@ import FormControl from "@material-ui/core/FormControl";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
+import { DialogContent,DialogTitle,Dialog } from "@material-ui/core";
 
 const StyledTableCell = withStyles((theme) => ({}))(TableCell);
 
@@ -326,7 +327,7 @@ class UserGroups extends Component {
 
     await axios
       .get(
-        "http://localhost:4000/project-overview/getusers_fromproject?projectid=" +
+        "http://localhost:4000/project-overview/getusers_fromproject/" +
           this.state.projectid
       )
       .then((response) => {
@@ -342,8 +343,8 @@ class UserGroups extends Component {
 
     await axios
       .get(
-        "http://localhost:4000/project-overview/getaccessrights_forproject?projectid=" +
-          this.state.projectid
+        "http://localhost:4000/project-overview/getaccessrights_forproject"
+     
       )
       .then((response) => {
         console.log(response);
@@ -437,11 +438,13 @@ class UserGroups extends Component {
     );
 
     ugform = (
-      <Modal show={this.state.displaycrewform} onHide={this.handleugformClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Create New UserGroup</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+       <Dialog
+   onClose={this.handleugformClose}
+   aria-labelledby="customized-dialog-title"
+   open={this.state.displaycrewform}>
+          <DialogTitle>Create New UserGroup</DialogTitle>
+        
+        <DialogContent>
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Label>UserGroup Name</Form.Label>
             <Form.Control
@@ -466,7 +469,7 @@ class UserGroups extends Component {
             <Autocomplete
               multiple
               id="tags-standard"
-              options={userdata}
+              options={this.state.users}
               style={{ width: 300 }}
               getOptionLabel={(each) => each.name}
               // defaultValue={[userdata[0]]}
@@ -492,7 +495,7 @@ class UserGroups extends Component {
             <Autocomplete
               multiple
               id="tags-standard"
-              options={accessrightsdata}
+              options={this.state.accessrights}
               style={{ width: 300 }}
               getOptionLabel={(each) => each.accessRight}
               onChange={this.handleAccessrightSkills}
@@ -513,24 +516,28 @@ class UserGroups extends Component {
               </section> */}
           </FormControl>
           {/* Enter Role: <TextField>Enter Role</TextField> */}
-        </Modal.Body>
-        <Modal.Footer>
+       
+       
           <Button variant="secondary" onClick={this.handleugformClose}>
             Close
           </Button>
           <Button variant="primary" onClick={this.submitugform}>
             Save Changes
           </Button>
-        </Modal.Footer>
-      </Modal>
+          </DialogContent>
+      </Dialog>
     );
 
     editugform = (
-      <Modal show={this.state.showeditug} onHide={this.closeeditugs}>
-        <Modal.Header closeButton>
-          <Modal.Title>UserGroup Form</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog
+      onClose={this.closeeditugs}
+      aria-labelledby="customized-dialog-title"
+      open={this.state.showeditug}>
+     
+       
+          <DialogTitle>UserGroup Form</DialogTitle>
+       
+        <DialogContent>
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Label>UserGroup Name</Form.Label>
             <Form.Control
@@ -612,16 +619,14 @@ class UserGroups extends Component {
             </FormControl>
           </Form.Group>
           {/* Enter Role: <TextField>Enter Role</TextField> */}
-        </Modal.Body>
-        <Modal.Footer>
+        </DialogContent>
           <Button variant="secondary" onClick={this.closeeditugs}>
             Close
           </Button>
           <Button variant="primary" onClick={this.submiteditugform}>
             Save Changes
           </Button>
-        </Modal.Footer>
-      </Modal>
+      </Dialog>
     );
 
     const displayform = this.state.usergroups.map((crew) => {

@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 // import Modal from 'react-bootstrap/Modal';
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { Form, Col } from "react-bootstrap";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -14,31 +14,23 @@ import Paper from "@material-ui/core/Paper";
 import { Component } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import "../css/projectcontacts.css";
+import { DialogContent,DialogTitle,Dialog,Button } from "@material-ui/core";
 
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import appStyles from "./appStyles.css";
 import Env from "../../helpers/Env";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
 import purple from "@material-ui/core/colors/purple";
-import red from "@material-ui/core/colors/red";
 
-const accent = purple.A200; // #E040FB (alternative method)
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: "#272E42",
-    color: theme.palette.common.white,
-  },
-}))(TableCell);
+const StyledTableCell = withStyles((theme) => ({}))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
     "&:nth-of-type(odd)": {
       backgroundColor: theme.palette.background.default,
-      textAlign: "center",
     },
   },
 }))(TableRow);
@@ -78,6 +70,8 @@ class CrewListing extends Component {
       selectedrolesdata: [],
       showroles: false,
       curentuserid: 0,
+      showviewuserrole : false,
+      viewdata :""
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -86,6 +80,13 @@ class CrewListing extends Component {
     this.handleroleshow = this.handleroleshow.bind(this);
     this.handleroleclose = this.handleroleclose.bind(this);
     this.handlerolechanges = this.handlerolechanges.bind(this);
+  }
+
+  componentWillMount()
+  {
+    this.setState({
+      viewdata : "role"
+    })
   }
 
   handleOnChange() {
@@ -100,6 +101,30 @@ class CrewListing extends Component {
       showroles: false,
     });
   }
+
+  showviewfun = async (value) => {
+    console.log(value, "in show view fun");
+    await axios
+      .get(
+        "http://localhost:4000/project-overview/get_project_userroles?projectid=" +
+          this.state.projectid +
+          "&userid=" +
+          value.userid
+      )
+      .then((response) => {
+        console.log("in subresponse", response.data);
+
+        this.setState({
+         viewdata : response.data[0].role
+        });
+        console.log(this.state.viewdata)
+      });
+
+    await this.setState({
+     
+      showviewuserrole: true,
+    });
+  };
 
   handlerolechanges() {
     var users = [];
@@ -117,11 +142,19 @@ class CrewListing extends Component {
       .post(Env.host + "/project-overview/add_rolesto_project", data)
       .then((response) => {
         //  rolesdata = response.data;
+        this.getcrewlist();
       });
 
     this.setState({
       showroles: false,
     });
+  }
+
+  closeshowuser = () =>
+  {
+    this.setState({
+      showviewuserrole :false
+    })
   }
 
   handleroleshow(val, val1, val2, val3, val4) {
@@ -196,30 +229,7 @@ class CrewListing extends Component {
     });
   };
 
-  handleClose = (e) => {
-    var users = [];
-    console.log("size is", this.state.usersval.length);
-    console.log("userval are", this.state.usersval);
-    for (var i = 0; i < this.state.usersval.length; i++) {
-      console.log("inside push");
-      users.push(this.state.usersval[i].userid);
-    }
-    const data = {
-      project_id: this.state.projectid,
-      usernames: users,
-    };
-
-    console.log("inside handleclosedata is ", data);
-    axios
-      .post(Env.host + "/companydb/assigntoproject", data)
-      .then((response) => {
-        //  rolesdata = response.data;
-      });
-
-    this.setState({
-      show: false,
-    });
-  };
+ 
 
   handleClose = (e) => {
     var users = [];
@@ -239,6 +249,7 @@ class CrewListing extends Component {
       .post(Env.host + "/companydb/assigntoproject", data)
       .then((response) => {
         //  rolesdata = response.data;
+        this.getcrewlist();
       });
 
     this.setState({
@@ -254,21 +265,27 @@ class CrewListing extends Component {
 
   submitForm() {}
 
-  componentDidMount() {
+  getcrewlist = () =>
+  {
+
     axios
-      .get(
-        Env.host +
-          "/project-overview/getcrewlist?projectid=" +
-          this.state.projectid
-      )
-      .then((response) => {
-        console.log(response);
+    .get(
+      Env.host +
+        "/project-overview/getcrewlist?projectid=" +
+        this.state.projectid
+    )
+    .then((response) => {
+      console.log(response);
 
-        this.setState({
-          crewlist: this.state.crewlist.concat(response.data),
-        });
+      this.setState({
+        crewlist: response.data
       });
+    });
+  }
 
+  componentDidMount() {
+  
+this.getcrewlist();
     axios.get(Env.host + "/project-overview/getusers").then((response) => {
       console.log(response);
 
@@ -287,18 +304,41 @@ class CrewListing extends Component {
   render() {
     let modelui = null;
     let rolemodel = null;
+let showuserrole = null;
 
+showuserrole = (
+   <Dialog
+  onClose={this.closeshowuser}
+  aria-labelledby="customized-dialog-title"
+  open={this.state.showviewuserrole}> 
+  <DialogContent>
+  <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label>Role :</Form.Label>
+            <Form.Label>{this.state.viewdata}</Form.Label>
+          </Form.Group>
+  </DialogContent>
+  <Button variant="secondary" onClick={this.closeshowuser}>
+            Close
+  </Button>
+    
+  </Dialog>
+
+)
     modelui = (
-      <Modal show={this.state.show} onHide={this.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Crew</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <FormControl className={classes.formControl}>
+      <Dialog
+      onClose={this.handleClose}
+      aria-labelledby="customized-dialog-title"
+      open={this.state.show}>
+    
+          <DialogTitle>Add Crew</DialogTitle>
+        <DialogContent>
+          <FormControl>
             <Autocomplete
               multiple
               id="tags-standard"
               options={usersdata}
+              style={{ width: 300 }}
+
               getOptionLabel={(each) => each.name}
               onChange={this.handleusers}
               // defaultValue={this.props?.studentSkills}
@@ -320,40 +360,38 @@ class CrewListing extends Component {
           </section> */}
           </FormControl>
           {/* Enter Role: <TextField>Enter Role</TextField> */}
-        </Modal.Body>
-        <Modal.Footer>
+          </DialogContent>
+
           <Button variant="secondary" onClick={this.handleclosemodal}>
             Close
           </Button>
           <Button variant="primary" onClick={this.handleClose}>
             Save Changes
           </Button>
-        </Modal.Footer>
-      </Modal>
+      </Dialog>
     );
 
     rolemodel = (
-      <Modal show={this.state.showroles} onHide={this.handleroleclose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Roles</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog open={this.state.showroles}    aria-labelledby="customized-dialog-title"
+       onClose={this.handleroleclose}>
+          <DialogTitle>Add Roles</DialogTitle>
+          <DialogContent>
           <FormControl className={classes.formControl}>
             <Autocomplete
               multiple
               id="tags-standard"
+              style={{ width: 300 }}
+
               options={dummydata}
               getOptionLabel={(each) => each.role}
               onChange={this.handleroles}
               // defaultValue={this.props?.studentSkills}
               renderInput={(params) => (
                 <TextField
-                  size="500"
                   {...params}
                   variant="standard"
                   label="Roles"
                   placeholder="Enter User"
-                  style={{ width: "120px" }}
                 />
               )}
             />
@@ -363,18 +401,17 @@ class CrewListing extends Component {
             ))}
           </section> */}
           </FormControl>
+          </DialogContent>
+
           {/* Enter Role: <TextField>Enter Role</TextField> */}
-        </Modal.Body>
-        <Modal.Footer>
           <Button variant="secondary" onClick={this.handleroleclose}>
             Close
           </Button>
           <Button variant="primary" onClick={this.handlerolechanges}>
             Save Changes
           </Button>
-        </Modal.Footer>
-      </Modal>
-    );
+           </Dialog>
+     );
 
     const displayform = this.state.crewlist.map((crew) => {
       return (
@@ -382,6 +419,9 @@ class CrewListing extends Component {
           <StyledTableCell align="center">{crew.userid}</StyledTableCell>
           <StyledTableCell align="center">{crew.name}</StyledTableCell>
           <StyledTableCell align="center">{crew.phonenumber}</StyledTableCell>
+          <StyledTableCell align="center">
+            <Link onClick={(e) => this.showviewfun(crew)}>View</Link>
+          </StyledTableCell>
           <StyledTableCell align="center">
             {crew.role}
             <Link
@@ -475,6 +515,9 @@ class CrewListing extends Component {
                         Phone Number
                       </StyledTableCell>
                       <StyledTableCell align="center">
+                        View Roles
+                      </StyledTableCell>
+                      <StyledTableCell align="center">
                         Add Roles
                       </StyledTableCell>
                     </TableRow>
@@ -494,6 +537,13 @@ class CrewListing extends Component {
                 <TableContainer component={Paper}>
                   <Table aria-label="customized table">
                     <TableBody>{rolemodel}</TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+              <div>
+                <TableContainer component={Paper}>
+                  <Table aria-label="customized table">
+                    <TableBody>{showuserrole}</TableBody>
                   </Table>
                 </TableContainer>
               </div>

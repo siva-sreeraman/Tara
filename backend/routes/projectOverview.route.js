@@ -259,6 +259,15 @@ router.get("/getusers_fromproject/:id", async function (req, res) {
 res.status(201).send(result);
 });
 
+router.get("/get_project_userroles/", async function (req, res) {
+  console.log("Inside miys ");
+console.log(req.query)
+  const sqlquery = "select role from project_users where user_Id = ? and project_Id = ?";
+  result = await query(pool, sqlquery,[req.query.userid,req.query.projectid] ).catch(console.log);
+// console.log("all users of given project" ,result)
+res.status(201).send(result);
+});
+
 router.get("/getevents_fromproject/:id", async function (req, res) {
   console.log("Inside get events from project ");
   console.log(req.params.id);
