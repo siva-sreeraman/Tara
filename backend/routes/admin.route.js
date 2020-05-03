@@ -69,6 +69,16 @@ router.put("/super-user/approve-requests", async function (req, res) {
     .catch(console.log);
 });
 
+router.put("/approve-requests", async function (req, res) {
+  const { uid } = req.body;
+  const updateStatus = `UPDATE users SET status = "accepted" WHERE uid="${uid}";`;
+  await query(pool, updateStatus)
+    .then(async (result) => {
+      res.status(200).send(result);
+    })
+    .catch(console.log);
+});
+
 router.post("/file-upload", fileUploadController.uploadFile);
 
 router.get("/create-upload-url", fileUploadController.createUploadUrl);

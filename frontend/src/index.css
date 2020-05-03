@@ -35,3 +35,25 @@ code {
 .login-card {
   width: 300px;
 }
+
+a.remove-link-style {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.remove-link-style:hover {
+  text-decoration: none;
+  color: inherit;
+}
+
+.modal-backdrop {
+  z-index: 1400;
+}
+
+.modal {
+  z-index: 1450;
+}
+
+.modal-dialog {
+  margin: 5rem auto;
+}

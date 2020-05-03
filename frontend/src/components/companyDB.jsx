@@ -1,8 +1,8 @@
-import React,{Fragment} from "react";
+import React, { Fragment } from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Button from 'react-bootstrap/Button';
-import {Modal} from 'react-bootstrap';
+import Button from "react-bootstrap/Button";
+import { Modal } from "react-bootstrap";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -20,7 +20,7 @@ import Env from "../helpers/Env";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-import JwPagination from 'jw-react-pagination';
+import JwPagination from "jw-react-pagination";
 
 // import SimpleMap from "../components/SimpleMap";
 // import "./CompanyDB.css";
@@ -31,37 +31,32 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  body: {
-    fontSize: 14,
-  },
 }))(TableCell);
 
-const classes = makeStyles(theme => ({
+const classes = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 600
+    width: 600,
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 300
-  }
+    minWidth: 300,
+  },
 }));
 
 const customStyles = {
-  li : {
-      first : { 
-        display : 'none'
-      },
-      last : {
-        display : 'none'
-      }
-  }
+  li: {
+    first: {
+      display: "none",
+    },
+    last: {
+      display: "none",
+    },
+  },
 };
 
 var rolesdata = [];
-var projectsdata=[];
-
-
+var projectsdata = [];
 
 class CompanyDB extends Component {
   constructor(props) {
@@ -75,16 +70,14 @@ class CompanyDB extends Component {
       userdetails: [],
       costumedetails: [],
       locationdetails: [],
-       roles :[],
-      show : false,
-      projectshow:false,
-      userval : [],
-      enableaddproject:false,
-        checkedItems: new Map(),
-        projects:[],
-        pageOfItems:[]        
-
-      
+      roles: [],
+      show: false,
+      projectshow: false,
+      userval: [],
+      enableaddproject: false,
+      checkedItems: new Map(),
+      projects: [],
+      pageOfItems: [],
     };
     this.handleUsers = this.handleUsers.bind(this);
     this.getactors = this.getactors.bind(this);
@@ -101,8 +94,6 @@ class CompanyDB extends Component {
     this.handleclosemodal = this.handleclosemodal.bind(this);
     this.handleprojectclosemodal = this.handleprojectclosemodal.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
-
-
   }
 
   componentDidMount() {
@@ -110,16 +101,14 @@ class CompanyDB extends Component {
     axios.get(Env.host + "/companydb/allroles").then((response) => {
       console.log(response);
 
-     rolesdata = response.data;
+      rolesdata = response.data;
     });
-
 
     axios.get(Env.host + "/companydb/allprojects").then((response) => {
       console.log(response);
 
-     projectsdata = response.data;
+      projectsdata = response.data;
     });
-    
   }
 
   onChangePage(pageOfItems) {
@@ -127,96 +116,87 @@ class CompanyDB extends Component {
     this.setState({ pageOfItems });
   }
 
-  handleclosemodal = () =>
-  {
+  handleclosemodal = () => {
     this.setState({
-      show : false
-  })
-  }
-
-  handleClose = () =>
-  {
-
-    const data = {
-      user_id : this.state.userval,
-      roles : this.state.roles
-    }
-    
-console.log("inside handleclosedata is ",data)
-    axios.post(Env.host + "/companydb/addrolestouser",data).then((response) => {
-     rolesdata = response.data;
+      show: false,
     });
+  };
 
+  handleClose = () => {
+    const data = {
+      user_id: this.state.userval,
+      roles: this.state.roles,
+    };
+
+    console.log("inside handleclosedata is ", data);
+    axios
+      .post(Env.host + "/companydb/addrolestouser", data)
+      .then((response) => {
+        rolesdata = response.data;
+      });
 
     axios.get(Env.host + "/companydb/allusers").then((response) => {
-     this.setState({
-      userdetails : response.data
-     })
-
-     });
-
       this.setState({
-          show : false
-      })
-  }
+        userdetails: response.data,
+      });
+    });
 
-  handleprojectclosemodal = () =>
-  {
     this.setState({
-      projectshow : false
-  })
-  }
+      show: false,
+    });
+  };
 
+  handleprojectclosemodal = () => {
+    this.setState({
+      projectshow: false,
+    });
+  };
 
-handleprojectclose = () =>
-{
-  this.setState({
-    projectshow : false
-})
-console.log("in handle project close",);
-console.log(this.state.projects)
-var temp =[];
-// console.log("in assign projects",this.state.projects)
-      this.state.checkedItems.forEach(logMapElements)
+  handleprojectclose = () => {
+    this.setState({
+      projectshow: false,
+    });
+    console.log("in handle project close");
+    console.log(this.state.projects);
+    var temp = [];
+    // console.log("in assign projects",this.state.projects)
+    this.state.checkedItems.forEach(logMapElements);
 
-     function logMapElements(value, key, map) {
-      console.log(key ,value)
-      if(value)
-      {
+    function logMapElements(value, key, map) {
+      console.log(key, value);
+      if (value) {
         temp.push(key);
       }
-      
-  }
-
-  // temp.push(this.state.projects[0].id)
-  console.log("data",temp)
-    const data = {
-
-    usernames : temp,
-     project_id : this.state.projects[0].id
     }
-    console.log("in checked items",data)
-    Object.entries(this.state.checkedItems).map(([key,value])=>{
-     console.log(key);
-    })
-      axios.post(Env.host + "/companydb/assigntoproject",data).then((response) => {
-        console.log("dta in asign project",data);
-       });
-   
-}
 
-  handleShow = (e,uservalue) =>
-  {
-      this.setState({
-          show : true
-      })
+    // temp.push(this.state.projects[0].id)
+    console.log("data", temp);
+    const data = {
+      usernames: temp,
+      project_id: this.state.projects[0].id,
+    };
+    console.log("in checked items", data);
+    Object.entries(this.state.checkedItems).map(([key, value]) => {
+      console.log(key);
+    });
+    axios
+      .post(Env.host + "/companydb/assigntoproject", data)
+      .then((response) => {
+        console.log("dta in asign project", data);
+      });
+  };
 
-      console.log("in handleshow",uservalue.userid);
-      this.setState({
-        userval : uservalue.userid
-      })
-  }
-  
+  handleShow = (e, uservalue) => {
+    this.setState({
+      show: true,
+    });
+
+    console.log("in handleshow", uservalue.userid);
+    this.setState({
+      userval: uservalue.userid,
+    });
+  };
+
   getusers = () => {
     axios.get(Env.host + "/companydb/allusers").then((response) => {
       console.log(response);
@@ -224,7 +204,6 @@ var temp =[];
       this.setState({
         userdetails: response.data,
       });
-
     });
   };
   getactors = () => {
@@ -292,178 +271,196 @@ var temp =[];
     this.getcostumes();
   };
 
-  handleroles = (event,values,props) =>
-    {
-      console.log("in handle on change roles");
+  handleroles = (event, values, props) => {
+    console.log("in handle on change roles");
 
-      this.setState({
-        roles: values
-      }, () => {
+    this.setState(
+      {
+        roles: values,
+      },
+      () => {
         // This will output an array of objects
         // given by Autocompelte options property.
         // console.log(this.state.roles);
-      });
-      // this.props.userdetails.roles = values;
+      }
+    );
+    // this.props.userdetails.roles = values;
+  };
 
-    }
+  handleprojects = (event, values, props) => {
+    console.log("in handle on change roles");
 
-    handleprojects = (event,values,props) =>
-    {
-      console.log("in handle on change roles");
-
-      this.setState({
-        projects: values
-      }, () => {
+    this.setState(
+      {
+        projects: values,
+      },
+      () => {
         // This will output an array of objects
         // given by Autocompelte options property.
         // console.log(this.state.roles);
-      });
-      // this.props.userdetails.roles = values;
+      }
+    );
+    // this.props.userdetails.roles = values;
+  };
 
-    }
+  togglePopup = () => {
+    this.setState({
+      showPopup: !this.state.showPopup,
+    });
+    console.log("showpopup in togglepopup", this.state.showPopup);
+  };
 
-  
-  togglePopup =() =>{  
-    this.setState({  
-         showPopup: !this.state.showPopup  
-    });  
-    console.log("showpopup in togglepopup",this.state.showPopup)
-     }  
+  handleChange = (e) => {
+    const item = e.target.name;
+    const isChecked = e.target.checked;
+    console.log("the name is", item);
+    console.log("if checked", isChecked);
+    this.setState((prevState) => ({
+      checkedItems: prevState.checkedItems.set(item, isChecked),
+    }));
+    console.log("checked items are", this.state.checkedItems);
+    this.setState({
+      enableaddproject: true,
+    });
+  };
 
-     handleChange = (e) => {
-      const item = e.target.name;
-      const isChecked = e.target.checked;
-      console.log("the name is",item);
-      console.log("if checked",isChecked);
-      this.setState(prevState => ({ checkedItems: prevState.checkedItems.set(item, isChecked) }));
-      console.log("checked items are",this.state.checkedItems);
-      this.setState({
-        enableaddproject:true
-      })
-    }
-
-
-    AssignProject = (e) =>
-    {
-      
-      this.setState({
-        projectshow : true
-    })
-    }
+  AssignProject = (e) => {
+    this.setState({
+      projectshow: true,
+    });
+  };
 
   render() {
     let displaydetails = null;
-    let modelui =null;
+    let modelui = null;
     let projectmodel = null;
-    var flag=0;
-    if(this.state.checkedItems.size >1 ) 
-    {
-      for(var i ;i<this.state.checkedItems.size;i++)
-      {
-console.log("checked items",this.state.checkedItems[i])
+    var flag = 0;
+    if (this.state.checkedItems.size > 1) {
+      for (var i; i < this.state.checkedItems.size; i++) {
+        console.log("checked items", this.state.checkedItems[i]);
       }
-    
-        this.state.enableaddproject=true
-     
+
+      this.state.enableaddproject = true;
     }
     if (this.state.usercheck) {
       const formdetails = this.state.pageOfItems.map((userdetails) => {
-        if(userdetails.roles < 4)
-        {
-            console.log("no role defined");
-           userdetails.roles = <Link onClick={e => this.handleShow(e, userdetails)}>Add role</Link>;
+        if (userdetails.roles < 4) {
+          console.log("no role defined");
+          userdetails.roles = (
+            <Link onClick={(e) => this.handleShow(e, userdetails)}>
+              Add role
+            </Link>
+          );
         }
 
-      modelui =  <Modal show={this.state.show} onHide={this.handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Roles</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <FormControl className={classes.formControl}>
-              <Autocomplete
-                multiple
-                id="tags-standard"
-                options={rolesdata}
-                getOptionLabel={each => each.rolename}
-                onChange={this.handleroles}
-                // defaultValue={this.props?.studentSkills}
-                renderInput={params => (
-                  <TextField size="500"
-                    {...params}
-                    variant="standard"
-                    label="Roles"
-                    placeholder="Enter Roles"
-                    style = {{width : "120px"}}
-                  />
-                )}
-              />
-              {/* <section className="skills-chips">
+        modelui = (
+          <Modal show={this.state.show} onHide={this.handleClose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Roles</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <FormControl className={classes.formControl}>
+                <Autocomplete
+                  multiple
+                  id="tags-standard"
+                  options={rolesdata}
+                  getOptionLabel={(each) => each.rolename}
+                  onChange={this.handleroles}
+                  // defaultValue={this.props?.studentSkills}
+                  renderInput={(params) => (
+                    <TextField
+                      size="500"
+                      {...params}
+                      variant="standard"
+                      label="Roles"
+                      placeholder="Enter Roles"
+                      style={{ width: "120px" }}
+                    />
+                  )}
+                />
+                {/* <section className="skills-chips">
                 {this.props?.studentSkills?.map(skill => (
                   <Chip className="skill-chip" label={skill.skill} />
                 ))}
               </section> */}
-            </FormControl>
-         {/* Enter Role: <TextField>Enter Role</TextField> */}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.handleclosemodal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={this.handleClose}>
-            Save Changes
-          </Button>
-        </Modal.Footer>
-      </Modal>
-  
-   projectmodel =  <Modal show={this.state.projectshow} onHide={this.handleprojectclose}>
-   <Modal.Header closeButton>
-     <Modal.Title>Add Roles</Modal.Title>
-   </Modal.Header>
-   <Modal.Body>
-   <FormControl className={classes.formControl}>
-         <Autocomplete
-           multiple
-           id="tags-standard"
-           options={projectsdata}
-           getOptionLabel={each => each.name}
-           onChange={this.handleprojects}
-           // defaultValue={this.props?.studentSkills}
-           renderInput={params => (
-             <TextField size="500"
-               {...params}
-               variant="standard"
-               label="Projects"
-               placeholder="Enter Projects"
-               style = {{width : "120px"}}
-             />
-           )}
-         />
-         {/* <section className="skills-chips">
+              </FormControl>
+              {/* Enter Role: <TextField>Enter Role</TextField> */}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={this.handleclosemodal}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.handleClose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        );
+
+        projectmodel = (
+          <Modal show={this.state.projectshow} onHide={this.handleprojectclose}>
+            <Modal.Header closeButton>
+              <Modal.Title>Add Roles</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <FormControl className={classes.formControl}>
+                <Autocomplete
+                  multiple
+                  id="tags-standard"
+                  options={projectsdata}
+                  getOptionLabel={(each) => each.name}
+                  onChange={this.handleprojects}
+                  // defaultValue={this.props?.studentSkills}
+                  renderInput={(params) => (
+                    <TextField
+                      size="500"
+                      {...params}
+                      variant="standard"
+                      label="Projects"
+                      placeholder="Enter Projects"
+                      style={{ width: "120px" }}
+                    />
+                  )}
+                />
+                {/* <section className="skills-chips">
            {this.props?.studentSkills?.map(skill => (
              <Chip className="skill-chip" label={skill.skill} />
            ))}
          </section> */}
-       </FormControl>
-    {/* Enter Role: <TextField>Enter Role</TextField> */}
-   </Modal.Body>
-   <Modal.Footer>
-     <Button variant="secondary" onClick={this.handleprojectclosemodal}>
-       Close
-     </Button>
-     <Button variant="primary" onClick={this.handleprojectclose}>
-       Save Changes
-     </Button>
-   </Modal.Footer>
- </Modal>
-       
+              </FormControl>
+              {/* Enter Role: <TextField>Enter Role</TextField> */}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="secondary"
+                onClick={this.handleprojectclosemodal}
+              >
+                Close
+              </Button>
+              <Button variant="primary" onClick={this.handleprojectclose}>
+                Save Changes
+              </Button>
+            </Modal.Footer>
+          </Modal>
+        );
+
         return (
           <TableBody>
             <TableRow>
-            <StyledTableCell><Checkbox name={userdetails.userid} checked={this.state.checkedItems.get(userdetails.userid)} onChange={this.handleChange} /></StyledTableCell>
+              <StyledTableCell>
+                <Checkbox
+                  name={userdetails.userid}
+                  checked={this.state.checkedItems.get(userdetails.userid)}
+                  onChange={this.handleChange}
+                />
+              </StyledTableCell>
 
               <StyledTableCell>{userdetails.name}</StyledTableCell>
               {/* <StyledTableCell>{userdetails.roles}</StyledTableCell> */}
-              <StyledTableCell>{userdetails.roles}/{userdetails?.role1}/{userdetails.role2}/{userdetails.role3}/{userdetails.role4}</StyledTableCell>
+              <StyledTableCell>
+                {userdetails.roles}/{userdetails?.role1}/{userdetails.role2}/
+                {userdetails.role3}/{userdetails.role4}
+              </StyledTableCell>
               {/* <StyledTableCell></StyledTableCell>
               <StyledTableCell></StyledTableCell>
               <StyledTableCell></StyledTableCell> */}
@@ -486,12 +483,11 @@ console.log("checked items",this.state.checkedItems[i])
                   <Table aria-label="customized table">
                     <TableHead>
                       <TableRow>
-
-                      <StyledTableCell></StyledTableCell>
+                        <StyledTableCell></StyledTableCell>
 
                         <StyledTableCell>User Name</StyledTableCell>
                         <StyledTableCell>Roles</StyledTableCell>
-                     
+
                         <StyledTableCell>User address</StyledTableCell>
                         <StyledTableCell>Phone Number</StyledTableCell>
                         <StyledTableCell>Mail Id</StyledTableCell>
@@ -499,15 +495,16 @@ console.log("checked items",this.state.checkedItems[i])
                     </TableHead>
 
                     {formdetails}
-
                   </Table>
                 </TableContainer>
                 <br></br>
-               <div align="center">
-               <JwPagination items={this.state.userdetails} onChangePage={this.onChangePage} styles={customStyles}/>
-
-               </div>
-
+                <div align="center">
+                  <JwPagination
+                    items={this.state.userdetails}
+                    onChangePage={this.onChangePage}
+                    styles={customStyles}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -677,34 +674,33 @@ console.log("checked items",this.state.checkedItems[i])
           >
             Costumes
           </button>
-          
-          <button disabled={!this.state.enableaddproject}
+
+          <button
+            disabled={!this.state.enableaddproject}
             class="btn btn-outline-dark mr-1"
             onClick={() => this.AssignProject()}
           >
-          AssignProject           
+            AssignProject
           </button>
         </div>
         <div id="textdisplay" class="tabcontent">
           {displaydetails}
-
         </div>
       </div>
     );
   }
 }
 
-
-class Popup extends React.Component {  
-  render() {  
-return (  
-<div className='popup'>  
-<div className='popup\_inner'>  
-<h1>{this.props.text}</h1>  
-<button onClick={this.props.closePopup}>close me</button>  
-</div>  
-</div>  
-);  
-}  
-} 
+class Popup extends React.Component {
+  render() {
+    return (
+      <div className="popup">
+        <div className="popup\_inner">
+          <h1>{this.props.text}</h1>
+          <button onClick={this.props.closePopup}>close me</button>
+        </div>
+      </div>
+    );
+  }
+}
 export default CompanyDB;

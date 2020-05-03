@@ -1,6 +1,7 @@
 import React from "react";
 import { Form } from "react-bootstrap";
 import axios from "axios";
+import { Redirect } from "react-router";
 
 import Env from "../helpers/Env";
 import Constants from "../helpers/Constants";
@@ -20,6 +21,7 @@ class Login extends React.Component {
       invalidCredentialsMessage: "",
       redirectToReferrer: false,
       currentUser: null,
+      loginFlag: false,
     };
     this.submitForm = this.submitForm.bind(this);
   }
@@ -44,6 +46,9 @@ class Login extends React.Component {
           .post(`${Env.host}/auth/login`, loginData)
           .then((loginResponse) => {
             console.log("response::::", loginResponse);
+            this.setState({
+              loginFlag: true,
+            });
             window.localStorage.setItem("auth", JSON.stringify(loginResponse));
           });
         console.log(
@@ -62,8 +67,14 @@ class Login extends React.Component {
   };
 
   render() {
+    let redirectVar = null;
+    if (this.state.loginFlag) {
+      console.log("Register is:::", this.state.loginFlag);
+      redirectVar = <Redirect to="/usergroups" />;
+    }
     return (
       <div style={{ marginTop: "20px", paddingLeft: "150px" }}>
+        {redirectVar}
         <div className="login-page">
           <div className="row">
             <div className="col-8">

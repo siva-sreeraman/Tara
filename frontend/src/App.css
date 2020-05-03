@@ -9,10 +9,11 @@
 .links .a {
   color: #343a40
 }
+
 @import '~@fullcalendar/core/main.css';
 @import '~@fullcalendar/daygrid/main.css';
 
-.amazon-body{
-  margin-left:200px;
-  min-height:425px;
+.amazon-body {
+  margin-left: 200px;
+  min-height: 425px;
 }

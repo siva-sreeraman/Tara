@@ -1,8 +1,8 @@
-import React,{Fragment} from "react";
+import React, { Fragment } from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import Modal from 'react-bootstrap/Modal';
-import {Button,Modal} from 'react-bootstrap';
+import { Button, Modal } from "react-bootstrap";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -17,11 +17,11 @@ import FormControl from "@material-ui/core/FormControl";
 import Env from "../helpers/Env";
 import { TextField } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import {Form,Col} from 'react-bootstrap';
-import Tooltip from '@material-ui/core/Tooltip';
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { Form, Col } from "react-bootstrap";
+import Tooltip from "@material-ui/core/Tooltip";
 
-import JwPagination from 'jw-react-pagination';
+import JwPagination from "jw-react-pagination";
 
 // import SimpleMap from "../components/SimpleMap";
 // import "./CompanyDB.css";
@@ -32,64 +32,52 @@ const StyledTableCell = withStyles((theme) => ({
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  body: {
-    fontSize: 14,
-  },
 }))(TableCell);
 
-const classes = makeStyles(theme => ({
+const classes = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    width: 600
+    width: 600,
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 300
-  }
+    minWidth: 300,
+  },
 }));
 
 const customStyles = {
-  li : {
-      first : { 
-        display : 'none'
-      },
-      last : {
-        display : 'none'
-      }
-  }
+  li: {
+    first: {
+      display: "none",
+    },
+    last: {
+      display: "none",
+    },
+  },
 };
 
 var rolesdata = [];
-var projectsdata=[];
-
-
+var projectsdata = [];
 
 class CompanyLocation extends Component {
   constructor(props) {
     super(props);
     this.state = {
-   
       userdetails: [],
       costumedetails: [],
       locationdetails: [],
-       roles :[],
-      show : false,
-        pageOfItems:[],
-        showmodal : false ,
-        name : "",
-        source : "",
-        locationdetails :[],
-        description : ""   
-
-      
+      roles: [],
+      show: false,
+      pageOfItems: [],
+      showmodal: false,
+      name: "",
+      source: "",
+      locationdetails: [],
+      description: "",
     };
     this.handleCostumes = this.handleCostumes.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
-
-
-
   }
-
 
   getlocations = () => {
     axios.get(Env.host + "/companydb/alllocations").then((response) => {
@@ -103,9 +91,8 @@ class CompanyLocation extends Component {
 
   componentDidMount() {
     console.log("inside componentDidMount");
-  
-    
-    this.getlocations()
+
+    this.getlocations();
   }
 
   onChangePage(pageOfItems) {
@@ -113,224 +100,221 @@ class CompanyLocation extends Component {
     this.setState({ pageOfItems });
   }
 
-
-  SubmitCostumes = () =>
-  {
+  SubmitCostumes = () => {
     const data = {
-      name : this.state.name,
-      source : this.state.source,
-      description : this.state.description
-    }
-    console.log(data)
-    axios.post(Env.host + "/companydb/submitnewlocation",data).then((response) => {
-      console.log(response);
+      name: this.state.name,
+      source: this.state.source,
+      description: this.state.description,
+    };
+    console.log(data);
+    axios
+      .post(Env.host + "/companydb/submitnewlocation", data)
+      .then((response) => {
+        console.log(response);
+      });
 
+    this.setState({
+      showmodal: false,
     });
+    this.getlocations();
+  };
 
+  handlenamechange = (e) => {
     this.setState({
-      showmodal:false
-    })
-    this.getlocations()
+      name: e.target.value,
+    });
+  };
 
-  }
-
-  handlenamechange = (e) =>
-  {
-this.setState({
-
-  name : e.target.value
-})
-  }
-
-
-  handlesourcechange = (e) =>
-  {
+  handlesourcechange = (e) => {
     this.setState({
+      source: e.target.value,
+    });
+  };
 
-      source : e.target.value
-    })
-
-  }
-
-
-  handledescriptionchange = (e) =>
-  {
+  handledescriptionchange = (e) => {
     this.setState({
+      description: e.target.value,
+    });
+  };
 
-      description : e.target.value
-    })
-
-  }
-
-  handleclosemodal = () =>
-  {
+  handleclosemodal = () => {
     this.setState({
-      show : false
-  })
-  }
+      show: false,
+    });
+  };
 
-
-  deleteCompanyCostume = (userdetails) =>
-  {
-    console.log("in dleete",userdetails)
+  deleteCompanyCostume = (userdetails) => {
+    console.log("in dleete", userdetails);
 
     const data = {
-      costumeid : userdetails
-    }
-    axios.post(Env.host + "/companydb/deletelocation",data).then((response) => {
-      console.log(response);
+      costumeid: userdetails,
+    };
+    axios
+      .post(Env.host + "/companydb/deletelocation", data)
+      .then((response) => {
+        console.log(response);
+      });
 
-    });
-
-    this.getcostumes();
-  }
-
-  handleModelClose  = () =>
-  {
-    this.setState({
-      showmodal : false
-    })
-  }
-
-
-
- 
-  showCostumeModal = () =>
-{
-  this.setState({
-    showmodal:true
-  })
-}
-
-
-  handleCostumes = () => {
-   
     this.getcostumes();
   };
 
+  handleModelClose = () => {
+    this.setState({
+      showmodal: false,
+    });
+  };
+
+  showCostumeModal = () => {
+    this.setState({
+      showmodal: true,
+    });
+  };
+
+  handleCostumes = () => {
+    this.getcostumes();
+  };
 
   render() {
     let displaydetails = null;
-let costumemodal = null;
- 
-  costumemodal = <Modal show={this.state.showmodal} onHide={this.handleprojectclose}>
-  <Modal.Header closeButton>
-    <Modal.Title>Add Location</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
+    let costumemodal = null;
 
-  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label>Costume Name</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Costume Name"
-                      name="name"
-                      // onKeyDown={this.onKeyUp}
-                      onChange={this.handlenamechange}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label>Costume Address</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Costume Source"
-                      name="source"
-                      // onKeyDown={this.onKeyUp}
-                      onChange={this.handlesourcechange}
-                    />
-                  </Form.Group>
-                  <Form.Group controlId="exampleForm.ControlInput1">
-                    <Form.Label> Location</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter Costume Description"
-                      name="description"
-                      // onKeyDown={this.onKeyUp}
-                      onChange={this.handledescriptionchange}
-                    />
-                  </Form.Group>
-   {/* Enter Role: <TextField>Enter Role</TextField> */}
-  </Modal.Body>
-  <Modal.Footer>
-    <Button variant="secondary" onClick={this.handleModelClose}>
-      Close
-    </Button>
-    <Button variant="primary" onClick={this.SubmitCostumes}>
-      Save Changes
-    </Button>
-  </Modal.Footer>
- </Modal>
-  
-  
+    costumemodal = (
+      <Modal show={this.state.showmodal} onHide={this.handleprojectclose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Add Location</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label>Costume Name</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Costume Name"
+              name="name"
+              // onKeyDown={this.onKeyUp}
+              onChange={this.handlenamechange}
+            />
+          </Form.Group>
+          <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label>Costume Address</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Costume Source"
+              name="source"
+              // onKeyDown={this.onKeyUp}
+              onChange={this.handlesourcechange}
+            />
+          </Form.Group>
+          <Form.Group controlId="exampleForm.ControlInput1">
+            <Form.Label> Location</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter Costume Description"
+              name="description"
+              // onKeyDown={this.onKeyUp}
+              onChange={this.handledescriptionchange}
+            />
+          </Form.Group>
+          {/* Enter Role: <TextField>Enter Role</TextField> */}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={this.handleModelClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={this.SubmitCostumes}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
 
-      console.log(this.state.formdetails);
-      const formdetails = this.state.pageOfItems.map((userdetails) => {
-        return (
-          <TableBody>
-            <TableRow>
-              <StyledTableCell> {userdetails.name}</StyledTableCell>
-              <StyledTableCell> {userdetails.address}</StyledTableCell>
-              <StyledTableCell> {userdetails.latitude}</StyledTableCell>
-              <StyledTableCell> {userdetails.longitude}</StyledTableCell>
+    console.log(this.state.formdetails);
+    const formdetails = this.state.pageOfItems.map((userdetails) => {
+      return (
+        <TableBody>
+          <TableRow>
+            <StyledTableCell> {userdetails.name}</StyledTableCell>
+            <StyledTableCell> {userdetails.address}</StyledTableCell>
+            <StyledTableCell> {userdetails.latitude}</StyledTableCell>
+            <StyledTableCell> {userdetails.longitude}</StyledTableCell>
 
-              <StyledTableCell><Link onClick={ e => this.deleteCompanyCostume(userdetails.costumeid)}><Tooltip title="Delete Company Costume" classes={{ tooltip: classes.customWidth }} placement="right" arrow><span className="glyphicon glyphicon-trash"  style={{fontSize:15,color:"black"}}></span></Tooltip></Link><br></br></StyledTableCell>
-            </TableRow>
-          </TableBody>
-        );
-      });
-      displaydetails = 
-        <div>
-          <div class="paddingleft15">
-            <div class="form-group row" paddingleft>
-              <div class="col-lg-12" style={{maxWidth:"90%"}}>
-                {" "}
-                <h2>Locations</h2>
-                <div align="right">
-                <button align="right"
-            className="btn btn-outline-primary"
-            onClick={this.showCostumeModal}
-          >
-            Add New Location
-          </button>
-          </div>
-          <br></br>
-                <TableContainer component={Paper}>
-                  <Table aria-label="customized table">
-                    <TableHead>
-                      <TableRow>
-                        <StyledTableCell> Name</StyledTableCell>
-                        <StyledTableCell>Address</StyledTableCell>
-                        <StyledTableCell>Latitude</StyledTableCell>
-                        <StyledTableCell>Longitude</StyledTableCell>
-
-                        <StyledTableCell>X</StyledTableCell>
-                      </TableRow>
-                    </TableHead>
-
-                    {formdetails}
-                  </Table>
-                </TableContainer>
+            <StyledTableCell>
+              <Link
+                onClick={(e) =>
+                  this.deleteCompanyCostume(userdetails.costumeid)
+                }
+              >
+                <Tooltip
+                  title="Delete Company Costume"
+                  classes={{ tooltip: classes.customWidth }}
+                  placement="right"
+                  arrow
+                >
+                  <span
+                    className="glyphicon glyphicon-trash"
+                    style={{ color: "black" }}
+                  ></span>
+                </Tooltip>
+              </Link>
+              <br></br>
+            </StyledTableCell>
+          </TableRow>
+        </TableBody>
+      );
+    });
+    displaydetails = (
+      <div>
+        <div class="paddingleft15">
+          <div class="form-group row" paddingleft>
+            <div class="col-lg-12" style={{ maxWidth: "90%" }}>
+              {" "}
+              <h2>Locations</h2>
+              <div align="right">
+                <button
+                  align="right"
+                  className="btn btn-outline-primary"
+                  onClick={this.showCostumeModal}
+                >
+                  Add New Location
+                </button>
               </div>
+              <br></br>
+              <TableContainer component={Paper}>
+                <Table aria-label="customized table">
+                  <TableHead>
+                    <TableRow>
+                      <StyledTableCell> Name</StyledTableCell>
+                      <StyledTableCell>Address</StyledTableCell>
+                      <StyledTableCell>Latitude</StyledTableCell>
+                      <StyledTableCell>Longitude</StyledTableCell>
+
+                      <StyledTableCell>X</StyledTableCell>
+                    </TableRow>
+                  </TableHead>
+
+                  {formdetails}
+                </Table>
+              </TableContainer>
             </div>
-</div>
-</div>
+          </div>
+        </div>
+      </div>
+    );
     return (
       <div>
-      
-    
         <div id="textdisplay" class="tabcontent">
           {displaydetails}
           <div align="center">
-               <JwPagination items={this.state.locationdetails} onChangePage={this.onChangePage} styles={customStyles}/>
-
-               </div>
+            <JwPagination
+              items={this.state.locationdetails}
+              onChangePage={this.onChangePage}
+              styles={customStyles}
+            />
+          </div>
           {costumemodal}
         </div>
       </div>
     );
   }
 }
-
-
 
 export default CompanyLocation;

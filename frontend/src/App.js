@@ -4,14 +4,10 @@ import "./App.css";
 import { Provider } from "react-redux";
 import Routes from "./Routes";
 
-
 function App() {
   return (
     <div className="App">
-     
-       
-          <Routes />    
-   
+      <Routes />
     </div>
   );
 }
