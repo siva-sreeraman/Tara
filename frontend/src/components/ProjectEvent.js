@@ -27,6 +27,11 @@ const StyledTableCell = withStyles((theme) => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
+    fontSize: 14,
+  },
+
+  body: {
+    fontSize: 14,
   },
 }))(TableCell);
 
@@ -99,7 +104,7 @@ class ProjectEvent extends Component {
         .get(Env.host + "/accessright/user/" + userid, data)
         .then((response) => {
           this.setState({
-            access: response.data,
+            access: true,
           });
           this.getevents();
         });
@@ -146,7 +151,7 @@ class ProjectEvent extends Component {
     }
     const data = {
       userids: temp,
-      projectid: this.state.projectid,
+      projectid: this.state.projects[0].eventid,
     };
     console.log("in checked items", data);
     Object.entries(this.state.checkedItems).map(([key, value]) => {
@@ -336,23 +341,48 @@ class ProjectEvent extends Component {
             <Modal.Title>Edit Event </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <FormControl className={classes.formControl}>
-              <Autocomplete
-                multiple
-                id="tags-standard"
-                options={this.state.eventlist}
-                getOptionLabel={(each) => each.title}
-                onChange={this.handleprojects}
-                renderInput={(params) => (
-                  <TextField
-                    size="500"
-                    {...params}
-                    variant="standard"
-                    label="Events"
-                    placeholder="Enter Events"
-                    style={{ width: "150px" }}
-                  />
-                )}
+            <form>
+              <label for="title">Title:</label>
+              <input
+                type="text"
+                name="title"
+                id="title"
+                value={this.state.title}
+                onChange={this.onChange}
+                class="form-control"
+                required
+              />
+              <br></br>
+              <label for="time"> Time</label>
+              <input
+                type="text"
+                name="time"
+                id="time"
+                value={this.state.time}
+                onChange={this.onChange}
+                class="form-control"
+                required
+              />
+              <br></br>
+              <label for="date"> Date</label>
+              <input
+                type="date"
+                name="date"
+                id="date"
+                value={this.state.date}
+                onChange={this.onChange}
+                class="form-control"
+                required
+              />
+              <br></br> <label for="locatio"> Location</label>
+              <input
+                type="text"
+                name="location"
+                id="location"
+                value={this.state.location}
+                onChange={this.onChange}
+                class="form-control"
+                required
               />
               <br></br>
               <label for="description"> description</label>
@@ -366,7 +396,7 @@ class ProjectEvent extends Component {
                 required
               />
               <br></br>
-            </FormControl>
+            </form>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleeditclosemodal}>
@@ -395,7 +425,7 @@ class ProjectEvent extends Component {
                 <Autocomplete
                   multiple
                   id="tags-standard"
-                  options={eventsdata}
+                  options={this.state.eventlist}
                   getOptionLabel={(each) => each.title}
                   onChange={this.handleprojects}
                   renderInput={(params) => (
@@ -409,6 +439,18 @@ class ProjectEvent extends Component {
                     />
                   )}
                 />
+                <br></br>
+                <label for="description"> description</label>
+                <input
+                  type="text"
+                  name="description"
+                  id="description"
+                  value={this.state.description}
+                  onChange={this.onChange}
+                  class="form-control"
+                  required
+                />
+                <br></br>
               </FormControl>
             </Modal.Body>
             <Modal.Footer>
@@ -483,84 +525,96 @@ class ProjectEvent extends Component {
     if (this.state.eventcheck) {
       details = this.state.eventlist.map((el) => {
         return (
-          <div>
-            <div
-              class="card"
-              style={{ width: "1000px", height: "200px", "margin-top": "10px" }}
-            >
-              <div class="col-md-1"></div>
-              <div class="col-md-12">
-                <div class="row">
-                  <div class="col-md-10">
-                    <div style={{ "margin-top": "10px", fontSize: "25px" }}>
-                      <Link
-                        to={"/Eventdetails/" + el.eventid}
-                        style={{ color: "black" }}
-                      >
-                        {el.title}
-                      </Link>
-                    </div>
-                  </div>
-                  <div class="col-md-1" style={{ marginright: "0px" }}>
-                    {this.state.access ? (
-                      <div>
-                        <IconButton onClick={() => this.handleedit(el.eventid)}>
-                          <Edit />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => this.handledelete(el.eventid)}
-                        >
-                          <Delete />
-                        </IconButton>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col-md-1">
-                    <div style={{ fontSize: " 15px" }}>
-                      {" "}
-                      <span class="glyphicon glyphicon-map-marker">
-                        {el.eventlocation}
-                      </span>
-                    </div>
-                  </div>
-                  <div class="col-md-1">
-                    <div style={{ fontSize: "15px" }}>
-                      <span class="glyphicon glyphicon-time">{el.time}</span>
-                    </div>
-                  </div>
-                  <div class="col-md-2">
-                    <div style={{ fontSize: "15px" }}>
-                      {" "}
-                      <span class="glyphicon glyphicon-calendar">
-                        {el.date.substr(0, 10)}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div class="col-md-2">
-                    <div style={{ fontSize: "15px" }}>
-                      {" "}
-                      <Link
-                        to={"/Eventdetails/" + el.eventid}
-                        style={{ color: "black" }}
-                      >
-                        View Users
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-
-                <div style={{ fontSize: "15px", "margin-top": "20px" }}>
-                  {el.eventdescription}
+          <div style={{ border: "1px solid black" }} width="70%" height="30%">
+            <div>
+              <div class="col-md-10">
+                <div style={{ "margin-top": "10px", fontSize: "25px" }}>
+                  <Link
+                    to={"/taskdetails/" + el.taskid}
+                    style={{ color: "black" }}
+                  >
+                    {el.title}
+                  </Link>
                 </div>
               </div>
 
-              <div class="col-md-1"></div>
+              <div class="col-md-10">
+                <div style={{ "margin-top": "10px", fontSize: "15px" }}>
+                  <Link
+                    to={"/taskdetails/" + el.taskid}
+                    style={{ color: "black" }}
+                  >
+                    {el.eventdescription}
+                  </Link>
+                </div>
+              </div>
+
+              <div class="col-md-1" style={{ marginright: "0px" }}>
+                {this.state.access == true ? (
+                  <div>
+                    <IconButton
+                      style={{ fontSize: 30 }}
+                      onClick={() => this.handleedit(el.taskid)}
+                    >
+                      <Edit />
+                    </IconButton>
+                    <IconButton
+                      style={{ fontSize: 30 }}
+                      onClick={() => this.handledelete(el.taskid)}
+                    >
+                      <Delete />
+                    </IconButton>
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+
+              {/* <div style={{ "fontSize": "15px", "margin-top": "20px" }}>{el.description}</div> */}
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <span class="glyphicon glyphicon-calendar">
+                    {el.date.substr(0, 10)}
+                  </span>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <Link
+                    to={"/eventdetails/" + el.eventid}
+                    style={{ color: "black" }}
+                  >
+                    {el.eventlocation}
+                  </Link>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <Link
+                    to={"/eventdetails/" + el.eventid}
+                    style={{ color: "black" }}
+                  >
+                    {el.time}
+                  </Link>
+                </div>
+              </div>
+
+              <div class="col-md-2">
+                <div style={{ fontSize: "15px" }}>
+                  {" "}
+                  <Link
+                    to={"/eventdetails/" + el.eventid}
+                    style={{ color: "black" }}
+                  >
+                    View Users
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -658,7 +712,7 @@ class ProjectEvent extends Component {
           >
             Users
           </button>
-          {this.state.access === "true" ? (
+          {this.state.access === true ? (
             <button
               disabled={!this.state.enableaddproject}
               class="btn btn-outline-dark mr-1"
@@ -678,7 +732,7 @@ class ProjectEvent extends Component {
           >
             Events
           </button>
-          {this.state.access === "true" ? (
+          {this.state.access === true ? (
             <button
               style={{ "font-size": "20px" }}
               class="btn btn-outline-dark mr-1"

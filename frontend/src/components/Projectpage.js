@@ -36,7 +36,30 @@ class Projectpage extends Component {
   render() {
     let projects = this.state.allprojects.map((project) => {
       return (
-        <div
+
+          <div>
+        <table>
+          <tr>
+            <td>
+            <div>
+            <div id="container" style={{ marginTop: "10px" }}>
+              <div style={{ "font-size": "50px" }} id="name">
+                {project.name.charAt(0)}
+              </div>
+            </div>
+            </div>
+            </td>
+            <td>
+            <div style={{padding: "30px"}}><Link
+                to={"/Projectmainpage/" + project.id}>
+                {project.name}
+              </Link>
+              </div>
+            </td>
+          </tr>
+        </table>
+        </div>
+        /* <div
           class="card"
           style={{
             display: "block",
@@ -51,19 +74,18 @@ class Projectpage extends Component {
                 {project.name.charAt(0)}
               </div>
             </div>
+
           </div>
-          <div class="col-md-9" style={{ marginTop: "10px" }}>
-            <div style={{ "font-size": "15px", padding: "30px" }}>
-              {" "}
-              <Link
-                to={"/Projectmainpage/" + project.id}
-                style={{ color: "black" }}
-              >
+           <div class="col-md-3">
+             
+           <Link
+                to={"/Projectmainpage/" + project.id}>
                 {project.name}
               </Link>
+           </div>
+       
             </div>
-          </div>
-        </div>
+          */
       );
     });
 
@@ -74,18 +96,6 @@ class Projectpage extends Component {
           <div class="row">
             <div style={{ marginRight: "0px" }}>
               <div>
-                <Card style={{ width: "30em", height: "7em" }}>
-                  {/* <Card.Img variant="top" src="holder.js/100px180" /> */}
-                  <Card.Body style={{ backgroundColor: "pink" }}>
-                    <h1>My Projects</h1>
-                    <Card.Title align="center"></Card.Title>
-                    {/* <Card.Text>
-      Some quick example text to build on the card title and make up the bulk of
-      the card's content.
-    </Card.Text> */}
-                    {/* <Button variant="primary">Go somewhere</Button> */}
-                  </Card.Body>
-                </Card>
               </div>
             </div>
           </div>

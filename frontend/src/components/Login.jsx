@@ -84,7 +84,7 @@ class Login extends React.Component {
     let redirectVar = null;
     if (this.state.loginFlag) {
       console.log("Register is:::", this.state.loginFlag);
-      redirectVar = <Redirect to="/usergroups" />;
+      redirectVar = <Redirect to="/Projectpage" />;
     }
     return (
       <div style={{ marginTop: "20px", paddingLeft: "150px" }}>

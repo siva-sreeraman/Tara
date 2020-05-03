@@ -13,7 +13,7 @@ const fs = require("fs");
 var profile = require("./routes/profile");
 var calender = require("./routes/calender");
 var accessright = require("./routes/accessright");
-
+var bodyParser = require("body-parser");
 const app = express();
 app.use(bodyParser.json());
 app.use(

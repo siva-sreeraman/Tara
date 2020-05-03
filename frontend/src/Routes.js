@@ -23,7 +23,7 @@ import Mycalender from "./components/Mycalender";
 import Registration from "./components/Registration";
 import Projectpage from "./components/Projectpage";
 import Projectmainpage from "./components/Projectmainpage";
-import Costumepage from "./components/Costumepage";
+// import Costumepage from "./components/Costumepage";
 import Adminprofilepage from "./components/Adminprofilepage";
 import ProjectEvent from "./components/ProjectEvent";
 import ProjectTasks from "./components/ProjectTasks";
@@ -31,7 +31,7 @@ import ProjectTasks from "./components/ProjectTasks";
 import CrewListing from "./components/projectOverview/ProjectContacts";
 import CompanyUsers from "./components/CompanyUsers";
 import CompanyCostumes from "./components/CompanyCostumes";
-import Costume from "./components/projectOverview/CostumePage";
+// import Costume from "./components/projectOverview/CostumePage";
 import UserGroups from "./components/projectOverview/UserGroups";
 import CompanyLocation from "./components/CompanyLocations";
 
