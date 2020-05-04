@@ -10,7 +10,7 @@ A place where talent meets opportunity.
 - Bhavana Chowdary
 - Thanmai Gajam
 - Prasanna
-- Vijayashree
+- Vijayashree Nanjundaswamy
 - Baijun Jiang
 
 # Concept and Advisory
