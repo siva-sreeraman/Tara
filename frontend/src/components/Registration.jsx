@@ -2,14 +2,12 @@ import React from "react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
-import axios from "axios";
 
 import * as firebase from "firebase/app";
 // Add the Firebase products that you want to use
 import "firebase/auth";
 import Constants from "../helpers/Constants";
-import Env from "../helpers/Env";
-import SimpleTable from "./SimpleTable";
+import AuthService from "../auth.service";
 
 class Registration extends React.Component {
   constructor(props) {
@@ -26,12 +24,31 @@ class Registration extends React.Component {
       currentUser: null,
       showAddRolesForm: false,
       registerFlag: false,
+      isRegistrationComplete: false,
 
       roleFieldCount: 0,
       maxRoles: 4,
     };
     this.submitForm = this.submitForm.bind(this);
   }
+
+  // async componentWillUnmount() {
+  //   console.log("componentWillUnmount");
+  //   let registrationData = null;
+  //   await axios
+  //     .post(`${Env.host}/auth/registration`, registrationData)
+  //     .then(async (response) => {
+  //       console.log("componentWillUnmount registration response::::", response);
+  //       await this.setState({
+  //         registerFlag: true,
+  //       });
+  //       isRegistrationComplete;
+  //     })
+  //     .catch((err) => {
+  //       console.log("componentWillUnmount registration err::::", err);
+  //       isRegistrationComplete = true;
+  //     });
+  // }
 
   handleOnChange = (event) => {
     this.setState({
@@ -73,34 +90,43 @@ class Registration extends React.Component {
       .auth()
       // .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((res) => {
+      .then(async (res) => {
         console.log(
           "createUserWithEmailAndPassword res: " + JSON.stringify(res)
         );
+
         const userObj = {
           email: res.user.email,
         };
         registrationData.uid = res.user.uid;
-        firebase
-          .firestore()
-          .collection("users")
-          .doc(this.state.email)
-          .set(userObj);
+        AuthService.isNewUser = true;
+        AuthService.registrationData = registrationData;
+        console.log("createUserWithEmailAndPassword AuthService Set!");
+        // firebase
+        //   .firestore()
+        //   .collection("users")
+        //   .doc(this.state.email)
+        //   .set(userObj);
 
-        axios
-          .post(`${Env.host}/auth/registration`, registrationData)
-          .then((response) => {
-            console.log("response::::", response);
-            this.setState({
-              registerFlag: true,
-            });
-          });
+        // await axios
+        //   .post(`${Env.host}/auth/registration`, registrationData)
+        //   .then(async (response) => {
+        //     console.log("registration response::::", response);
+        //     await this.setState({
+        //       registerFlag: true,
+        //     });
+        //     isRegistrationComplete;
+        //   })
+        //   .catch((err) => {
+        //     console.log("registration err::::", err);
+        //     isRegistrationComplete = true;
+        //   });
       })
       .catch(function (error) {
         // Handle Errors here.
         var errorCode = error.code;
         var errorMessage = error.message;
-        // ...
+        console.log("createUserWithEmailAndPassword error: " + error);
         console.log(
           "createUserWithEmailAndPassword error: " + JSON.stringify(error)
         );

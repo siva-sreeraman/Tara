@@ -1,6 +1,10 @@
 import React from "react";
 import { Redirect, withRouter } from "react-router";
 import * as firebase from "firebase/app";
+import axios from "axios";
+
+import Env from "../helpers/Env";
+import AuthService from "../auth.service";
 
 class AuthBasedRedirect extends React.Component {
   constructor(props) {
@@ -21,7 +25,12 @@ class AuthBasedRedirect extends React.Component {
         var providerData = user.providerData;
         console.log("onAuthStateChanged - Login success");
         console.log(JSON.stringify(user));
-        await this.setState({ auth: user });
+
+        if (AuthService.isNewUser) {
+          this.register(user);
+        } else {
+          await this.setState({ auth: user });
+        }
         // this.routeChange("usergroups");
       } else {
         // User is signed out.
@@ -31,6 +40,20 @@ class AuthBasedRedirect extends React.Component {
       }
     });
   }
+
+  register = async (user) => {
+    await axios
+      .post(`${Env.host}/auth/registration`, AuthService.registrationData)
+      .then(async (response) => {
+        console.log("registration response::::", response);
+        AuthService.isNewUser = false;
+        await this.setState({ auth: user });
+      })
+      .catch((err) => {
+        console.log("registration err::::", err);
+        AuthService.isNewUser = false;
+      });
+  };
 
   render() {
     const { from } = this.props?.location?.state || {
