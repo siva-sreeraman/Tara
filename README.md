@@ -67,6 +67,6 @@ Tara: Bringing together Talent and Opportunity in the Performing Arts industries
  5-cloud technologies: kubernetes,AWS
  
  
- 
+ # Architecture Diagram
 
 ![](images/taraarchitecture.PNG)
