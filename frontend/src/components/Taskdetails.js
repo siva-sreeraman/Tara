@@ -12,12 +12,16 @@ import { Component } from "react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+const StyledTableCell = withStyles((theme) => ({}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
   },
-}))(TableCell);
+}))(TableRow);
+
 
 class Taskdetails extends Component {
   constructor(props) {
@@ -61,37 +65,38 @@ class Taskdetails extends Component {
       });
 
       displayform = (
-        <div class="paddingleft15">
-          <div class="form-group row" paddingleft>
-            <div class="col-lg-10">
-              <h2> USERS ASSIGNED </h2>{" "}
-            </div>
-          </div>
-
-          <div class="form-group row" paddingleft>
-            <div class="col-lg-1"></div>
-            <div class="col-lg-9">
-              <TableContainer component={Paper}>
-                <Table aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell> Name</StyledTableCell>
-                      <StyledTableCell> address</StyledTableCell>
-                      <StyledTableCell>phonenumber</StyledTableCell>
-                      <StyledTableCell>mail id</StyledTableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>{details}</TableBody>
-                </Table>
-              </TableContainer>
+        <div>
+          <div className="paddingleft15">
+            <div>{this.state.sucessmsg}</div>
+            <div className="form-group">
+              <div className="">
+                <div className="form-group d-flex justify-content-between">
+                  <h2>Assigned Users</h2>
+                  <br></br>
+                </div>
+                <TableContainer component={Paper}>
+                  <Table aria-label="customized table">
+                    <TableHead>
+                      <TableRow>
+                        <StyledTableCell> Name</StyledTableCell>
+                        <StyledTableCell> address</StyledTableCell>
+                        <StyledTableCell>phonenumber</StyledTableCell>
+                        <StyledTableCell>mail id</StyledTableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>{details}</TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
             </div>
           </div>
         </div>
+
       );
     } else {
       displayform = (
         <div style={{ marginTop: "20px" }}>
-          <h1>NO USERS ASSIGNED TO THIS TASK</h1>
+          <h1>No Users are Assigned</h1>
         </div>
       );
     }

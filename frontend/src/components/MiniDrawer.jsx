@@ -152,7 +152,7 @@ export default function MiniDrawer(props) {
       });
   };
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => { };
 
   let redirectTo = null;
   if (!!props.auth) {
@@ -192,10 +192,10 @@ export default function MiniDrawer(props) {
               Logout
             </Button>
           ) : (
-            <Button color="inherit" onClick={handleLogin}>
-              Login
-            </Button>
-          )}
+              <Button color="inherit" onClick={handleLogin}>
+                Login
+              </Button>
+            )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -216,8 +216,8 @@ export default function MiniDrawer(props) {
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon />
-            )}
+                <ChevronLeftIcon />
+              )}
           </IconButton>
         </div>
         <Divider />
@@ -295,7 +295,7 @@ export default function MiniDrawer(props) {
               <ListItemText primary="Locations" />
             </ListItem>
           </Link>
-          
+
 
           <Link className="remove-link-style" to="/Adminprofilepage">
             <ListItem button key="Groups">
@@ -338,8 +338,8 @@ export default function MiniDrawer(props) {
           <Route path="/usergroups" component={UserGroups} />
           <Route path="/Projectmainpage/:id" component={Projectmainpage} />
           <Route path="/Adminprofilepage" component={Adminprofilepage} />
-          <Route path="/ProjectEvent/:id" component={ProjectEvent} />
-          <Route path="/ProjectTasks/:id" component={ProjectTasks} />
+          <Route path="/ProjectEvent/" component={ProjectEvent} />
+          <Route path="/ProjectTasks/" component={ProjectTasks} />
           <Route path="/contactspage" component={CrewListing} />
           <Route path="/Companyuserspage" component={CompanyUsers} />
           <Route path="/companyCostumes" component={CompanyCostumes} />

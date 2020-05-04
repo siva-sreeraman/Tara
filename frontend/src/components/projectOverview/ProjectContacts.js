@@ -14,7 +14,7 @@ import Paper from "@material-ui/core/Paper";
 import { Component } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import "../css/projectcontacts.css";
-import { DialogContent,DialogTitle,Dialog,Button } from "@material-ui/core";
+import { DialogContent, DialogTitle, Dialog, Button } from "@material-ui/core";
 
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
@@ -35,11 +35,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 700,
-  },
-});
 
 const classes = makeStyles((theme) => ({
   root: {
@@ -70,8 +65,8 @@ class CrewListing extends Component {
       selectedrolesdata: [],
       showroles: false,
       curentuserid: 0,
-      showviewuserrole : false,
-      viewdata :""
+      showviewuserrole: false,
+      viewdata: ""
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -82,10 +77,9 @@ class CrewListing extends Component {
     this.handlerolechanges = this.handlerolechanges.bind(this);
   }
 
-  componentWillMount()
-  {
+  componentWillMount() {
     this.setState({
-      viewdata : "role"
+      viewdata: "role"
     })
   }
 
@@ -107,21 +101,21 @@ class CrewListing extends Component {
     await axios
       .get(
         "http://localhost:4000/project-overview/get_project_userroles?projectid=" +
-          this.state.projectid +
-          "&userid=" +
-          value.userid
+        this.state.projectid +
+        "&userid=" +
+        value.userid
       )
       .then((response) => {
         console.log("in subresponse", response.data);
 
         this.setState({
-         viewdata : response.data[0].role
+          viewdata: response.data[0].role
         });
         console.log(this.state.viewdata)
       });
 
     await this.setState({
-     
+
       showviewuserrole: true,
     });
   };
@@ -150,10 +144,9 @@ class CrewListing extends Component {
     });
   }
 
-  closeshowuser = () =>
-  {
+  closeshowuser = () => {
     this.setState({
-      showviewuserrole :false
+      showviewuserrole: false
     })
   }
 
@@ -229,7 +222,7 @@ class CrewListing extends Component {
     });
   };
 
- 
+
 
   handleClose = (e) => {
     var users = [];
@@ -263,29 +256,28 @@ class CrewListing extends Component {
     });
   };
 
-  submitForm() {}
+  submitForm() { }
 
-  getcrewlist = () =>
-  {
+  getcrewlist = () => {
 
     axios
-    .get(
-      Env.host +
+      .get(
+        Env.host +
         "/project-overview/getcrewlist?projectid=" +
         this.state.projectid
-    )
-    .then((response) => {
-      console.log(response);
+      )
+      .then((response) => {
+        console.log(response);
 
-      this.setState({
-        crewlist: response.data
+        this.setState({
+          crewlist: response.data
+        });
       });
-    });
   }
 
   componentDidMount() {
-  
-this.getcrewlist();
+
+    this.getcrewlist();
     axios.get(Env.host + "/project-overview/getusers").then((response) => {
       console.log(response);
 
@@ -304,33 +296,33 @@ this.getcrewlist();
   render() {
     let modelui = null;
     let rolemodel = null;
-let showuserrole = null;
+    let showuserrole = null;
 
-showuserrole = (
-   <Dialog
-  onClose={this.closeshowuser}
-  aria-labelledby="customized-dialog-title"
-  open={this.state.showviewuserrole}> 
-  <DialogContent>
-  <Form.Group controlId="exampleForm.ControlInput1">
+    showuserrole = (
+      <Dialog
+        onClose={this.closeshowuser}
+        aria-labelledby="customized-dialog-title"
+        open={this.state.showviewuserrole}>
+        <DialogContent>
+          <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Label>Role :</Form.Label>
             <Form.Label>{this.state.viewdata}</Form.Label>
           </Form.Group>
-  </DialogContent>
-  <Button variant="secondary" onClick={this.closeshowuser}>
-            Close
+        </DialogContent>
+        <Button variant="secondary" onClick={this.closeshowuser}>
+          Close
   </Button>
-    
-  </Dialog>
 
-)
+      </Dialog>
+
+    )
     modelui = (
       <Dialog
-      onClose={this.handleClose}
-      aria-labelledby="customized-dialog-title"
-      open={this.state.show}>
-    
-          <DialogTitle>Add Crew</DialogTitle>
+        onClose={this.handleClose}
+        aria-labelledby="customized-dialog-title"
+        open={this.state.show}>
+
+        <DialogTitle>Add Crew</DialogTitle>
         <DialogContent>
           <FormControl>
             <Autocomplete
@@ -360,22 +352,22 @@ showuserrole = (
           </section> */}
           </FormControl>
           {/* Enter Role: <TextField>Enter Role</TextField> */}
-          </DialogContent>
+        </DialogContent>
 
-          <Button variant="secondary" onClick={this.handleclosemodal}>
-            Close
+        <Button variant="secondary" onClick={this.handleclosemodal}>
+          Close
           </Button>
-          <Button variant="primary" onClick={this.handleClose}>
-            Save Changes
+        <Button variant="primary" onClick={this.handleClose}>
+          Save Changes
           </Button>
       </Dialog>
     );
 
     rolemodel = (
-      <Dialog open={this.state.showroles}    aria-labelledby="customized-dialog-title"
-       onClose={this.handleroleclose}>
-          <DialogTitle>Add Roles</DialogTitle>
-          <DialogContent>
+      <Dialog open={this.state.showroles} aria-labelledby="customized-dialog-title"
+        onClose={this.handleroleclose}>
+        <DialogTitle>Add Roles</DialogTitle>
+        <DialogContent>
           <FormControl className={classes.formControl}>
             <Autocomplete
               multiple
@@ -401,17 +393,17 @@ showuserrole = (
             ))}
           </section> */}
           </FormControl>
-          </DialogContent>
+        </DialogContent>
 
-          {/* Enter Role: <TextField>Enter Role</TextField> */}
-          <Button variant="secondary" onClick={this.handleroleclose}>
-            Close
+        {/* Enter Role: <TextField>Enter Role</TextField> */}
+        <Button variant="secondary" onClick={this.handleroleclose}>
+          Close
           </Button>
-          <Button variant="primary" onClick={this.handlerolechanges}>
-            Save Changes
+        <Button variant="primary" onClick={this.handlerolechanges}>
+          Save Changes
           </Button>
-           </Dialog>
-     );
+      </Dialog>
+    );
 
     const displayform = this.state.crewlist.map((crew) => {
       return (
@@ -486,28 +478,27 @@ showuserrole = (
 
     return (
       <div>
-        <div class="paddingleft15">
-          <div class="form-group row" paddingleft>
-            <div class="col-lg-10"> </div>
-            <div class="col-lg-1">
-              <a
-                className="btn btn-primary"
-                style={{ padding: "10px 30px 10px 30px" }}
-                onClick={(e) => this.handleShow(e)}
-              >
-                <h5>Add Crew</h5>
-              </a>{" "}
-            </div>
-          </div>
 
-          <div class="form-group row" paddingleft>
-            <div class="col-lg-2"></div>
-            <div class="col-lg-9" style={{ maxwidth: "100%" }}>
-              {" "}
-              <h2>Contacts</h2>
+        <div className="paddingleft15">
+          <div>{this.state.sucessmsg}</div>
+          <div className="form-group">
+            <div className="">
+              <div className="form-group d-flex justify-content-between">
+                <h2>Contacts</h2>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  onClick={(e) => this.handleShow(e)}
+                >
+                  Add Crew
+                </Button>
+              </div>
+
+
+
               <TableContainer component={Paper}>
                 <Table aria-label="customized table">
-                  <TableHead style={{ backgroundColor: "#272E42" }}>
+                  <TableHead >
                     <TableRow>
                       <StyledTableCell align="center">Crew Id</StyledTableCell>
                       <StyledTableCell align="center"> Name</StyledTableCell>

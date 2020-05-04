@@ -4,7 +4,7 @@ import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import Modal from 'react-bootstrap/Modal';
 import Button from "@material-ui/core/Button";
 
-import {  Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -13,7 +13,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Checkbox from "@material-ui/core/Checkbox";
-import { DialogContent,DialogTitle,Dialog } from "@material-ui/core";
+import { DialogContent, DialogTitle, Dialog } from "@material-ui/core";
 
 import { Component } from "react";
 import { Redirect } from "react-router";
@@ -363,11 +363,11 @@ class CompanyDB extends Component {
       }
 
       modelui = (
-      
-        <Dialog open={this.state.show}  aria-labelledby="customized-dialog-title" onClose={this.handleClose}>
-            <DialogTitle>Add Roles</DialogTitle>
-               <DialogContent>
-               
+
+        <Dialog open={this.state.show} aria-labelledby="customized-dialog-title" onClose={this.handleClose}>
+          <DialogTitle>Add Roles</DialogTitle>
+          <DialogContent>
+
             <FormControl>
               <Autocomplete
                 multiple
@@ -394,22 +394,22 @@ class CompanyDB extends Component {
             </FormControl>
             {/* Enter Role: <TextField>Enter Role</TextField> */}
             <DialogContent>
-            <Button variant="secondary" onClick={this.handleclosemodal}>
-              Close
+              <Button variant="secondary" onClick={this.handleclosemodal}>
+                Close
             </Button>
-            <Button variant="primary" onClick={this.handleClose}>
-              Save Changes
+              <Button variant="primary" onClick={this.handleClose}>
+                Save Changes
             </Button>
             </DialogContent>
-           
-            </DialogContent>
+
+          </DialogContent>
 
         </Dialog>
       );
 
       projectmodel = (
         <Dialog open={this.state.projectshow} onClose={this.handleprojectclose}>
-            <DialogTitle>Add Roles</DialogTitle>
+          <DialogTitle>Add Roles</DialogTitle>
           <DialogContent>
             <FormControl className={classes.formControl}>
               <Autocomplete
@@ -437,15 +437,15 @@ class CompanyDB extends Component {
          </section> */}
             </FormControl>
             {/* Enter Role: <TextField>Enter Role</TextField> */}
-          
-         </DialogContent>
-            <Button variant="secondary" onClick={this.handleprojectclosemodal}>
-              Close
+
+          </DialogContent>
+          <Button variant="secondary" onClick={this.handleprojectclosemodal}>
+            Close
             </Button>
-            <Button variant="primary" onClick={this.handleprojectclose}>
-              Save Changes
+          <Button variant="primary" onClick={this.handleprojectclose}>
+            Save Changes
             </Button>
-         
+
         </Dialog>
       );
 
@@ -480,60 +480,60 @@ class CompanyDB extends Component {
     displaydetails = (
       <div>
         <div class="paddingleft15">
-        <div className="form-group">
-        <div className="">
-        <div className="form-group d-flex justify-content-between">
-        <h2>Locations</h2>
+          <div className="form-group">
+            <div className="">
+              <div className="form-group d-flex justify-content-between">
+                <h2>Users</h2>
 
-        <Button
-        disabled={!this.state.enableaddproject}
+                <Button
+                  disabled={!this.state.enableaddproject}
                   variant="contained"
                   color="secondary"
                   onClick={this.AssignProject}
                 >
-                 Assign Project
+                  Assign Project
                 </Button>
               </div>
-              </div>
-             
-     </div>
-     </div>
+            </div>
 
-               
-             
-              <TableContainer component={Paper}>
-                <Table aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-                      <StyledTableCell></StyledTableCell>
+          </div>
+        </div>
 
-                      <StyledTableCell>User Name</StyledTableCell>
-                      <StyledTableCell>Roles</StyledTableCell>
 
-                      <StyledTableCell>User address</StyledTableCell>
-                      <StyledTableCell>Phone Number</StyledTableCell>
-                      <StyledTableCell>Mail Id</StyledTableCell>
-                    </TableRow>
-                  </TableHead>
 
-                  {formdetails}
-                </Table>
-              </TableContainer>
-              <br></br>
-             
-              <div align="center">
-                <JwPagination
-                  items={this.state.userdetails}
-                  onChangePage={this.onChangePage}
-                  styles={customStyles}
-                />
-              </div>
-          
+        <TableContainer component={Paper}>
+          <Table aria-label="customized table">
+            <TableHead>
+              <TableRow>
+                <StyledTableCell></StyledTableCell>
+
+                <StyledTableCell>User Name</StyledTableCell>
+                <StyledTableCell>Roles</StyledTableCell>
+
+                <StyledTableCell>User address</StyledTableCell>
+                <StyledTableCell>Phone Number</StyledTableCell>
+                <StyledTableCell>Mail Id</StyledTableCell>
+              </TableRow>
+            </TableHead>
+
+            {formdetails}
+          </Table>
+        </TableContainer>
+        <br></br>
+
+        <div align="center">
+          <JwPagination
+            items={this.state.userdetails}
+            onChangePage={this.onChangePage}
+            styles={customStyles}
+          />
+        </div>
+
         <div>
           {modelui}
           {projectmodel}
         </div>
-        </div>
+      </div>
     );
 
     return (
