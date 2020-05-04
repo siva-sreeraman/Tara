@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import purple from "@material-ui/core/colors/purple";
 import red from "@material-ui/core/colors/red";
+import Button from "@material-ui/core/Button";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -198,9 +199,7 @@ class CreateProjectTemplate extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col-3">
-            <NavigationPanel />
-          </div>
+          <div className="col-1">{/* <NavigationPanel /> */}</div>
           <div className="col">
             <section>
               <h3>Create Project Template</h3>
@@ -293,13 +292,22 @@ function CreateTemplateForm(props) {
       />
       <br />
       <div>
-        <button
+        {/* <button
           type="button"
           onClick={props.createTemplate}
           className="btn btn-dark"
         >
           Create Template
-        </button>
+        </button> */}
+        <Button
+          type="button"
+          onClick={props.createTemplate}
+          variant="outlined"
+          color="primary"
+          onClick={props.createTemplate}
+        >
+          Create Template
+        </Button>
       </div>
     </Form>
   );

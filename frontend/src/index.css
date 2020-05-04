@@ -57,3 +57,27 @@ a.remove-link-style:hover {
 .modal-dialog {
   margin: 5rem auto;
 }
+
+.document.img {
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+}
+
+.document.card {
+  width: 200px
+}
+
+.document.card .img-placeholder,
+.document.img {
+  width: 200px;
+  max-height: 200px;
+}
+
+.document.card .img-placeholder {
+  display: block;
+  height: 200px;
+}
+
+.folder-icon {
+  font-size: 36px;
+}

@@ -7,6 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 // import TabPanel from "./TabPanel";
 import Env from "../helpers/Env";
+import Button from "@material-ui/core/Button";
 import NavigationPanel from "./NavigationPanel";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import FormControl from "@material-ui/core/FormControl";
@@ -263,9 +264,7 @@ class CreateProject extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col-3">
-            <NavigationPanel />
-          </div>
+          <div className="col-1"></div>
           <div className="col">
             <section>
               <h3>Create Project</h3>
@@ -426,13 +425,21 @@ class CreateProject extends React.Component {
                 )}
                 <br />
                 <div>
-                  <button
+                  {/* <button
                     type="button"
                     onClick={this.createProject}
                     className="btn btn-dark"
                   >
                     Create Project
-                  </button>
+                  </button> */}
+                  <Button
+                    type="button"
+                    variant="outlined"
+                    color="primary"
+                    onClick={this.createProject}
+                  >
+                    Create Project
+                  </Button>
                 </div>
               </Form>
             </section>

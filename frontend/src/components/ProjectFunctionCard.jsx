@@ -30,7 +30,6 @@ export default function ProjectFunctionCard(props) {
         <CardMedia
           className={classes.media}
           image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
@@ -43,12 +42,7 @@ export default function ProjectFunctionCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Link
-          to={{
-            pathname: `/file-upload`,
-            projectId: props?.projectId,
-          }}
-        >
+        <Link to={props.funcPath}>
           <Button size="small" color="primary">
             {props.funcName}
           </Button>

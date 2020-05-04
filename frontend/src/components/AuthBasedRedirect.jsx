@@ -43,9 +43,7 @@ class AuthBasedRedirect extends React.Component {
       redirectTo = <Redirect to="/Projectpage" />;
     } else {
       console.log("redirectTo login");
-      !!from
-        ? (redirectTo = <Redirect to={from} />)
-        : (redirectTo = <Redirect to="/login" />);
+      redirectTo = <Redirect to={from} />;
     }
     return <React.Fragment>{redirectTo}</React.Fragment>;
   }
