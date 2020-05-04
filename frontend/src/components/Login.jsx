@@ -99,85 +99,19 @@ class Login extends React.Component {
       redirectVar = <Redirect to="/my-projects" />;
     }
     return (
-      <div className="app-login container" style={{backgroundImage:`url(${background})`,width:"1240px", height:"500px"}}>
+      <div  class="bg-img">
         {redirectVar}
-        <div className="login-page mt-5">
-          <div className="row">
-            <div className="col-8">
-            
-                {/* <h1>TARA</h1> */}
-                {/* <p>
-                  Lorem ipsum is placeholder text commonly used in the graphic,
-                  print, and publishing industries for previewing layouts and
-                  visual mockups.
-                </p> */}
-              
-            </div>
-            <div className="col" style={{marginTop:"10px"}}>
-              <section className="card login-card">
-                <div className="card-body" >
-                  {!this.state.loginFlag ? (
-                    <p>{this.state.invalidCredentialsMessage}</p>
-                  ) : (
-                    ""
-                  )}
-                  <div className="student-profile-form">
-                    <Form>
-                      <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                          type="email"
-                          placeholder="Email"
-                          name="email"
-                          onChange={this.handleOnChange}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          placeholder="password"
-                          name="password"
-                          // onKeyDown={this.onKeyUp}
-                          onChange={this.handleOnChange}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Label>I am</Form.Label>
-                        <Form.Control
-                          as="select"
-                          name="persona"
-                          onChange={this.handleOnChange}
-                        >
-                          <option value={Constants.Role.Admin}>Admin</option>
-                          <option value={Constants.Role.User}>User</option>
-                        </Form.Control>
-                      </Form.Group>
-                    </Form>
-                    <button
-                      onClick={this.submitForm}
-                      className="btn btn-primary btn-login"
-                    >
-                      Login
-                    </button>
-                    <Link
-                      className="btn btn-outline-primary ml-3"
-                      to="/sign-up"
-                    >
-                      Sign Up
-                    </Link>
-
-      <div class="bg-img">
+      <div class="img">
       <div style={{ marginTop: "20px",paddingLeft:"900px"}}>
         {redirectVar}
-            <div className="card login-card" style={{height:"350px",width:"400px",marginTop: "120px",position:"absolute",backgroundColor:"#5c5959"}}>
+         
               <div className="card-body">
                 {!this.state.loginFlag ? (
                   <p>{this.state.invalidCredentialsMessage}</p>
                 ) : (
                   ""
                 )}
-                <div className="student-profile-form" style={{width:"300px", paddingLeft:"50px"}}>
+                <div className="student-profile-form" style={{ paddingTop:"150px",width:"300px", paddingLeft:"50px"}}>
                   <Form>
                     <Form.Group controlId="exampleForm.ControlInput1">
                       <Form.Label></Form.Label>
@@ -218,6 +152,12 @@ class Login extends React.Component {
                   >
                     Login
                   </button>
+                  <Link
+                      className="btn btn-outline-primary ml-3"
+                      to="/sign-up"
+                    >
+                      Sign Up
+                    </Link>
                   </div>
                   {/* <Link className="btn btn-primary btn-login" to="/">
                   Login
@@ -229,13 +169,9 @@ class Login extends React.Component {
                 </div>
                 </div>
               
-              </div>
-              </div>
-              </section>
-              </div>
-              </div>
-              </div>
-              </div>
+              
+          
+             
          
     
     );

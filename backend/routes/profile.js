@@ -34,10 +34,11 @@ const s3 = new AWS.S3({
 
  
 
+  accessKeyId: 'AKIAI72XJ4B436BWHDZA',
+  secretAccessKey: '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',
 
-
-  accessKeyId: process.env.TARA_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.TARA_SECRET_ACCESS_KEY,
+  // accessKeyId: process.env.TARA_AWS_ACCESS_KEY,
+  // secretAccessKey: process.env.TARA_SECRET_ACCESS_KEY,
 
 
 });
@@ -110,7 +111,8 @@ router.post('/uploadpic/admin/:id', upload.single('profilepic'), async (request,
       // console.log(fileContent)
       const params = {
        
-        Bucket: process.env.TARA_BUCKET_NAME,
+       // Bucket: process.env.TARA_BUCKET_NAME,
+        Bucket: 'handshakeresume-273',
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -145,7 +147,8 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
       const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
       // console.log(fileContent)
       const params = {
-        Bucket: process.env.TARA_BUCKET_NAME,
+       // Bucket: process.env.TARA_BUCKET_NAME,
+       Bucket: 'handshakeresume-273',
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -159,6 +162,8 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
   
           const dbquery = 'update users set profile_pic=? where  id=?';
           result = await query(pool, dbquery, [data.Location, request.params.id]).catch(console.log);
+          console.log(result);
+
           response.status(200).send(result);
 
 

@@ -48,7 +48,7 @@ class Allevents extends Component {
     if (sessionStorage.getItem('persona') == "admin") {
 
 
-      axios.get(Env.host + "/calender/admin/allevents/" + sessionStorage.getItem('companyId')).then((response) => {
+      axios.get(Env.host+"/calender/admin/allevents/"+sessionStorage.getItem('companyId')).then((response) => {
         this.setState({
           userdetails: response.data
         })
@@ -56,8 +56,8 @@ class Allevents extends Component {
 
     }
     else {
-      let id = sessionStorage.getItem('uid')
-      axios.get(Env.host + "/calender/allevents/" + id).then((response) => {
+      let id = sessionStorage.getItem('userid')
+      axios.get(Env.host+"/calender/allevents/"+ id).then((response) => {
         this.setState({
           userdetails: response.data
         })

@@ -1,4 +1,5 @@
 import React from "react";
+import Env from "../helpers/Env";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
@@ -39,7 +40,7 @@ class Taskdetails extends Component {
     };
 
     axios
-      .get("http://localhost:4000/project-overview/gettaskusers/" + data.id)
+      .get(Env.host+"/project-overview/gettaskusers/"+ data.id)
       .then((response) => {
         console.log(response.data);
 
