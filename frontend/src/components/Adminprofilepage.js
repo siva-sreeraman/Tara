@@ -12,6 +12,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import CallIcon from '@material-ui/icons/Call';
+import MailIcon from '@material-ui/icons/Mail';
+import EditIcon from '@material-ui/icons/Edit';
 
 
 
@@ -26,7 +29,7 @@ class Adminprofilepage extends Component {
             openimage: false,
             name: "",
             email: "",
-            phonenumber: "",
+            phone_number: "",
 
         }
         this.uploadpic = this.uploadpic.bind(this)
@@ -52,8 +55,8 @@ class Adminprofilepage extends Component {
 
                     name: response.data[0].name,
                     email: response.data[0].email,
-                    phonenumber: response.data[0].phonenumber,
-                    profilepic: response.data[0].profilepic,
+                    phone_number: response.data[0].phone_number,
+                    profile_pic: response.data[0].profile_pic,
 
 
                 });
@@ -73,8 +76,8 @@ class Adminprofilepage extends Component {
   
                       name: response.data[0].name,
                       email: response.data[0].email,
-                      phonenumber: response.data[0].phonenumber,
-                      profilepic: response.data[0].profilepic,
+                      phone_number: response.data[0].phone_number,
+                      profile_pic: response.data[0].profile_pic,
   
   
                   });
@@ -129,12 +132,12 @@ class Adminprofilepage extends Component {
 
             name: this.state.name,
             email: this.state.email,
-            phonenumber: this.state.phonenumber
+            phone_number: this.state.phone_number
 
         }
         if(sessionStorage.getItem('persona')=="admin")
         {
-          axios.post(Env.host+"/profile/admin"+sessionStorage.getItem('uid'), data)
+          axios.post(Env.host+"/profile/admin/"+sessionStorage.getItem('uid'), data)
 
         }
         else{
@@ -148,16 +151,14 @@ class Adminprofilepage extends Component {
         console.log("hi")
         const formData = new FormData();
         formData.append('profilepic', this.state.file);
-        formData.append('persona',sessionStorage.getItem('persona'));
-
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         };
-        //let id=sessionStorage.getItem('id');
-        let id = 1;
-        axios.post(Env.host + '/profile/uploadpic/' + id, formData, config)
+        if(sessionStorage.getItem('persona')=="admin")
+        {
+          axios.post(Env.host + '/profile/uploadpic/admin/'+sessionStorage.getItem('uid'), formData, config)
             .then((response) => {
                 this.getdata();
 
@@ -167,6 +168,24 @@ class Adminprofilepage extends Component {
                 })
             }).catch((error) => {
             });
+
+        }
+        else
+        {
+          axios.post(Env.host + '/profile/uploadpic/user'+sessionStorage.getItem('uid'), formData, config)
+          .then((response) => {
+              this.getdata();
+
+              this.setState({
+                  openimage: false,
+                  file: null
+              })
+          }).catch((error) => {
+          });
+
+        }
+     
+       
     }
 
     render() {
@@ -203,8 +222,8 @@ class Adminprofilepage extends Component {
                     <br></br> <label for="email"> Mail Id:</label>
                     <input type="email" name="email" id="email" value={this.state.email} onChange={this.onChange} class="form-control" required />
                     <br></br>
-                    <br></br><label for="phonenumber"> Phonenumber</label>
-                    <input type="number" name="phonenumber" id="phonenumber" value={this.state.phonenumber} onChange={this.onChange} class="form-control" required />
+                    <br></br><label for="phone_number"> Phonenumber</label>
+                    <input type="number" name="phone_number" id="phone_number" value={this.state.phone_number} onChange={this.onChange} class="form-control" required />
                     <br></br>
 
                 </form>
@@ -224,26 +243,30 @@ class Adminprofilepage extends Component {
                 <div>
                     <div class="card" style={{
                         "display": "block", "border-radius": "4px", "border": "1px #ddd solid", "margin-top": "20px",
-                        "background-color": "#fff", height: "600px",
+                        "background-color": "#fff", height: "525px",
                     }}>
+                    <div class="nam4" style={{ "paddingLeft": "550px","paddingTop": "5px", fontSize: "20px" }}><button class="btn" style={{ color: "black" }} onClick={() => this.handleedit()}><EditIcon></EditIcon></button></div>
+
+
                         <div class="col-md-9">
 
-                            <div class="colm" style={{ "paddingTop": "90px", "paddingLeft": "250px", fontSize: "15px" }}>
-                                {this.state.profile.profilepic === null ? (
+                            <div class="colm" style={{ "paddingTop": "50px", "paddingLeft": "200px", fontSize: "15px" }}>
+                                {this.state.profile.profile_pic === null ? (
                                     <Avatar className="changePhoto" title="Upload profile pic" onClick={this.openmodal} variant="circle" >
                                         <h1>{this.state.name.charAt(0)}</h1>
                                     </Avatar>
                                 ) : (
-                                        <Avatar className="changePhoto" title="Change profile pic" onClick={this.openmodal} variant="circle" src={this.state.profilepic} style={{ cursor: "pointer", width: "200px", height: "200px", margin: "15px", border: "0.5px solid" }} />
+                                        <Avatar className="changePhoto" title="Change profile pic" onClick={this.openmodal} variant="circle" src={this.state.profile_pic} style={{ cursor: "pointer", width: "200px", height: "200px", margin: "15px", border: "0.5px solid" }} />
                                     )}
                             </div>
 
-                            <div class="nam" style={{ "paddingTop": "50px", "paddingLeft": "250px", fontSize: "15px" }}><PersonOutlineIcon></PersonOutlineIcon>{this.state.name}</div>
-                            <div class="nam2" style={{ "paddingTop": "20px", "paddingLeft": "250px", fontSize: "15px" }}><span class="glyphicon glyphicon-envelope"></span>&nbsp;&nbsp;&nbsp;&nbsp;{this.state.email}</div>
-                            <div class="nam3" style={{ "paddingTop": "20px", "paddingLeft": "250px", fontSize: "15px" }}><i class='fas fa-tty'></i>&nbsp;&nbsp;&nbsp;&nbsp;{this.state.phonenumber}</div>
-                            <div class="nam4" style={{ "paddingTop": "20px", "paddingLeft": "250px", fontSize: "15px" }}><button class="btn" style={{ color: "black" }} onClick={() => this.handleedit()}>EDIT</button></div>
-
+                            <div class="nam" style={{ "paddingTop": "50px", "paddingLeft": "250px", fontSize: "20px" }}><PersonOutlineIcon></PersonOutlineIcon>&nbsp;&nbsp;&nbsp;{this.state.name}</div>
+                            <div class="nam2" style={{ "paddingTop": "20px", "paddingLeft": "250px", fontSize: "20px" }}><MailIcon></MailIcon>&nbsp;&nbsp;&nbsp;{this.state.email}</div>
+                            <div class="nam3" style={{ "paddingTop": "20px", "paddingLeft": "250px", fontSize: "20px" }}><CallIcon></CallIcon>&nbsp;&nbsp;&nbsp;{this.state.phone_number}</div>
+                           
                         </div>
+                        
+
                     </div>
                 </div>
 
@@ -257,7 +280,7 @@ class Adminprofilepage extends Component {
                 <div class="row">
                     <div class="col-md-1"></div>
 
-                    <div style={{ marginTop: "20px","marginLeft":"550px" }}
+                    <div style={{ marginTop: "20px","marginLeft":"450px" }}
                     ><h1 > MY PROFILE</h1></div>
                 </div>
                 <div class="row" style={{}}>
