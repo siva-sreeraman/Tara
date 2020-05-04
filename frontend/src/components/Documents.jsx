@@ -13,7 +13,7 @@ class Documents extends React.Component {
       companyId: window.sessionStorage.getItem("companyId"),
       folders: ["Costumes", "Contracts", "Financing"],
       persona: sessionStorage.getItem("persona"),
-      projectid: sessionStorage.getItem("projectid"),
+      projectid: window.sessionStorage.getItem("projectid"),
       userid: sessionStorage.getItem("userid"),
       foldersWithAccessRight: [],
     };
@@ -91,7 +91,8 @@ class Documents extends React.Component {
 
   render() {
     const roomKey =
-      "companies/" + this.state.companyId + "/projects/" + this.state.projectId;
+      "companies/" + this.state.companyId + "/projects/" + this.state.projectid;
+    console.log("roomKey:::", roomKey);
     return (
       <div className="rooms container">
         <h2>Documents</h2>

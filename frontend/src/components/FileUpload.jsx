@@ -91,7 +91,7 @@ class FileUpload extends React.Component {
 
     formData.append("file", this.state.selectedFile);
     console.log("formData: ", formData);
-    this.uploadFile(formData, this.props?.location?.folder);
+    this.uploadFile(formData, this.props?.location?.projectFolder);
   };
 
   onChangeHandlerFileUpload = (event) => {
@@ -202,10 +202,9 @@ class FileUpload extends React.Component {
                 <a
                   target="_blank"
                   href={this.state?.presignedUrlMap[index]?.data}
-                  class="btn btn-outline-primary"
                 >
                   <Button size="small" color="primary">
-                    View Project
+                    View
                   </Button>
                 </a>
               </div>
