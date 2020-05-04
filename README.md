@@ -56,17 +56,17 @@ Tara: Bringing together Talent and Opportunity in the Performing Arts industries
 
 # Technology stack
 
- 1-Frontend-React,bootstrap,css,material-uI
+ 1-> Frontend-React,bootstrap,css,material-ui
  
- 2-Authentication- Firebase
+ 2-> Authentication- Firebase
  
- 3-Backend: Node js
+ 3-> Backend: Node js
  
- 4-Database: RDS,Dynamo db,s3 bucket
+ 4-> Database: AWS RDS,Dynamodb,S3 bucket
  
- 5-cloud technologies: kubernetes,AWS
+ 5-> cloud technologies: kubernetes,AWS
  
  
- 
+ # Architecture Diagram
 
 ![](images/taraarchitecture.PNG)
