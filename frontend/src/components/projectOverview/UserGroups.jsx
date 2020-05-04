@@ -713,9 +713,8 @@ this.checkaccessrights("Editor");
               <div className="form-group d-flex justify-content-between">
                 <h2>User Groups</h2>
                 {this.state.access == true ?
-                <Button
-                  variant="contained"
-                  color="secondary"
+                 <Button type="button" variant="outlined" color="primary"
+               
                   onClick={this.handleOnChange}
                 >
                   Add User Group

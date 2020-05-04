@@ -300,11 +300,10 @@ function CreateTemplateForm(props) {
         >
           Create Template
         </button> */}
-        <Button
-          type="button"
+         <Button type="button" variant="outlined" color="primary"
+        
           onClick={props.createTemplate}
-          variant="outlined"
-          color="primary"
+       
           onClick={props.createTemplate}
         >
           Create Template

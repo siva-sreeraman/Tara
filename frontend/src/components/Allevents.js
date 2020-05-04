@@ -105,9 +105,7 @@ class Allevents extends Component {
 
 
                   <div style={{ "fontSize": "15px" }}>
-                    <Button
-                      variant="contained"
-                      color="secondary"
+                     <Button type="button" variant="outlined" color="primary"
 
                     >
                       <Link to={"/Eventdetails/" + el.eventid} style={{ color: "black" }}></Link>View Users</Button></div>
