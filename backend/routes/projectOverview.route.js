@@ -268,6 +268,16 @@ console.log(req.query)
 res.status(201).send(result);
 });
 
+router.get("/getuserid/:id", async function (req, res) {
+  console.log("Inside miys ");
+console.log(req.query)
+  const sqlquery = "select userid from users where uid = ?";
+  result = await query(pool, sqlquery,[req.params.id] ).catch(console.log);
+// console.log("all users of given project" ,result)
+res.status(201).send(result);
+});
+
+
 router.get("/getevents_fromproject/:id", async function (req, res) {
   console.log("Inside get events from project ");
   console.log(req.params.id);

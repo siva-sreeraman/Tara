@@ -57,10 +57,53 @@ class Costume extends Component {
       name: "",
       source: "",
       description: "",
+      persona: sessionStorage.getItem('persona'),
+      projectid: sessionStorage.getItem('projectid'),
+      userid: sessionStorage.getItem('userid'),
+      access :false
     };
+    this.checkaccessrights = this.checkaccessrights.bind(this);
+
+  }
+
+  checkaccessrights = async(value) =>
+  {
+  if(this.state.persona == "admin")
+  {
+    this.setState({
+      access:true
+    })
+  }
+  else{
+    const data = {
+      projectid :this.state.projectid,
+      accessright : value,
+      userid : this.state.userid
+    }
+    await axios
+  .post(
+    "http://localhost:4000/accessright/user/",data
+  )
+  .then((response) => {
+    console.log("is it true",response.data);
+  if(response.data)
+  {
+  this.setState({
+    access:true
+  })
+  }
+  else{
+    this.setState({
+      access:false
+    })
+  }
+    
+  });
+  }
   }
 
   componentDidMount() {
+    this.checkaccessrights("Costumes");
     this.getcostumes();
 
     axios.get(Env.host + "/companydb/allcostumes").then((response) => {
@@ -334,21 +377,22 @@ class Costume extends Component {
             <div className="">
               <div className="form-group d-flex justify-content-between">
                 <h1>Costumes</h1>
+               {this.state.access ? 
                 <Button
                   variant="contained"
                   color="secondary"
                   onClick={this.showCostumeModal}
-                >
+                > 
                   Add Costume
-                </Button>
+                </Button>: ""}
 
-                <Button
+                {this.state.access ?<Button
                   variant="contained"
                   color="secondary"
                   onClick={this.showcreateCostumeModal}
                 >
                   Add New Costume
-                </Button>
+                </Button> : ""}
 
 
               </div>

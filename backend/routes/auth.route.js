@@ -70,11 +70,12 @@ router.post("/login", async function (req, res, next) {
   let tableName = "";
   if (Constants.Role.Admin === persona) {
     tableName = Constants.Role.Admin;
+    constructedQuery = `select id as userid, uid, name, profile_pic, company_id, status from ${tableName} where uid="${uid}"`;
   } else {
     tableName = "users";
+    constructedQuery = `select userid, uid, name, profile_pic, company_id, status from ${tableName} where uid="${uid}"`;
   }
 
-  constructedQuery = `select uid, name, profile_pic, company_id, status from ${tableName} where uid="${uid}"`;
   result = await query(pool, constructedQuery).catch(console.log);
 
   res.status(200).send(result);

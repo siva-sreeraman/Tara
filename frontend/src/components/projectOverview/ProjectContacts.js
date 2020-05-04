@@ -66,7 +66,11 @@ class CrewListing extends Component {
       showroles: false,
       curentuserid: 0,
       showviewuserrole: false,
-      viewdata: ""
+      viewdata: "",
+      persona: sessionStorage.getItem('persona'),
+      projectid: sessionStorage.getItem('projectid'),
+      userid: sessionStorage.getItem('userid'),
+      access :false
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -75,6 +79,8 @@ class CrewListing extends Component {
     this.handleroleshow = this.handleroleshow.bind(this);
     this.handleroleclose = this.handleroleclose.bind(this);
     this.handlerolechanges = this.handlerolechanges.bind(this);
+    this.checkaccessrights = this.checkaccessrights.bind(this);
+
   }
 
   componentWillMount() {
@@ -185,6 +191,43 @@ class CrewListing extends Component {
     });
   }
 
+
+  checkaccessrights = async(value) =>
+  {
+  if(this.state.persona == "admin")
+  {
+    this.setState({
+      access:true
+    })
+  }
+  else{
+    const data = {
+      projectid :this.state.projectid,
+      accessright : value,
+      userid : this.state.userid
+    }
+    await axios
+  .post(
+    "http://localhost:4000/accessright/user/",data
+  )
+  .then((response) => {
+    console.log("is it true",response.data);
+  if(response.data)
+  {
+  this.setState({
+    access:true
+  })
+  }
+  else{
+    this.setState({
+      access:false
+    })
+  }
+    
+  });
+  }
+  }
+
   handleusers = (event, values, props) => {
     console.log("in handle on users");
     console.log("the values are", values);
@@ -276,6 +319,7 @@ class CrewListing extends Component {
   }
 
   componentDidMount() {
+    this.checkaccessrights("Crew");
 
     this.getcrewlist();
     axios.get(Env.host + "/project-overview/getusers").then((response) => {
@@ -485,13 +529,14 @@ class CrewListing extends Component {
             <div className="">
               <div className="form-group d-flex justify-content-between">
                 <h2>Contacts</h2>
+               {this.state.access == true ?
                 <Button
                   variant="contained"
                   color="secondary"
                   onClick={(e) => this.handleShow(e)}
                 >
                   Add Crew
-                </Button>
+                </Button> : ""}
               </div>
 
 
