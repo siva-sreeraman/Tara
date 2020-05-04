@@ -71,14 +71,22 @@ router.put("/super-user/approve-requests", async function (req, res) {
 
 router.put("/approve-requests", async function (req, res) {
   const { uid } = req.body;
-  console.log("in approve requests")
-  console.log(uid)
-  const updateStatus = `UPDATE users SET status = "accepted" WHERE uid="${ req.body.userid}";`;
+  console.log("in approve requests");
+  console.log(uid);
+  let result = null;
+  let updateStatus = `UPDATE users SET status = "accepted" WHERE uid="${req.body.uid}";`;
   await query(pool, updateStatus)
-    .then(async (result) => {
-      res.status(200).send(result);
+    .then(async (response) => {
+      result = response;
     })
     .catch(console.log);
+  updateStatus = `UPDATE admin SET status = "accepted" WHERE uid="${req.body.uid}";`;
+  await query(pool, updateStatus)
+    .then(async (response) => {
+      result = response;
+    })
+    .catch(console.log);
+  res.status(200).send(result);
 });
 
 /** Upload from Server */

@@ -31,7 +31,7 @@ class CreateProject extends React.Component {
       templateCoreFunctions: null,
       templateDeptFunctions: null,
       showTemplateFunctions: false,
-      companyId: 1,
+      companyId: window.sessionStorage.getItem("companyId"),
       selectedTemplate: {},
       thanmai: null,
       templateName: "",

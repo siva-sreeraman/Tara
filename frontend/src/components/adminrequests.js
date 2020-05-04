@@ -2,14 +2,14 @@ import React, { Fragment } from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import Modal from 'react-bootstrap/Modal';
-import {  Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import CheckCircleOutlineIcon from "@material-ui/icons/CheckCircleOutline";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import GroupIcon from "@material-ui/icons/Group";
@@ -21,7 +21,7 @@ import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
 import FormControl from "@material-ui/core/FormControl";
 import Env from "../helpers/Env";
-import { TextField,Button } from "@material-ui/core";
+import { TextField, Button } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Form, Col } from "react-bootstrap";
@@ -42,7 +42,6 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
-
 
 const classes = makeStyles((theme) => ({
   root: {
@@ -76,7 +75,7 @@ class AdminRequests extends Component {
       userdetails: [],
       costumedetails: [],
       userrequests: [],
-      adminrequests:[],
+      adminrequests: [],
       roles: [],
       show: false,
       pageOfItems: [],
@@ -90,17 +89,19 @@ class AdminRequests extends Component {
   }
 
   getpendingrequests = () => {
-      var companyid = window.sessionStorage.getItem("companyId");
-      console.log(companyid)
-    axios.get(Env.host + "/admin/pending-requests/"+companyid).then((response) => {
-      console.log(response.data["userRequests"]);
-      console.log(response.data["adminRequests"]);
+    var companyid = window.sessionStorage.getItem("companyId");
+    console.log(companyid);
+    axios
+      .get(Env.host + "/admin/pending-requests/" + companyid)
+      .then((response) => {
+        console.log(response.data["userRequests"]);
+        console.log(response.data["adminRequests"]);
 
-      this.setState({
-        userrequests: response.data["userRequests"],
-        adminrequests :response.data["adminRequests"]
+        this.setState({
+          userrequests: response.data["userRequests"],
+          adminrequests: response.data["adminRequests"],
+        });
       });
-    });
   };
 
   componentDidMount() {
@@ -114,18 +115,15 @@ class AdminRequests extends Component {
     this.setState({ pageOfItems });
   }
 
-
-  editstatus = (e,userdetails) => {
+  editstatus = (e, userdetails) => {
     console.log("in dleete", userdetails);
 
     const data = {
-      userid: userdetails,
+      uid: userdetails,
     };
-    axios
-      .put(Env.host + "/admin/approve-requests", data)
-      .then((response) => {
-        console.log(response);
-      });
+    axios.put(Env.host + "/admin/approve-requests", data).then((response) => {
+      console.log(response);
+    });
 
     this.getpendingrequests();
   };
@@ -206,17 +204,18 @@ class AdminRequests extends Component {
           <TableRow>
             <StyledTableCell> {userdetails.name}</StyledTableCell>
             <StyledTableCell>
-            <Link className="remove-link-style"   onClick={e => this.editstatus(e,userdetails.uid)}>
-            <ListItem button key="Groups">
-              <ListItemIcon>
-                <CheckCircleOutlineIcon />
-              </ListItemIcon>
-              <ListItemText primary="" />
-            </ListItem>
-          </Link>
-                </StyledTableCell>
-           
-
+              <Link
+                className="remove-link-style"
+                onClick={(e) => this.editstatus(e, userdetails.uid)}
+              >
+                <ListItem button key="Groups">
+                  <ListItemIcon>
+                    <CheckCircleOutlineIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="" />
+                </ListItem>
+              </Link>
+            </StyledTableCell>
           </TableRow>
         </TableBody>
       );
@@ -228,24 +227,25 @@ class AdminRequests extends Component {
           <TableRow>
             <StyledTableCell> {userdetails.name}</StyledTableCell>
             <StyledTableCell>
-        {/* <Button
+              {/* <Button
                   variant="contained"
                   color="secondary"
                 
                 >
                  Update Status
                 </Button> */}
-                <Link className="remove-link-style"   onClick={e => this.editstatus(e,userdetails.uid)}>
-            <ListItem button key="Groups">
-              <ListItemIcon>
-                <CheckCircleOutlineIcon />
-              </ListItemIcon>
-              <ListItemText primary="" />
-            </ListItem>
-          </Link>
-                </StyledTableCell>
-           
-
+              <Link
+                className="remove-link-style"
+                onClick={(e) => this.editstatus(e, userdetails.uid)}
+              >
+                <ListItem button key="Groups">
+                  <ListItemIcon>
+                    <CheckCircleOutlineIcon />
+                  </ListItemIcon>
+                  <ListItemText primary="" />
+                </ListItem>
+              </Link>
+            </StyledTableCell>
           </TableRow>
         </TableBody>
       );
@@ -254,12 +254,12 @@ class AdminRequests extends Component {
     displaydetails = (
       <div>
         <div class="paddingleft15">
-        <div className="form-group">
-        <div className="">
-        <div className="form-group d-flex justify-content-between">
-        <h2>Pending Requests</h2>
+          <div className="form-group">
+            <div className="">
+              <div className="form-group d-flex justify-content-between">
+                <h2>Pending Requests</h2>
 
-        {/* <Button
+                {/* <Button
                   variant="contained"
                   color="secondary"
                   onClick={this.showCostumeModal}
@@ -267,40 +267,34 @@ class AdminRequests extends Component {
                  Add New Location
                 </Button> */}
               </div>
-              </div>
-              <br></br>
-     
-              <TableContainer component={Paper}>
-                <Table aria-label="customized table">
-                  <TableHead>
-                    <TableRow>
-
-                      <StyledTableCell> Name</StyledTableCell>
-                      <StyledTableCell> Update Status </StyledTableCell>
-
-                    </TableRow>
-                  </TableHead>
-                  <TableHead>
-                    <TableRow>
-
-                     <h5>User Requests</h5>
-
-                    </TableRow>
-                  </TableHead>
-                  {formdetails}
-                  <TableHead>
-                    <TableRow>
-
-                     <h5>Admin Requests</h5>
-
-                    </TableRow>
-                  </TableHead>
-                  {adminformdetails}
-                </Table>
-              </TableContainer>
             </div>
+            <br></br>
+
+            <TableContainer component={Paper}>
+              <Table aria-label="customized table">
+                <TableHead>
+                  <TableRow>
+                    <StyledTableCell> Name</StyledTableCell>
+                    <StyledTableCell> Update Status </StyledTableCell>
+                  </TableRow>
+                </TableHead>
+                <TableHead>
+                  <TableRow>
+                    <h5>User Requests</h5>
+                  </TableRow>
+                </TableHead>
+                {formdetails}
+                <TableHead>
+                  <TableRow>
+                    <h5>Admin Requests</h5>
+                  </TableRow>
+                </TableHead>
+                {adminformdetails}
+              </Table>
+            </TableContainer>
           </div>
         </div>
+      </div>
     );
     return (
       <div>
