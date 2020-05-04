@@ -86,6 +86,10 @@ class CompanyDB extends Component {
       checkedItems: new Map(),
       projects: [],
       pageOfItems: [],
+      access : false,
+      persona: sessionStorage.getItem('persona'),
+      projectid: sessionStorage.getItem('projectid'),
+      userid: sessionStorage.getItem('userid'),
     };
     this.handleUsers = this.handleUsers.bind(this);
     this.getactors = this.getactors.bind(this);
@@ -102,9 +106,49 @@ class CompanyDB extends Component {
     this.handleclosemodal = this.handleclosemodal.bind(this);
     this.handleprojectclosemodal = this.handleprojectclosemodal.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+    this.checkaccessrights = this.checkaccessrights.bind(this);
+
   }
 
+
+  checkaccessrights = async(value) =>
+{
+if(this.state.persona == "admin")
+{
+  this.setState({
+    access:true
+  })
+}
+else{
+  const data = {
+    projectid :this.state.projectid,
+    accessright : value,
+    userid : this.state.userid
+  }
+  await axios
+.post(
+  "http://localhost:4000/accessright/user/",data
+)
+.then((response) => {
+  console.log("is it true",response.data);
+if(response.data)
+{
+this.setState({
+  access:true
+})
+}
+else{
+  this.setState({
+    access:false
+  })
+}
+  
+});
+}
+}
+
   componentDidMount() {
+    this.checkaccessrights("Crew")
     console.log("inside componentDidMount");
     axios.get(Env.host + "/companydb/allroles").then((response) => {
       console.log(response);
@@ -354,11 +398,12 @@ class CompanyDB extends Component {
 
       this.state.enableaddproject = true;
     }
+
     const formdetails = this.state.pageOfItems.map((userdetails) => {
-      if (userdetails.roles < 4) {
+      if (userdetails.roles < 4 && this.state.access) {
         console.log("no role defined");
-        userdetails.roles = (
-          <Link onClick={(e) => this.handleShow(e, userdetails)}>Add role</Link>
+      userdetails.roles = (
+         <Link onClick={(e) => this.handleShow(e, userdetails)}>Add role</Link>
         );
       }
 
@@ -484,7 +529,7 @@ class CompanyDB extends Component {
             <div className="">
               <div className="form-group d-flex justify-content-between">
                 <h2>Users</h2>
-
+{this.state.access == "true"?
                 <Button
                   disabled={!this.state.enableaddproject}
                   variant="contained"
@@ -492,7 +537,7 @@ class CompanyDB extends Component {
                   onClick={this.AssignProject}
                 >
                   Assign Project
-                </Button>
+                </Button> : ""}
               </div>
             </div>
 

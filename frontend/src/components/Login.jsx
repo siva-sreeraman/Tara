@@ -25,6 +25,7 @@ class Login extends React.Component {
       redirectToReferrer: false,
       currentUser: null,
       loginFlag: false,
+      userid:""
     };
     this.submitForm = this.submitForm.bind(this);
   }
@@ -54,6 +55,7 @@ class Login extends React.Component {
               this.setState({
                 loginFlag: true,
               });
+
               window.sessionStorage.setItem("uid", loginResponse.data[0].uid);
               window.sessionStorage.setItem("name", loginResponse.data[0].name);
               window.sessionStorage.setItem(
@@ -90,6 +92,26 @@ class Login extends React.Component {
           "createUserWithEmailAndPassword error: " + JSON.stringify(error)
         );
       });
+
+      await axios
+      .get(
+        "http://localhost:4000/project-overview/getuserid/"+
+        window.sessionStorage.getItem("uid")
+      )
+      .then((response) => {
+        console.log(response);
+  
+        this.setState({
+          userid : response.data
+        });
+        
+        console.log("my userid",response.data[0].userid)
+     
+      window.sessionStorage.setItem(
+        "userid",
+        response.data[0].userid
+      );
+    });
   };
 
   render() {

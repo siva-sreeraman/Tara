@@ -49,6 +49,9 @@ class UserGroups extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      persona: sessionStorage.getItem('persona'),
+      projectid: sessionStorage.getItem('projectid'),
+      userid: sessionStorage.getItem('userid'),
       usergroups: [],
       ugname: "",
       displaycrewform: false,
@@ -58,7 +61,6 @@ class UserGroups extends Component {
       users: [],
       accessrights: [],
       displaycrewform: false,
-      projectid: localStorage.getItem("projectid"),
       ugdescription: "",
       showeditug: false,
       editugdes: "",
@@ -69,6 +71,7 @@ class UserGroups extends Component {
       viewusers: [],
       ugid: 0,
       showview: false,
+      access:false
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handlenamechange = this.handlenamechange.bind(this);
@@ -83,6 +86,7 @@ class UserGroups extends Component {
     this.showeditugform = this.showeditugform.bind(this);
     this.handleeditnamechange = this.handleeditnamechange.bind(this);
     this.handleeditdeschange = this.handleeditdeschange.bind(this);
+    this.checkaccessrights = this.checkaccessrights.bind(this);
   }
 
   showeditugform() {
@@ -289,6 +293,43 @@ class UserGroups extends Component {
     });
   }
 
+checkaccessrights = async(value) =>
+{
+if(this.state.persona == "admin")
+{
+  this.setState({
+    access:true
+  })
+}
+else{
+  const data = {
+    projectid :this.state.projectid,
+    accessright : value,
+    userid : this.state.userid
+  }
+  await axios
+.post(
+  "http://localhost:4000/accessright/user/",data
+)
+.then((response) => {
+  console.log("is it true",response.data);
+if(response.data)
+{
+this.setState({
+  access:true
+})
+}
+else{
+  this.setState({
+    access:false
+  })
+}
+  
+});
+}
+}
+
+
   async submitugform() {
     const data = {
       ugname: this.state.ugname,
@@ -312,6 +353,13 @@ class UserGroups extends Component {
   }
 
   async componentDidMount() {
+console.log(this.state.persona)
+console.log(this.state.projectid)
+console.log(this.state.userid)
+
+
+this.checkaccessrights("Editor");
+
     await axios
       .get(
         "http://localhost:4000/project-overview/getusergroups_project?projectid=" +
@@ -646,10 +694,11 @@ class UserGroups extends Component {
 
           <StyledTableCell align="center">{crew.UserGroup}</StyledTableCell>
           <StyledTableCell align="center">{crew.description}</StyledTableCell>
-
+          {this.state.access == true ?
           <StyledTableCell align="center">
             <Link onClick={this.showeditugform}>Edit Usergroup</Link>
           </StyledTableCell>
+          : ""}
         </TableRow>
       );
     });
@@ -661,13 +710,14 @@ class UserGroups extends Component {
             <div className="">
               <div className="form-group d-flex justify-content-between">
                 <h2>User Groups</h2>
+                {this.state.access == true ?
                 <Button
                   variant="contained"
                   color="secondary"
                   onClick={this.handleOnChange}
                 >
                   Add User Group
-                </Button>
+                </Button> : ""}
               </div>
 
               <TableContainer component={Paper}>
@@ -686,9 +736,11 @@ class UserGroups extends Component {
                       <StyledTableCell align="center">
                         Description
                       </StyledTableCell>
+                      {this.state.access == true ?
                       <StyledTableCell align="center">
                         Edit Usergroup
                       </StyledTableCell>
+                      : ""}
                     </TableRow>
                   </TableHead>
                   <TableBody>{displayform}</TableBody>

@@ -86,12 +86,19 @@ class CompanyDB extends Component {
       source: "",
       description: "",
       msgmodal: false,
+      access : false,
+      persona: sessionStorage.getItem('persona'),
+      projectid: sessionStorage.getItem('projectid'),
+      userid: sessionStorage.getItem('userid'),
     };
     this.handleCostumes = this.handleCostumes.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+    this.checkaccessrights = this.checkaccessrights.bind(this);
+
   }
 
   componentDidMount() {
+    this.checkaccessrights("Costumes");
     console.log("inside componentDidMount");
     axios.get(Env.host + "/companydb/allroles").then((response) => {
       console.log(response);
@@ -107,6 +114,42 @@ class CompanyDB extends Component {
 
     this.getcostumes();
   }
+
+  checkaccessrights = async(value) =>
+{
+if(this.state.persona == "admin")
+{
+  this.setState({
+    access:true
+  })
+}
+else{
+  const data = {
+    projectid :this.state.projectid,
+    accessright : value,
+    userid : this.state.userid
+  }
+  await axios
+.post(
+  "http://localhost:4000/accessright/user/",data
+)
+.then((response) => {
+  console.log("is it true",response.data);
+if(response.data)
+{
+this.setState({
+  access:true
+})
+}
+else{
+  this.setState({
+    access:false
+  })
+}
+  
+});
+}
+}
 
   onChangePage(pageOfItems) {
     // update local state with new page of items
@@ -300,14 +343,14 @@ class CompanyDB extends Component {
         <div className="">
         <div className="form-group d-flex justify-content-between">
         <h2>Costumes</h2>
-
+{this.state.access == true ? 
         <Button
                   variant="contained"
                   color="secondary"
                   onClick={this.showCostumeModal}
                 >
                  Add New Costume
-                </Button>
+                </Button> : ""}
               </div>
               </div>
               <br></br>
