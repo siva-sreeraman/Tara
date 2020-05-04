@@ -75,19 +75,15 @@ router.get("/allevents", async (request, response) => {
   }
 });
 
-router.get("/allusers", async (request, response) => {
-  try {
-    const dbquery = "select * from users ";
-
-    await pool.query(dbquery, (err, result) => {
-      if (err) throw new Error(err);
-      // console.log(result);
-      response.status(200).send(result);
-    });
-  } catch (ex) {
-    return response.status(500).send(err);
-  }
+router.get("/allusersfromcompany/:id", async (req, res) => {
+   console.log(req.params)
+  const constructedQuery = `select * from users where company_id = ? `;
+  result = await query(pool, constructedQuery, req.params.id).catch(console.log);
+  console.log(result);
+  res.status(200).send(result);
 });
+
+
 
 router.get("/allroles", async (request, response) => {
   try {
@@ -242,6 +238,7 @@ router.post("/deletecostume", async function (req, res) {
   console.log(result)
   res.status(201).send(result);
 });
+
 
 
 
