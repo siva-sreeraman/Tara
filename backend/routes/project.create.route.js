@@ -68,13 +68,14 @@ router.get("/allprojects", async function (req, res) {
   res.status(201).send(result);
 });
 
-
 router.get("/project_by_id/", async function (req, res) {
-  console.log(req.params)
-  console.log("the query",req.query.projectid)
+  console.log(req.params);
+  console.log("the query", req.query.projectid);
   const getprojectbyid = `SELECT * FROM projects where id = ?`;
-  result = await query(pool, getprojectbyid,[req.query.projectid] ).catch(console.log);
-  console.log("result from found project",result)
+  result = await query(pool, getprojectbyid, [req.query.projectid]).catch(
+    console.log
+  );
+  console.log("result from found project", result);
   res.status(201).send(result);
 });
 
@@ -101,17 +102,19 @@ router.post("/template", async function (req, res) {
   coreFunIds.map(async (coreFunId) => {
     constructedQuery = `INSERT INTO template_core_functions (template_id, core_fun_id) \
   VALUES (?, ?)`;
-    result = await query(pool, constructedQuery, [templateId, coreFunId]).catch(
-      console.log
-    );
+    result = await query(pool, constructedQuery, [
+      templateId,
+      coreFunId.id,
+    ]).catch(console.log);
   });
 
   deptFunIds.map(async (deptFunId) => {
     constructedQuery = `INSERT INTO template_dept_functions (template_id, dept_fun_id) \
   VALUES (?, ?)`;
-    result = await query(pool, constructedQuery, [templateId, deptFunId]).catch(
-      console.log
-    );
+    result = await query(pool, constructedQuery, [
+      templateId,
+      deptFunId.id,
+    ]).catch(console.log);
   });
 
   res.status(201).send("successfully stored template");

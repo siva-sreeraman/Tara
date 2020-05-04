@@ -565,8 +565,7 @@ class ProjectTasks extends Component {
       <div>
         <div class="non" style={{ "padding-left": "50px", "margin-top": "30px", "font-size": "40px" }}>
 
-          <Button variant="contained"
-            color="secondary"
+           <Button type="button" variant="outlined" color="primary" 
             style={{ margin: "6px" }}
 
             onClick={() => this.handleUsers()}>
@@ -574,17 +573,16 @@ class ProjectTasks extends Component {
           </Button>
 
           {this.state.access === true ?
-            <Button disabled={!this.state.enableaddproject}
-              variant="contained"
-              color="secondary"
+             <Button type="button" variant="outlined" color="primary" 
+            disabled={!this.state.enableaddproject}
+            
               style={{ margin: "6px" }}
               onClick={() => this.AssignEvent()}
             >
               Assign To Task
           </Button> : ""}
 
-          <Button variant="contained"
-            color="secondary"
+           <Button type="button" variant="outlined" color="primary" 
             style={{ margin: "6px" }}
 
             onClick={() => this.handleEvents()}
@@ -592,8 +590,7 @@ class ProjectTasks extends Component {
             Tasks
           </Button>
           {this.state.access == true ?
-            <Button variant="contained"
-              color="secondary"
+             <Button type="button" variant="outlined" color="primary" 
               style={{ margin: "6px" }}
 
               onClick={() => this.handleaddEvents()}

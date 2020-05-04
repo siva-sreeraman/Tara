@@ -4,6 +4,7 @@ import { Form } from "react-bootstrap";
 import FormGroup from "@material-ui/core/FormGroup";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import {Redirect} from 'react-router';
 
 // import TabPanel from "./TabPanel";
 import Env from "../helpers/Env";
@@ -30,13 +31,14 @@ class CreateProject extends React.Component {
       templateCoreFunctions: null,
       templateDeptFunctions: null,
       showTemplateFunctions: false,
-      companyId: 1,
+      companyId: window.sessionStorage.getItem("companyId"),
       selectedTemplate: {},
       thanmai: null,
       templateName: "",
       description: "",
       coreFunIds: [],
       deptFunIds: [],
+      projectcreated:false
     };
   }
 
@@ -125,6 +127,7 @@ class CreateProject extends React.Component {
       .then((response) => {
         const newData = response.data;
         console.log("newData", newData);
+     
       });
   };
 
@@ -257,12 +260,27 @@ class CreateProject extends React.Component {
       .then((response) => {
         const newData = response;
         console.log("newData", newData);
+        this.setState({
+          projectcreated :true
+        })
       });
+      console.log("project created",this.state.projectcreated)
+
   };
 
   render() {
+    let redirectVar = null;
+
+    if(this.state.projectcreated){
+           
+      redirectVar = <Redirect to= "/Projectpage"/>
+     
+  }
     return (
+
       <div>
+                      {redirectVar}
+
         <div className="row">
           <div className="col-1"></div>
           <div className="col">
@@ -432,10 +450,8 @@ class CreateProject extends React.Component {
                   >
                     Create Project
                   </button> */}
-                  <Button
-                    type="button"
-                    variant="outlined"
-                    color="primary"
+                   <Button type="button" variant="outlined" color="primary"
+                   
                     onClick={this.createProject}
                   >
                     Create Project

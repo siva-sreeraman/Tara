@@ -27,19 +27,23 @@ export default function ProjectFunctionCard(props) {
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.projectName}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
+        <Link to={props.funcPath} className="remove-link-style">
+          <CardMedia
+            className={classes.media}
+            image="/static/images/cards/contemplative-reptile.jpg"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {props.projectName}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Lorem ipsum, or lipsum as it is sometimes known, is dummy text
+              used in laying out print, graphic or web designs. The passage is
+              attributed to an unknown typesetter in the 15th century who is
+              book.
+            </Typography>
+          </CardContent>
+        </Link>
       </CardActionArea>
       <CardActions>
         <Link to={props.funcPath}>

@@ -127,7 +127,7 @@ else{
   }
   await axios
 .post(
-  "http://localhost:4000/accessright/user/",data
+  Env.host+"/accessright/user/",data
 )
 .then((response) => {
   console.log("is it true",response.data);
@@ -530,10 +530,9 @@ else{
               <div className="form-group d-flex justify-content-between">
                 <h2>Users</h2>
 {this.state.access?
-                <Button
+                 <Button type="button" variant="outlined" color="primary"
                   disabled={!this.state.enableaddproject}
-                  variant="contained"
-                  color="secondary"
+               
                   onClick={this.AssignProject}
                 >
                   Assign Project

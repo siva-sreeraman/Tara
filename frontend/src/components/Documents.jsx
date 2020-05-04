@@ -41,7 +41,7 @@ class Documents extends React.Component {
       "companies/" + this.state.companyId + "/projects/" + this.state.projectId;
     return (
       <div className="rooms container">
-        <h1>Project ID{this.state?.projectId}</h1>
+        <h2>Documents</h2>
         <article className="d-flex flext-wrap">
           {this.state.folders.map((folder) => (
             // <DocumentCard
@@ -74,7 +74,7 @@ class Documents extends React.Component {
                     room: folder,
                   }}
                 >
-                  <Button size="small" color="primary">
+                  <Button size="small" variant="outlined" color="primary">
                     {folder}
                   </Button>
                 </Link>

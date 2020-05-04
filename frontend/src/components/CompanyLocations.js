@@ -273,9 +273,8 @@ class CompanyLocation extends Component {
         <div className="form-group d-flex justify-content-between">
         <h2>Locations</h2>
 
-        <Button
-                  variant="contained"
-                  color="secondary"
+         <Button type="button" variant="outlined" color="primary"
+                
                   onClick={this.showCostumeModal}
                 >
                  Add New Location

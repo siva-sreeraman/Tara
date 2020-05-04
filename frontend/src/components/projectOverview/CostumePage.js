@@ -18,9 +18,9 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Component } from "react";
 import { Redirect } from "react-router";
 import { Link } from "react-router-dom";
-import Env from "../../helpers/Env";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Form, Col } from "react-bootstrap";
+import Env from "../../helpers/Env";
 
 const StyledTableCell = withStyles((theme) => ({}))(TableCell);
 
@@ -82,7 +82,7 @@ class Costume extends Component {
     }
     await axios
   .post(
-    "http://localhost:4000/accessright/user/",data
+    Env.host+"/accessright/user/",data
   )
   .then((response) => {
     console.log("is it true",response.data);
@@ -378,17 +378,16 @@ class Costume extends Component {
               <div className="form-group d-flex justify-content-between">
                 <h1>Costumes</h1>
                {this.state.access ? 
-                <Button
-                  variant="contained"
-                  color="secondary"
+                 <Button type="button" variant="outlined" color="primary"
+                
                   onClick={this.showCostumeModal}
                 > 
                   Add Costume
                 </Button>: ""}
 
-                {this.state.access ?<Button
-                  variant="contained"
-                  color="secondary"
+                {this.state.access ?
+                <Button
+                 
                   onClick={this.showcreateCostumeModal}
                 >
                   Add New Costume

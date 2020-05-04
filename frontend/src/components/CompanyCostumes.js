@@ -131,7 +131,7 @@ else{
   }
   await axios
 .post(
-  "http://localhost:4000/accessright/user/",data
+  Env.host + "/accessright/user/",data
 )
 .then((response) => {
   console.log("is it true",response.data);
@@ -344,9 +344,8 @@ else{
         <div className="form-group d-flex justify-content-between">
         <h2>Costumes</h2>
 {this.state.access == true ? 
-        <Button
-                  variant="contained"
-                  color="secondary"
+         <Button type="button" variant="outlined" color="primary"
+                
                   onClick={this.showCostumeModal}
                 >
                  Add New Costume

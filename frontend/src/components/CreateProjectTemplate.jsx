@@ -37,7 +37,7 @@ class CreateProjectTemplate extends React.Component {
       productionTypes: null,
       coreFunctions: null,
       deptFunctions: null,
-      companyId: 1,
+      companyId: window.sessionStorage.getItem("companyId"),
       templateName: "",
       description: "",
       coreFunIds: [],
@@ -136,9 +136,10 @@ class CreateProjectTemplate extends React.Component {
   };
 
   handleOnDeptFunctionsChange = (event, data) => {
-    let deptFunIds = this.state.deptFunIds;
-    deptFunIds.push(data.id);
-    this.setState({ deptFunIds: deptFunIds });
+    // let deptFunIds = this.state.deptFunIds;
+    // deptFunIds.push(data.id);
+    // this.setState({ deptFunIds: deptFunIds });
+    this.setState({ deptFunIds: data });
   };
 
   handleOnChange = async (event) => {
@@ -164,16 +165,16 @@ class CreateProjectTemplate extends React.Component {
       coreFunIds: this.state.coreFunIds,
       deptFunIds: this.state.deptFunIds,
     };
-    // axios
-    //   .post(Env.host + "/project-create/template", projectData, {
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //   })
-    //   .then((response) => {
-    //     const newData = response.data;
-    //     console.log("newData", newData);
-    //   });
+    axios
+      .post(Env.host + "/project-create/template", templateData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const newData = response.data;
+        console.log("newData", newData);
+      });
   };
 
   // createTemplate = () => {
@@ -299,11 +300,10 @@ function CreateTemplateForm(props) {
         >
           Create Template
         </button> */}
-        <Button
-          type="button"
+         <Button type="button" variant="outlined" color="primary"
+        
           onClick={props.createTemplate}
-          variant="outlined"
-          color="primary"
+       
           onClick={props.createTemplate}
         >
           Create Template
