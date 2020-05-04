@@ -96,12 +96,13 @@ class ProjectTasks extends Component {
   componentDidMount(props) {
 
 
-    if (this.state.persona != "admin") {
-      let userid = this.state.userid
+    if (this.state.persona !== "admin") {
       const data = {
-        usergroup: "create task"
+        projectid :this.state.projectid,
+        accessright:"task",
+        userid : this.state.userid
       }
-      axios.get(Env.host + "/accessright/user/" + userid, data).then((response) => {
+      axios.post(Env.host+"/accessright/user", data).then((response) => {
         this.setState({
           access: response.data
         })
