@@ -35,6 +35,7 @@ import AdminDashboard from "../components/AdminDashboard";
 import ProjectOverview from "../components/ProjectOverview";
 import SuDashboard from "../su/components/su-dashboard";
 import CompanyDB from "../components/companyDB";
+import AdminRequests from "../components/adminrequests";
 // import Calendar from "../components/Calendar";
 import FileUpload from "../components/FileUpload";
 import CreateProject from "../components/CreateProject";
@@ -278,6 +279,17 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
 
+
+          <Link className="remove-link-style" to="/pendingrequests">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+                <LocalMallIcon />{" "}
+              </ListItemIcon>
+              <ListItemText primary="Requests" />
+            </ListItem>
+          </Link>
+          
+
           <Link className="remove-link-style" to="/companylocations">
             <ListItem button key="Groups">
               <ListItemIcon>
@@ -328,6 +340,9 @@ export default function MiniDrawer(props) {
             path="/create-project-template"
             component={CreateProjectTemplate}
           />
+          
+          <Route path="/pendingrequests" component={AdminRequests} />
+
           <Route path="/documents" component={Documents} />
           <Route path="/samplepopup" component={Example} />
           <Route path="/eventdetails/:id" component={Eventdetails} />
