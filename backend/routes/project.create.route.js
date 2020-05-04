@@ -24,6 +24,16 @@ router.get("/dept-functions", async function (req, res) {
   res.status(200).send(result);
 });
 
+
+router.get("/getproject_bycompanyid/:id", async function (req, res) {
+  console.log(req.params)
+  const constructedQuery = `SELECT * FROM projects where company_id= ?`;
+  result = await query(pool, constructedQuery, req.params.id).catch(console.log);
+  console.log(result);
+  res.status(200).send(result);
+});
+
+
 router.get("/all-templates/:companyId", async function (req, res) {
   const companyId = req.params.companyId;
   const constructedQuery = `SELECT * FROM templates where company_id = ${companyId}`;

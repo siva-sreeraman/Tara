@@ -12,11 +12,12 @@ class Projectpage extends Component {
     super(props);
     this.state = {
       allprojects: [],
+      companyid :window.sessionStorage.getItem("companyId")
     };
   }
   componentDidMount() {
     axios
-      .get(Env.host + "/project-create/allprojects")
+      .get(Env.host + "/project-create/getproject_bycompanyid/"+this.state.companyid)
       .then(async (response) => {
         console.log("response from all projects", response);
         await this.setState({
