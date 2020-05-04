@@ -32,13 +32,12 @@ const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3({
 
-  accessKeyId: "AKIATVI3TWXJZ5APWZBX",
-  secretAccessKey:"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",
+ 
 
 
 
-  // accessKeyId: process.env.TARA_AWS_ACCESS_KEY,
-  // secretAccessKey: process.env.TARA_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.TARA_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.TARA_SECRET_ACCESS_KEY,
 
 
 });
@@ -110,8 +109,8 @@ router.post('/uploadpic/admin/:id', upload.single('profilepic'), async (request,
       const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
       // console.log(fileContent)
       const params = {
-        Bucket:"tara-playground",
-        //Bucket: process.env.TARA_BUCKET_NAME,
+       
+        Bucket: process.env.TARA_BUCKET_NAME,
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
