@@ -225,15 +225,6 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
 
-          <Link className="remove-link-style" to="/Companyuserspage">
-            <ListItem button key="Groups">
-              <ListItemIcon>
-                <PeopleIcon />{" "}
-              </ListItemIcon>
-              <ListItemText primary="Users" />
-            </ListItem>
-          </Link>
-
           <Link className="remove-link-style" to="/Allevents">
             <ListItem button key="Groups">
               <ListItemIcon>
@@ -272,15 +263,6 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
 
-          <Link className="remove-link-style" to="/pendingrequests">
-            <ListItem button key="Groups">
-              <ListItemIcon>
-                <BeenhereIcon />{" "}
-              </ListItemIcon>
-              <ListItemText primary="Requests" />
-            </ListItem>
-          </Link>
-
           <Link className="remove-link-style" to="/companylocations">
             <ListItem button key="Groups">
               <ListItemIcon>
@@ -289,16 +271,26 @@ export default function MiniDrawer(props) {
               <ListItemText primary="Locations" />
             </ListItem>
           </Link>
+          <Divider />
 
-          <Link className="remove-link-style" to="/create-project">
+          <Link className="remove-link-style" to="/Companyuserspage">
             <ListItem button key="Groups">
               <ListItemIcon>
-                <RoomIcon />
+                <PeopleIcon />{" "}
               </ListItemIcon>
-              <ListItemText primary="Locations" />
+              <ListItemText primary="Users" />
             </ListItem>
           </Link>
 
+          <Link className="remove-link-style" to="/pendingrequests">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+                <BeenhereIcon />{" "}
+              </ListItemIcon>
+              <ListItemText primary="Requests" />
+            </ListItem>
+          </Link>
+          <Divider />
           <Link className="remove-link-style" to="/Adminprofilepage">
             <ListItem button key="Groups">
               <ListItemIcon>

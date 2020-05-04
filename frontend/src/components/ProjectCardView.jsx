@@ -40,8 +40,10 @@ export default function MediaCard(props) {
               {props.projectName}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              Lizards are a widespread group of squamate reptiles, with over
-              6,000 species, ranging across all continents except Antarctica
+              Lorem ipsum, or lipsum as it is sometimes known, is dummy text
+              used in laying out print, graphic or web designs. The passage is
+              attributed to an unknown typesetter in the 15th century who is
+              book.
             </Typography>
           </CardContent>
         </Link>

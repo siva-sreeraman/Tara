@@ -204,7 +204,9 @@ class FileUpload extends React.Component {
                   href={this.state?.presignedUrlMap[index]?.data}
                   class="btn btn-outline-primary"
                 >
-                  View
+                  <Button size="small" color="primary">
+                    View Project
+                  </Button>
                 </a>
               </div>
             </section>
@@ -213,7 +215,7 @@ class FileUpload extends React.Component {
         <h2>File Upload</h2>
         <section>
           <React.Fragment>
-            <Button variant="contained" color="secondary" component="label">
+            <Button variant="outlined" color="primary" component="label">
               Choose File
               <input
                 type="file"
@@ -225,8 +227,8 @@ class FileUpload extends React.Component {
             </Button>
             <Button
               className="ml-3"
-              variant="contained"
-              color="secondary"
+              variant="outlined"
+              color="primary"
               onClick={this.fileUploadHandler}
             >
               Upload
@@ -240,7 +242,6 @@ class FileUpload extends React.Component {
         ) : (
           ""
         )} */}
-        Heres the download link
         {!!this.state?.presignedUrl?.data ? (
           <React.Fragment>
             <figure>
