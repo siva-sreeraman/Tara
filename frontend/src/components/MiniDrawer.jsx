@@ -60,6 +60,7 @@ import Costume from "../components/projectOverview/CostumePage";
 import UserGroups from "../components/projectOverview/UserGroups";
 import CompanyLocation from "../components/CompanyLocations";
 import RoomIcon from "@material-ui/icons/Room";
+import BeenhereIcon from "@material-ui/icons/Beenhere";
 
 import Allevents from "../components/Allevents";
 import Alltasks from "../components/Alltasks";
@@ -274,7 +275,7 @@ export default function MiniDrawer(props) {
           <Link className="remove-link-style" to="/pendingrequests">
             <ListItem button key="Groups">
               <ListItemIcon>
-                <LocalMallIcon />{" "}
+                <BeenhereIcon />{" "}
               </ListItemIcon>
               <ListItemText primary="Requests" />
             </ListItem>

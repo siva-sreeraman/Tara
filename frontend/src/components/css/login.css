@@ -1,0 +1,14 @@
+.bg-img {
+    /* The image used */
+    background-image: url("https://blog.infinitydirect.com/wp-content/uploads/2018/05/film.png");
+    min-height: 800px;
+    margin-top: 0px;
+
+  /* Center and scale the image nicely */
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+  
+  
+  }
+  

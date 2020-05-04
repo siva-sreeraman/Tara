@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 
 import Env from "../helpers/Env";
 import Constants from "../helpers/Constants";
+import "../components/css/login.css";
 
 import * as firebase from "firebase/app";
 // Add the Firebase products that you want to use
@@ -97,80 +98,71 @@ class Login extends React.Component {
       redirectVar = <Redirect to="/my-projects" />;
     }
     return (
-      <div className="app-login container">
+      <div class="bg-img">
+      <div style={{ marginTop: "20px",paddingLeft:"900px"}}>
         {redirectVar}
-        <div className="login-page mt-5">
-          <div className="row">
-            <div className="col-8">
-              <section className="jumbotron">
-                <h1>TARA</h1>
-                <p>
-                  Lorem ipsum is placeholder text commonly used in the graphic,
-                  print, and publishing industries for previewing layouts and
-                  visual mockups.
-                </p>
-              </section>
-            </div>
-            <div className="col">
-              <section className="card login-card">
-                <div className="card-body">
-                  {!this.state.loginFlag ? (
-                    <p>{this.state.invalidCredentialsMessage}</p>
-                  ) : (
-                    ""
-                  )}
-                  <div className="student-profile-form">
-                    <Form>
-                      <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Email</Form.Label>
-                        <Form.Control
-                          type="email"
-                          placeholder="Email"
-                          name="email"
-                          onChange={this.handleOnChange}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="exampleForm.ControlInput1">
-                        <Form.Label>Password</Form.Label>
-                        <Form.Control
-                          type="password"
-                          placeholder="password"
-                          name="password"
-                          // onKeyDown={this.onKeyUp}
-                          onChange={this.handleOnChange}
-                        />
-                      </Form.Group>
-                      <Form.Group controlId="exampleForm.ControlSelect1">
-                        <Form.Label>I am</Form.Label>
-                        <Form.Control
-                          as="select"
-                          name="persona"
-                          onChange={this.handleOnChange}
-                        >
-                          <option value={Constants.Role.Admin}>Admin</option>
-                          <option value={Constants.Role.User}>User</option>
-                        </Form.Control>
-                      </Form.Group>
-                    </Form>
-                    <button
-                      onClick={this.submitForm}
-                      className="btn btn-primary btn-login"
-                    >
-                      Login
-                    </button>
-                    <Link
-                      className="btn btn-outline-primary ml-3"
-                      to="/sign-up"
-                    >
-                      Sign Up
-                    </Link>
+            <div className="card login-card" style={{height:"350px",width:"400px",marginTop: "120px",position:"absolute",backgroundColor:"#5c5959"}}>
+              <div className="card-body">
+                {!this.state.loginFlag ? (
+                  <p>{this.state.invalidCredentialsMessage}</p>
+                ) : (
+                  ""
+                )}
+                <div className="student-profile-form" style={{width:"300px", paddingLeft:"50px"}}>
+                  <Form>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label></Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label></Form.Label>
+                      <Form.Control
+                        type="password"
+                        placeholder="password"
+                        name="password"
+                        // onKeyDown={this.onKeyUp}
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                      <Form.Label></Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="persona"
+                        onChange={this.handleOnChange}
+                      >
+                        <option value={Constants.Role.Admin}>Admin</option>
+                        <option value={Constants.Role.User}>User</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Form>
+                  <div class="nan"  style={{ paddingLeft:"80px", paddingTop:"10px"}}>
+                  <button  
+                    onClick={this.submitForm}
+                    className="button"
+                    
+                  >
+                    Login
+                  </button>
                   </div>
+                  {/* <Link className="btn btn-primary btn-login" to="/">
+                  Login
+                </Link> */}
                 </div>
-              </section>
-            </div>
-          </div>
-        </div>
-      </div>
+              
+                </div>
+                </div>
+                </div>
+                </div>
+              
+              
+         
+    
     );
   }
 }
