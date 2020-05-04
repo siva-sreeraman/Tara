@@ -16,6 +16,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import FormControl from "@material-ui/core/FormControl";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Link } from "react-router-dom";
+import Env from "../../helpers/Env";
+
 import Button from "@material-ui/core/Button";
 import { DialogContent,DialogTitle,Dialog } from "@material-ui/core";
 
@@ -129,7 +131,7 @@ class UserGroups extends Component {
 
     await axios
       .get(
-        "http://localhost:4000/project-overview/get_project_usergroup_details?projectid=" +
+        Env.host+"/project-overview/get_project_usergroup_details?projectid=" +
           this.state.projectid +
           "&ugid=" +
           value.UserGroupId
@@ -163,7 +165,7 @@ class UserGroups extends Component {
 
     await axios
       .post(
-        "http://localhost:4000/project-overview/update_project_usergroup_details?projectid=" +
+        Env.host+"/project-overview/update_project_usergroup_details?projectid=" +
           this.state.projectid,
         data
       )
@@ -201,7 +203,7 @@ class UserGroups extends Component {
     console.log(value, "in show view fun");
     await axios
       .get(
-        "http://localhost:4000/project-overview/get_project_usergroup_details?projectid=" +
+        Env.host+"/project-overview/get_project_usergroup_details?projectid=" +
           this.state.projectid +
           "&ugid=" +
           value.UserGroupId
@@ -309,7 +311,7 @@ else{
   }
   await axios
 .post(
-  "http://localhost:4000/accessright/user/",data
+  Env.host+"/accessright/user/",data
 )
 .then((response) => {
   console.log("is it true",response.data);
@@ -339,7 +341,7 @@ else{
     };
     await axios
       .post(
-        "http://localhost:4000/project-overview/create_new_usergroup?projectid=" +
+        Env.host+"/project-overview/create_new_usergroup?projectid=" +
           this.state.projectid,
         data
       )
@@ -362,7 +364,7 @@ this.checkaccessrights("Editor");
 
     await axios
       .get(
-        "http://localhost:4000/project-overview/getusergroups_project?projectid=" +
+        Env.host+"/project-overview/getusergroups_project?projectid=" +
           this.state.projectid
       )
       .then((response) => {
@@ -375,7 +377,7 @@ this.checkaccessrights("Editor");
 
     await axios
       .get(
-        "http://localhost:4000/project-overview/getusers_fromproject/" +
+        Env.host+"/project-overview/getusers_fromproject/" +
           this.state.projectid
       )
       .then((response) => {
@@ -391,7 +393,7 @@ this.checkaccessrights("Editor");
 
     await axios
       .get(
-        "http://localhost:4000/project-overview/getaccessrights_forproject"
+        Env.host+"/project-overview/getaccessrights_forproject"
      
       )
       .then((response) => {

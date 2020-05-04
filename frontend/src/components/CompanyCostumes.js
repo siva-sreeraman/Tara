@@ -131,7 +131,7 @@ else{
   }
   await axios
 .post(
-  "http://localhost:4000/accessright/user/",data
+  Env.host + "/accessright/user/",data
 )
 .then((response) => {
   console.log("is it true",response.data);
