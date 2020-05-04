@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 
 import Env from "../helpers/Env";
 import Constants from "../helpers/Constants";
-
+import background from "../assets/images/hollywood.jpeg";
 import * as firebase from "firebase/app";
 // Add the Firebase products that you want to use
 import "firebase/auth";
@@ -97,23 +97,23 @@ class Login extends React.Component {
       redirectVar = <Redirect to="/my-projects" />;
     }
     return (
-      <div className="app-login container">
+      <div className="app-login container" style={{backgroundImage:`url(${background})`,width:"1240px", height:"500px"}}>
         {redirectVar}
         <div className="login-page mt-5">
           <div className="row">
             <div className="col-8">
-              <section className="jumbotron">
-                <h1>TARA</h1>
-                <p>
+            
+                {/* <h1>TARA</h1> */}
+                {/* <p>
                   Lorem ipsum is placeholder text commonly used in the graphic,
                   print, and publishing industries for previewing layouts and
                   visual mockups.
-                </p>
-              </section>
+                </p> */}
+              
             </div>
-            <div className="col">
+            <div className="col" style={{marginTop:"10px"}}>
               <section className="card login-card">
-                <div className="card-body">
+                <div className="card-body" >
                   {!this.state.loginFlag ? (
                     <p>{this.state.invalidCredentialsMessage}</p>
                   ) : (

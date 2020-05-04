@@ -14,11 +14,16 @@ const multer = require('multer');
 
 router.get('/user/:id', async (req, res) => {
     try {
-         var dbquery = 'select fk_UserId from userwithusergroup where  fk_UserGroupId  in (select UserGroupId from usergroups where UserGroup=?)';
-         result = await query(pool, dbquery, [req.body.usergroup]).catch(console.log);
+        //  var dbquery = 'select fk_UserId from userwithusergroup where  fk_UserGroupId  in (select UserGroupId from usergroups where UserGroup=?)';
+var dbquery = 'select * from accessrights where accessId in (select fk_AccessRightId from usergroupswithar where fk_UserGroupID in (select fk_UserGroupId from userwithusergroup where fk_UserId in (select user_Id from project_users where project_Id = ? and user_Id = ?) ))';
+         
+         result = await query(pool, dbquery, [req.body.projectid,req.body.userid]).catch(console.log);
+         console.log(result)
+         if(result)
+         {
          for (temp of result) 
          {
-             if(temp.fk_UserId==(req.params.id))
+             if(temp.accessRight==(req.body.accessright))
              {
                 console.log(temp.fk_UserId)
                 res.status(200).send("true");
@@ -26,14 +31,15 @@ router.get('/user/:id', async (req, res) => {
              }
 
          }
+        }
+        else{
          res.status(200).send("false");
-
+        }
     }
     catch (ex) {
         return res.status(500).send(ex);
     }
 })
-
 
 
 
