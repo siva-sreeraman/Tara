@@ -458,7 +458,7 @@ class CrewListing extends Component {
           <StyledTableCell align="center">
             <Link onClick={(e) => this.showviewfun(crew)}>View</Link>
           </StyledTableCell>
-          <StyledTableCell align="center">
+          {this.state.access == true ?<StyledTableCell align="center">
             {crew.role}
             <Link
               onClick={(e) =>
@@ -473,7 +473,7 @@ class CrewListing extends Component {
             >
               Add/Edit role
             </Link>
-          </StyledTableCell>
+          </StyledTableCell> : "" }
         </TableRow>
       );
     });
@@ -553,9 +553,9 @@ class CrewListing extends Component {
                       <StyledTableCell align="center">
                         View Roles
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      {this.state.access == "true" ? <StyledTableCell align="center">
                         Add Roles
-                      </StyledTableCell>
+                      </StyledTableCell> : ""}
                     </TableRow>
                   </TableHead>
                   <TableBody>{displayform}</TableBody>

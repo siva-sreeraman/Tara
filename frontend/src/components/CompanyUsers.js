@@ -529,7 +529,7 @@ else{
             <div className="">
               <div className="form-group d-flex justify-content-between">
                 <h2>Users</h2>
-{this.state.access == "true"?
+{this.state.access?
                 <Button
                   disabled={!this.state.enableaddproject}
                   variant="contained"

@@ -8,6 +8,7 @@ const multer = require('multer');
 
 
 router.post('/user', async (req, res) => {
+    var flag=0;
     try {
         //  var dbquery = 'select fk_UserId from userwithusergroup where  fk_UserGroupId  in (select UserGroupId from usergroups where UserGroup=?)';
 var dbquery = 'select * from accessrights where accessId in (select fk_AccessRightId from usergroupswithar where fk_UserGroupID in (select fk_UserGroupId from userwithusergroup where fk_UserId in (select user_Id from project_users where project_Id = ? and user_Id = ?) ))';
@@ -22,16 +23,21 @@ console.log(req.params)
          {
              if(temp.accessRight==(req.body.accessright))
              {
-                console.log(temp.fk_UserId)
-                res.status(200).send("true");
+                 console.log("yes he has accessright")
+                console.log(temp.accessRight)
+                flag =1;
+                res.send(true);
+
 
              }
 
          }
+        
+        if(flag == 0){
+            console.log("no he doesnt have an accessright")
+         res.send(false);
         }
-        else{
-         res.status(200).send("false");
-        }
+    }
     }
     catch (ex) {
         return res.status(500).send(ex);
