@@ -32,22 +32,21 @@ const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3({
 
- 
 
-  
 
-  // accessKeyId: process.env.TARA_AWS_ACCESS_KEY,
-  // secretAccessKey: process.env.TARA_SECRET_ACCESS_KEY,
+  accessKeyId: process.env.PROFILE_TARA_AWS_ACCESS_KEY,
+  secretAccessKey: process.env.PROFILE_TARA_SECRET_ACCESS_KEY,
 
 
 });
+console.log(s3)
 
 
 router.post('/admin/:id', async (req, res) => {
   try {
     console.log("admin edit")
-    var dbquery = 'UPDATE admin SET name = ?, email = ?, phone_number = ? WHERE (id = ?)';
-    result = await query(pool, dbquery, [req.body.name, req.body.email, req.body.phonenumber, req.params.id]).catch(console.log);
+    var dbquery = 'UPDATE admin SET name = ?, email = ?, phone_number = ? WHERE (uid = ?)';
+    result = await query(pool, dbquery, [req.body.name, req.body.email, req.body.phone_number, req.params.id]).catch(console.log);
     console.log(result)
     res.status(200).send(result);
 
@@ -62,7 +61,7 @@ router.post('/admin/:id', async (req, res) => {
 router.get('/admin/:id', async (req, res) => {
   try {
 
-    var dbquery = 'select * from admin where id=?';
+    var dbquery = 'select * from admin where uid=?';
     result = await query(pool, dbquery, [req.params.id]).catch(console.log);
     console.log(result)
     res.status(200).send(result);
@@ -75,9 +74,10 @@ router.get('/admin/:id', async (req, res) => {
 
 router.post('/user/:id', async (req, res) => {
   try {
-
-    var dbquery = 'UPDATE users SET name = ?, email = ?, phonenumber = ? WHERE (id = ?)';
-    result = await query(pool, dbquery, [req.body.name, req.body.email, req.body.phonenumber, req.params.id]).catch(console.log);
+    console.log("update user");
+    var dbquery = 'UPDATE users SET name = ?, email = ?, phone_number = ? WHERE (uid = ?)';
+    result = await query(pool, dbquery, [req.body.name, req.body.email, req.body.phone_number, req.params.id]).catch(console.log);
+    console.log(result);
     res.status(200).send(result);
 
   }
@@ -91,7 +91,7 @@ router.post('/user/:id', async (req, res) => {
 router.get('/user/:id', async (req, res) => {
   try {
 
-    var dbquery = 'select * from users where userid=?';
+    var dbquery = 'select * from users where uid=?';
     result = await query(pool, dbquery, [req.params.id]).catch(console.log);
     res.status(200).send(result);
 
@@ -108,11 +108,11 @@ router.post('/uploadpic/admin/:id', upload.single('profilepic'), async (request,
     console.log(process.env)
     if (request.file) {
       const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
-      // console.log(fileContent)
+
       const params = {
        
-       // Bucket: process.env.TARA_BUCKET_NAME,
-
+       Bucket: process.env.TARA_BUCKET_NAME,
+   
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -121,10 +121,11 @@ router.post('/uploadpic/admin/:id', upload.single('profilepic'), async (request,
       console.log(params);
       s3.upload(params, async (err, data) => {
         if (err) {
+          console.log(err)
           return response.status(500).json({ error: err.message });
         }
   
-          const dbquery = 'update admin set profile_pic=? where  id=?';
+          const dbquery = 'update admin set profile_pic=? where  uid=?';
           result = await query(pool, dbquery, [data.Location, request.params.id]).catch(console.log);
           response.status(200).send(result);
 
@@ -145,10 +146,8 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
     console.log(request.body)
     if (request.file) {
       const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
-      // console.log(fileContent)
       const params = {
-       // Bucket: process.env.TARA_BUCKET_NAME,
-
+         Bucket: process.env.PROFILE_TARA_BUCKET_NAME ,
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -157,10 +156,11 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
       console.log(params);
       s3.upload(params, async (err, data) => {
         if (err) {
+          console.log(err)
           return response.status(500).json({ error: err.message });
         }
   
-          const dbquery = 'update users set profile_pic=? where  id=?';
+          const dbquery = 'update users set profile_pic=? where  uid=?';
           result = await query(pool, dbquery, [data.Location, request.params.id]).catch(console.log);
           console.log(result);
 

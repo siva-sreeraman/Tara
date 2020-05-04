@@ -75,7 +75,7 @@ class ProjectEvent extends Component {
       show: false,
       projectshow: false,
       userval: [],
-      access: true,
+      access:false,
       edit: false,
       enableaddproject: false,
       checkedItems: new Map(),
@@ -104,9 +104,11 @@ class ProjectEvent extends Component {
 
     if (this.state.persona !== "admin") {
       const data = {
-        usergroup: "create event"
+        projectid :this.state.projectid,
+        accessright:"event",
+        userid : this.state.userid
       }
-      axios.get(Env.host+"/accessright/user/"+this.state.userid, data).then((response) => {
+      axios.post(Env.host+"/accessright/user", data).then((response) => {
         this.setState({
           access: response.data
         })

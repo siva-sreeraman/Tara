@@ -33,7 +33,7 @@ class Projectmainpage extends Component {
         });
       });
 
-    sessionStorage.setItem("projectname", this.state.projectdetails[0].name);
+    sessionStorage.setItem("projectname", this.state.projectdetails?this.state.projectdetails[0]?this.state.projectdetails[0].name:"":"");
     console.log(sessionStorage.getItem("projectname"));
   }
 
