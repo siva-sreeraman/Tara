@@ -141,7 +141,7 @@ class Adminprofilepage extends Component {
 
         }
         else{
-          axios.post(Env.host+"/profile/user"+sessionStorage.getItem('uid'), data)
+          axios.post(Env.host+"/profile/user/"+sessionStorage.getItem('uid'), data)
         }
         this.getdata();
 
@@ -172,7 +172,7 @@ class Adminprofilepage extends Component {
         }
         else
         {
-          axios.post(Env.host + '/profile/uploadpic/user'+sessionStorage.getItem('uid'), formData, config)
+          axios.post(Env.host + '/profile/uploadpic/user/'+sessionStorage.getItem('uid'), formData, config)
           .then((response) => {
               this.getdata();
 
@@ -238,7 +238,7 @@ class Adminprofilepage extends Component {
   </Button>
             </Modal.Footer>
         </Modal>
-        let projects = this.state.profile.map((project) => {
+        let projects = this.state.profile?this.state.profile.map((project) => {
             return (
                 <div>
                     <div class="card" style={{
@@ -271,8 +271,8 @@ class Adminprofilepage extends Component {
                 </div>
 
             )
-        }
-        )
+        }):""
+        
 
 
         return (
