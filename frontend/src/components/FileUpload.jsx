@@ -1,7 +1,14 @@
 import React from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
-import GetAppIcon from "@material-ui/icons/GetApp";
+import { makeStyles } from "@material-ui/core/styles";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
 
 import Env from "../helpers/Env";
 
@@ -9,6 +16,7 @@ class FileUpload extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      presignedUrlMap: {},
       uploadedFileUrl: null,
       files: [],
     };
@@ -26,9 +34,16 @@ class FileUpload extends React.Component {
       await this.setState({
         files: response.data.Contents,
       });
+      this.getPresignedUrls();
       console.log("files are::::", this.state.files);
     });
   }
+
+  getPresignedUrls = () => {
+    const temp = this.state?.files?.map((file, index) => {
+      this.getPresignedUrl(file.Key, index);
+    });
+  };
 
   componentDidMount() {
     this.getFilesInFolder();
@@ -113,16 +128,18 @@ class FileUpload extends React.Component {
     this.getPresignedUrl(fileKey);
   }
 
-  getPresignedUrl = (fileKey) => {
+  getPresignedUrl = (fileKey, index) => {
     // if (!this.state.key) {
     //   console.error("invalid S3 Key");
     //   return;
     // }
-    console.log("entered signed URL::::");
+    console.log("entered signed URL:::: index: " + index);
     axios
       .get(Env.host + "/admin/get-presigned-url?key=" + fileKey)
-      .then((result) => {
-        this.setState({ presignedUrl: result });
+      .then(async (result) => {
+        let urlMap = this.state.presignedUrlMap;
+        urlMap[index] = result;
+        await this.setState({ presignedUrlMap: urlMap });
       })
       .catch((err) => {
         console.error("getPresignedUrl err: " + err);
@@ -134,24 +151,65 @@ class FileUpload extends React.Component {
     return (
       <article>
         <h2 className="text-capitalize">{this.props?.location?.room}</h2>
-        {this.state?.files?.map((file) => (
-          <div class="card w-50">
-            <div class="card-body">
-              <h5 class="card-title">
-                {file.Key.split(this.props?.location?.room + "/").pop()}
-              </h5>
-              <Button
-                variant="contained"
-                color="secondary"
+        {/* "this.props.location"{" "}
+        <pre>{JSON.stringify(this.props?.location, null, 2)}</pre> */}
+        <article className="d-flex flex-wrap">
+          {this.state?.files?.map((file, index) => (
+            <section class="card document mr-3 mb-3">
+              {!!this.state?.presignedUrlMap &&
+              !!this.state?.presignedUrlMap[index] ? (
+                <React.Fragment>
+                  {"pdf" ===
+                  file.Key.split(this.props?.location?.room + "/")
+                    .pop()
+                    .split(".")[1] ? (
+                    <div className="img-placeholder"></div>
+                  ) : (
+                    // <a
+                    //   target="_blank"
+                    //   href={this.state?.presignedUrlMap[index].data}
+                    // >
+                    //   {file.Key.split(this.props?.location?.room + "/").pop()}
+                    // </a>
+                    <a
+                      target="_blank"
+                      href={this.state?.presignedUrlMap[index].data}
+                    >
+                      <img
+                        className="document img"
+                        src={this.state?.presignedUrlMap[index].data}
+                      />
+                    </a>
+                  )}
+                </React.Fragment>
+              ) : (
+                ""
+              )}
+
+              {/* <Button
+                variant="outline"
+                color="primary"
                 onClick={() => {
-                  this.getPresignedUrl(file.Key);
+                  this.getPresignedUrl(file.Key, index);
                 }}
               >
                 <GetAppIcon />
-              </Button>
-            </div>
-          </div>
-        ))}
+              </Button> */}
+              <div class="card-body">
+                <h5 class="card-title">
+                  {file.Key.split(this.props?.location?.room + "/").pop()}
+                </h5>
+                <a
+                  target="_blank"
+                  href={this.state?.presignedUrlMap[index]?.data}
+                  class="btn btn-outline-primary"
+                >
+                  View
+                </a>
+              </div>
+            </section>
+          ))}
+        </article>
         <h2>File Upload</h2>
         <section>
           <React.Fragment>
@@ -164,8 +222,9 @@ class FileUpload extends React.Component {
                 style={{ display: "none" }}
                 onChange={this.onChangeHandlerFileUpload}
               />
-            </Button>{" "}
+            </Button>
             <Button
+              className="ml-3"
               variant="contained"
               color="secondary"
               onClick={this.fileUploadHandler}

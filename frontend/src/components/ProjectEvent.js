@@ -106,7 +106,7 @@ class ProjectEvent extends Component {
       const data = {
         usergroup: "create event"
       }
-      axios.get(Env.host + "/accessright/user/" + this.state.userid, data).then((response) => {
+      axios.get(Env.host+"/accessright/user/"+this.state.userid, data).then((response) => {
         this.setState({
           access: response.data
         })

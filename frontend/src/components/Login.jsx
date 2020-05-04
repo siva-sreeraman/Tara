@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import Env from "../helpers/Env";
 import Constants from "../helpers/Constants";
 import background from "../assets/images/hollywood.jpeg";
+import "../components/css/login.css";
+
 import * as firebase from "firebase/app";
 // Add the Firebase products that you want to use
 import "firebase/auth";
@@ -164,13 +166,78 @@ class Login extends React.Component {
                     >
                       Sign Up
                     </Link>
+
+      <div class="bg-img">
+      <div style={{ marginTop: "20px",paddingLeft:"900px"}}>
+        {redirectVar}
+            <div className="card login-card" style={{height:"350px",width:"400px",marginTop: "120px",position:"absolute",backgroundColor:"#5c5959"}}>
+              <div className="card-body">
+                {!this.state.loginFlag ? (
+                  <p>{this.state.invalidCredentialsMessage}</p>
+                ) : (
+                  ""
+                )}
+                <div className="student-profile-form" style={{width:"300px", paddingLeft:"50px"}}>
+                  <Form>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label></Form.Label>
+                      <Form.Control
+                        type="email"
+                        placeholder="Email"
+                        name="email"
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlInput1">
+                      <Form.Label></Form.Label>
+                      <Form.Control
+                        type="password"
+                        placeholder="password"
+                        name="password"
+                        // onKeyDown={this.onKeyUp}
+                        onChange={this.handleOnChange}
+                      />
+                    </Form.Group>
+                    <Form.Group controlId="exampleForm.ControlSelect1">
+                      <Form.Label></Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="persona"
+                        onChange={this.handleOnChange}
+                      >
+                        <option value={Constants.Role.Admin}>Admin</option>
+                        <option value={Constants.Role.User}>User</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Form>
+                  <div class="nan"  style={{ paddingLeft:"80px", paddingTop:"10px"}}>
+                  <button  
+                    onClick={this.submitForm}
+                    className="button"
+                    
+                  >
+                    Login
+                  </button>
                   </div>
+                  {/* <Link className="btn btn-primary btn-login" to="/">
+                  Login
+                </Link> */}
                 </div>
+              
+                </div>
+                </div>
+                </div>
+                </div>
+              
+              </div>
+              </div>
               </section>
-            </div>
-          </div>
-        </div>
-      </div>
+              </div>
+              </div>
+              </div>
+              </div>
+         
+    
     );
   }
 }

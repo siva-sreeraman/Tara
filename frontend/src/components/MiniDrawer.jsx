@@ -60,6 +60,7 @@ import Costume from "../components/projectOverview/CostumePage";
 import UserGroups from "../components/projectOverview/UserGroups";
 import CompanyLocation from "../components/CompanyLocations";
 import RoomIcon from "@material-ui/icons/Room";
+import BeenhereIcon from "@material-ui/icons/Beenhere";
 
 import Allevents from "../components/Allevents";
 import Alltasks from "../components/Alltasks";
@@ -153,23 +154,10 @@ export default function MiniDrawer(props) {
       });
   };
 
-  const handleLogin = async () => { };
-
-  const { from } = props.location?.state || { from: { pathname: "/" } };
-
-  let redirectTo = null;
-  if (!!props.auth) {
-    redirectTo = <Redirect to="/login" />;
-    console.log("redirectTo login");
-  } else {
-    console.log("redirectTo from");
-    redirectTo = <Redirect to={from} />;
-    // redirectTo = <Redirect to="usergroups" />;
-  }
+  const handleLogin = async () => {};
 
   return (
     <div className={classes.root}>
-      {/* {redirectTo} */}
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -198,10 +186,10 @@ export default function MiniDrawer(props) {
               Logout
             </Button>
           ) : (
-              <Button color="inherit" onClick={handleLogin}>
-                Login
-              </Button>
-            )}
+            <Button color="inherit" onClick={handleLogin}>
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -222,8 +210,8 @@ export default function MiniDrawer(props) {
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
-                <ChevronLeftIcon />
-              )}
+              <ChevronLeftIcon />
+            )}
           </IconButton>
         </div>
         <Divider />
@@ -284,16 +272,14 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
 
-
           <Link className="remove-link-style" to="/pendingrequests">
             <ListItem button key="Groups">
               <ListItemIcon>
-                <LocalMallIcon />{" "}
+                <BeenhereIcon />{" "}
               </ListItemIcon>
               <ListItemText primary="Requests" />
             </ListItem>
           </Link>
-          
 
           <Link className="remove-link-style" to="/companylocations">
             <ListItem button key="Groups">
@@ -312,7 +298,6 @@ export default function MiniDrawer(props) {
               <ListItemText primary="Locations" />
             </ListItem>
           </Link>
-
 
           <Link className="remove-link-style" to="/Adminprofilepage">
             <ListItem button key="Groups">
@@ -343,7 +328,7 @@ export default function MiniDrawer(props) {
             path="/create-project-template"
             component={CreateProjectTemplate}
           />
-          
+
           <Route path="/pendingrequests" component={AdminRequests} />
 
           <Route path="/documents" component={Documents} />
