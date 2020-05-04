@@ -34,10 +34,10 @@ const s3 = new AWS.S3({
 
  
 
+  
 
-
-  accessKeyId: process.env.TARA_AWS_ACCESS_KEY,
-  secretAccessKey: process.env.TARA_SECRET_ACCESS_KEY,
+  // accessKeyId: process.env.TARA_AWS_ACCESS_KEY,
+  // secretAccessKey: process.env.TARA_SECRET_ACCESS_KEY,
 
 
 });
@@ -64,6 +64,7 @@ router.get('/admin/:id', async (req, res) => {
 
     var dbquery = 'select * from admin where id=?';
     result = await query(pool, dbquery, [req.params.id]).catch(console.log);
+    console.log(result)
     res.status(200).send(result);
 
   }
@@ -90,7 +91,7 @@ router.post('/user/:id', async (req, res) => {
 router.get('/user/:id', async (req, res) => {
   try {
 
-    var dbquery = 'select * from users where id=?';
+    var dbquery = 'select * from users where userid=?';
     result = await query(pool, dbquery, [req.params.id]).catch(console.log);
     res.status(200).send(result);
 
@@ -110,7 +111,8 @@ router.post('/uploadpic/admin/:id', upload.single('profilepic'), async (request,
       // console.log(fileContent)
       const params = {
        
-        Bucket: process.env.TARA_BUCKET_NAME,
+       // Bucket: process.env.TARA_BUCKET_NAME,
+
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -145,7 +147,8 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
       const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
       // console.log(fileContent)
       const params = {
-        Bucket: process.env.TARA_BUCKET_NAME,
+       // Bucket: process.env.TARA_BUCKET_NAME,
+
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -159,6 +162,8 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
   
           const dbquery = 'update users set profile_pic=? where  id=?';
           result = await query(pool, dbquery, [data.Location, request.params.id]).catch(console.log);
+          console.log(result);
+
           response.status(200).send(result);
 
 

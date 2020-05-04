@@ -76,6 +76,10 @@ class CrewListing extends Component {
       selectedrolesdata: [],
       showroles: false,
       curentuserid: 0,
+      persona: sessionStorage.getItem('persona'),
+      projectid: sessionStorage.getItem('projectid'),
+      userid: sessionStorage.getItem('userid'),
+      access :false
     };
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleShow = this.handleShow.bind(this);
@@ -84,6 +88,8 @@ class CrewListing extends Component {
     this.handleroleshow = this.handleroleshow.bind(this);
     this.handleroleclose = this.handleroleclose.bind(this);
     this.handlerolechanges = this.handlerolechanges.bind(this);
+    this.checkaccessrights = this.checkaccessrights.bind(this);
+
   }
 
   handleOnChange() {
@@ -99,6 +105,42 @@ class CrewListing extends Component {
     });
   }
 
+  checkaccessrights = async(value) =>
+  {
+  if(this.state.persona == "admin")
+  {
+    this.setState({
+      access:true
+    })
+  }
+  else{
+    const data = {
+      projectid :this.state.projectid,
+      accessright : value,
+      userid : this.state.userid
+    }
+    await axios
+  .post(
+    Env.host+"/accessright/user",data
+  )
+  .then((response) => {
+    console.log("is it true",response.data);
+  if(response.data)
+  {
+  this.setState({
+    access:true
+  })
+  }
+  else{
+    this.setState({
+      access:false
+    })
+  }
+    
+  });
+  }
+  }
+
   handlerolechanges() {
     var users = [];
     console.log("user role", this.state.selectedrolesdata);
@@ -109,6 +151,7 @@ class CrewListing extends Component {
       userid: this.state.curentuserid,
       project_id: this.state.projectid,
     };
+
 
     console.log("inside handleclosedata is ", data);
     axios
@@ -253,6 +296,8 @@ class CrewListing extends Component {
   submitForm() {}
 
   componentDidMount() {
+
+    this.checkaccessrights("Crew");
     axios
       .get(
         Env.host +
@@ -380,7 +425,8 @@ class CrewListing extends Component {
           <StyledTableCell align="right">{crew.userid}</StyledTableCell>
           <StyledTableCell align="right">{crew.name}</StyledTableCell>
           <StyledTableCell align="right">{crew.phonenumber}</StyledTableCell>
-          <StyledTableCell align="right">
+          
+          {this.state.access == "true" ?<StyledTableCell align="right">
             {crew.role}
             <Link
               onClick={(e) =>
@@ -395,7 +441,7 @@ class CrewListing extends Component {
             >
               Add/Edit role
             </Link>
-          </StyledTableCell>
+          </StyledTableCell> : ""}
         </TableRow>
       );
     });
@@ -469,7 +515,8 @@ class CrewListing extends Component {
                       <StyledTableCell>Crew Id</StyledTableCell>
                       <StyledTableCell> Name</StyledTableCell>
                       <StyledTableCell>Phone Number</StyledTableCell>
-                      <StyledTableCell>Add Roles</StyledTableCell>
+                      {this.state.access == "true" ?
+                      <StyledTableCell>Add Roles</StyledTableCell> : ""}
                     </TableRow>
                   </TableHead>
                   <TableBody>{displayform}</TableBody>

@@ -95,7 +95,7 @@ router.get("/allroles", async (request, response) => {
     console.log("inside get all users");
     await pool.query(dbquery, (err, result) => {
       if (err) throw new Error(err);
-      // console.log(result);
+      console.log(err);
       response.status(200).send(result);
     });
   } catch (ex) {

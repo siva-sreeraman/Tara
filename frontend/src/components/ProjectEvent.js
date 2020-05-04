@@ -61,7 +61,7 @@ class ProjectEvent extends Component {
     this.state = {
       persona: sessionStorage.getItem('persona'),
       projectid: sessionStorage.getItem('projectid'),
-      userid: sessionStorage.getItem('uid'),
+      userid: sessionStorage.getItem('userid'),
       eventcheck: true,
       usercheck: false,
       title: "",
@@ -185,7 +185,7 @@ class ProjectEvent extends Component {
       description: this.state.description,
       location: this.state.location,
     }
-    axios.post(Env.host + "/calender/event/" + this.state.eventid, data).then((response) => {
+    axios.post(Env.host+"/calender/event/"+this.state.eventid, data).then((response) => {
       this.getevents();
       this.setState({
         title: "",

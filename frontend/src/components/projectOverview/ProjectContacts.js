@@ -106,7 +106,7 @@ class CrewListing extends Component {
     console.log(value, "in show view fun");
     await axios
       .get(
-        "http://localhost:4000/project-overview/get_project_userroles?projectid=" +
+        Env.host+"/project-overview/get_project_userroles?projectid=" +
         this.state.projectid +
         "&userid=" +
         value.userid
@@ -208,7 +208,7 @@ class CrewListing extends Component {
     }
     await axios
   .post(
-    "http://localhost:4000/accessright/user/",data
+    Env.host+"/accessright/user/",data
   )
   .then((response) => {
     console.log("is it true",response.data);
@@ -458,7 +458,7 @@ class CrewListing extends Component {
           <StyledTableCell align="center">
             <Link onClick={(e) => this.showviewfun(crew)}>View</Link>
           </StyledTableCell>
-          <StyledTableCell align="center">
+          {this.state.access == true ?<StyledTableCell align="center">
             {crew.role}
             <Link
               onClick={(e) =>
@@ -473,7 +473,7 @@ class CrewListing extends Component {
             >
               Add/Edit role
             </Link>
-          </StyledTableCell>
+          </StyledTableCell> : "" }
         </TableRow>
       );
     });
@@ -553,9 +553,9 @@ class CrewListing extends Component {
                       <StyledTableCell align="center">
                         View Roles
                       </StyledTableCell>
-                      <StyledTableCell align="center">
+                      {this.state.access == "true" ? <StyledTableCell align="center">
                         Add Roles
-                      </StyledTableCell>
+                      </StyledTableCell> : ""}
                     </TableRow>
                   </TableHead>
                   <TableBody>{displayform}</TableBody>
