@@ -59,6 +59,10 @@ class Login extends React.Component {
                 loginResponse.data[0].profile_pic
               );
               window.sessionStorage.setItem(
+                "companyId",
+                loginResponse.data[0].company_id
+              );
+              window.sessionStorage.setItem(
                 "status",
                 loginResponse.data[0].status
               );

@@ -35,6 +35,7 @@ import AdminDashboard from "../components/AdminDashboard";
 import ProjectOverview from "../components/ProjectOverview";
 import SuDashboard from "../su/components/su-dashboard";
 import CompanyDB from "../components/companyDB";
+import AdminRequests from "../components/adminrequests";
 // import Calendar from "../components/Calendar";
 import FileUpload from "../components/FileUpload";
 import CreateProject from "../components/CreateProject";
@@ -152,7 +153,7 @@ export default function MiniDrawer(props) {
       });
   };
 
-  const handleLogin = async () => {};
+  const handleLogin = async () => { };
 
   const { from } = props.location?.state || { from: { pathname: "/" } };
 
@@ -197,10 +198,10 @@ export default function MiniDrawer(props) {
               Logout
             </Button>
           ) : (
-            <Button color="inherit" onClick={handleLogin}>
-              Login
-            </Button>
-          )}
+              <Button color="inherit" onClick={handleLogin}>
+                Login
+              </Button>
+            )}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -221,8 +222,8 @@ export default function MiniDrawer(props) {
             {theme.direction === "rtl" ? (
               <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon />
-            )}
+                <ChevronLeftIcon />
+              )}
           </IconButton>
         </div>
         <Divider />
@@ -283,6 +284,17 @@ export default function MiniDrawer(props) {
             </ListItem>
           </Link>
 
+
+          <Link className="remove-link-style" to="/pendingrequests">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+                <LocalMallIcon />{" "}
+              </ListItemIcon>
+              <ListItemText primary="Requests" />
+            </ListItem>
+          </Link>
+          
+
           <Link className="remove-link-style" to="/companylocations">
             <ListItem button key="Groups">
               <ListItemIcon>
@@ -291,6 +303,16 @@ export default function MiniDrawer(props) {
               <ListItemText primary="Locations" />
             </ListItem>
           </Link>
+
+          <Link className="remove-link-style" to="/create-project">
+            <ListItem button key="Groups">
+              <ListItemIcon>
+                <RoomIcon />
+              </ListItemIcon>
+              <ListItemText primary="Locations" />
+            </ListItem>
+          </Link>
+
 
           <Link className="remove-link-style" to="/Adminprofilepage">
             <ListItem button key="Groups">
@@ -321,6 +343,9 @@ export default function MiniDrawer(props) {
             path="/create-project-template"
             component={CreateProjectTemplate}
           />
+          
+          <Route path="/pendingrequests" component={AdminRequests} />
+
           <Route path="/documents" component={Documents} />
           <Route path="/samplepopup" component={Example} />
           <Route path="/eventdetails/:id" component={Eventdetails} />
@@ -331,8 +356,8 @@ export default function MiniDrawer(props) {
           <Route path="/usergroups" component={UserGroups} />
           <Route path="/Projectmainpage/:id" component={Projectmainpage} />
           <Route path="/Adminprofilepage" component={Adminprofilepage} />
-          <Route path="/ProjectEvent/:id" component={ProjectEvent} />
-          <Route path="/ProjectTasks/:id" component={ProjectTasks} />
+          <Route path="/ProjectEvent/" component={ProjectEvent} />
+          <Route path="/ProjectTasks/" component={ProjectTasks} />
           <Route path="/contactspage" component={CrewListing} />
           <Route path="/Companyuserspage" component={CompanyUsers} />
           <Route path="/companyCostumes" component={CompanyCostumes} />

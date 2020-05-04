@@ -1,15 +1,17 @@
 import React from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import Table from "@material-ui/core/Table";
+import { Button, Table } from "@material-ui/core";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { TextField } from "@material-ui/core";
+import { DialogContent, DialogTitle, Dialog } from "@material-ui/core";
+
 // import Modal from 'react-bootstrap/Modal';
 import FormControl from "@material-ui/core/FormControl";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -20,12 +22,7 @@ import Env from "../../helpers/Env";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Form, Col } from "react-bootstrap";
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: "#272E42",
-    color: theme.palette.common.white,
-  },
-}))(TableCell);
+const StyledTableCell = withStyles((theme) => ({}))(TableCell);
 
 const StyledTableRow = withStyles((theme) => ({
   root: {
@@ -35,11 +32,6 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-const useStyles = makeStyles({
-  table: {
-    minWidth: 900,
-  },
-});
 
 const classes = makeStyles((theme) => ({
   root: {
@@ -82,8 +74,8 @@ class Costume extends Component {
     axios
       .get(
         Env.host +
-          "/project-overview/getprojectcostumes/" +
-          this.state.projectid
+        "/project-overview/getprojectcostumes/" +
+        this.state.projectid
       )
       .then((response) => {
         console.log(response);
@@ -111,12 +103,13 @@ class Costume extends Component {
       .post(Env.host + "/companydb/submitnewcostume", data)
       .then((response) => {
         console.log(response);
+        this.getcostumes();
+
       });
 
     this.setState({
       showmodal: false,
     });
-    this.getcostumes();
   };
 
   showCostumeModal = (e) => {
@@ -172,12 +165,13 @@ class Costume extends Component {
       .post(Env.host + "/companydb/submitnewcostumebyproject/", data)
       .then((response) => {
         console.log(response);
+        this.getcostumes();
+
       });
 
     this.setState({
       showmodal: false,
     });
-    this.getcostumes();
   };
 
   handleCreateModelClose = () => {
@@ -233,11 +227,10 @@ class Costume extends Component {
     let costumecreate = null;
 
     costumecreate = (
-      <Modal show={this.state.showmodal} onHide={this.handleprojectclose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Costumes</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog open={this.state.showmodal} aria-labelledby="customized-dialog-title"
+        onClose={this.handleprojectclose}>
+        <DialogTitle>Add New Costume</DialogTitle>
+        <DialogContent>
           <Form.Group controlId="exampleForm.ControlInput1">
             <Form.Label>Costume Name</Form.Label>
             <Form.Control
@@ -269,29 +262,26 @@ class Costume extends Component {
             />
           </Form.Group>
           {/* Enter Role: <TextField>Enter Role</TextField> */}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.handleCreateModelClose}>
-            Close
+        </DialogContent>
+        <Button variant="secondary" onClick={this.handleCreateModelClose}>
+          Close
           </Button>
-          <Button variant="primary" onClick={this.SubmitCreateCostumes}>
-            Save Changes
+        <Button variant="primary" onClick={this.SubmitCreateCostumes}>
+          Save Changes
           </Button>
-        </Modal.Footer>
-      </Modal>
+      </Dialog>
     );
 
     let costumemodal = null;
 
     costumemodal = (
-      <Modal show={this.state.costumeshow} onHide={this.handleprojectclose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Add Costumes</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog open={this.state.costumeshow} aria-labelledby="customized-dialog-title" onClose={this.handleprojectclose}>
+        <DialogTitle>Add Costumes</DialogTitle>
+        <DialogContent>
           <FormControl className={classes.formControl}>
             <Autocomplete
               multiple
+              style={{ width: 300 }}
               id="tags-standard"
               options={allcostumes}
               getOptionLabel={(each) => each.costumename}
@@ -299,12 +289,10 @@ class Costume extends Component {
               // defaultValue={this.props?.studentSkills}
               renderInput={(params) => (
                 <TextField
-                  size="500"
                   {...params}
                   variant="standard"
                   label="Costumes"
                   placeholder="Enter Costume"
-                  style={{ width: "120px" }}
                 />
               )}
             />
@@ -315,16 +303,14 @@ class Costume extends Component {
        </section> */}
           </FormControl>
           {/* Enter Role: <TextField>Enter Role</TextField> */}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={this.handleModelClose}>
-            Close
+        </DialogContent>
+        <Button variant="secondary" onClick={this.handleModelClose}>
+          Close
           </Button>
-          <Button variant="primary" onClick={this.SubmitCostumes}>
-            Save Changes
+        <Button variant="primary" onClick={this.SubmitCostumes}>
+          Save Changes
           </Button>
-        </Modal.Footer>
-      </Modal>
+      </Dialog>
     );
 
     // console.log(this.state.formdetails);
@@ -340,30 +326,34 @@ class Costume extends Component {
       );
     });
     displaydetails = (
+
       <div>
-        <div class="paddingleft15">
-          <div class="form-group row" paddingleft>
-            <div class="col-lg-12" style={{ maxWidth: "90%" }}>
-              {" "}
-              <div align="right">
-                <button
-                  align="right"
-                  className="btn btn-outline-primary"
+        <div className="paddingleft15">
+          <div>{this.state.sucessmsg}</div>
+          <div className="form-group">
+            <div className="">
+              <div className="form-group d-flex justify-content-between">
+                <h1>Costumes</h1>
+                <Button
+                  variant="contained"
+                  color="secondary"
                   onClick={this.showCostumeModal}
                 >
                   Add Costume
-                </button>
+                </Button>
 
-                <button
-                  align="right"
-                  className="btn btn-outline-primary"
+                <Button
+                  variant="contained"
+                  color="secondary"
                   onClick={this.showcreateCostumeModal}
                 >
                   Add New Costume
-                </button>
+                </Button>
+
+
               </div>
               <br></br>
-              <h1>Costumes</h1>
+
               <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                   <TableHead>

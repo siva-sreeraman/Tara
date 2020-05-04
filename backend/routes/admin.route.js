@@ -71,7 +71,9 @@ router.put("/super-user/approve-requests", async function (req, res) {
 
 router.put("/approve-requests", async function (req, res) {
   const { uid } = req.body;
-  const updateStatus = `UPDATE users SET status = "accepted" WHERE uid="${uid}";`;
+  console.log("in approve requests")
+  console.log(uid)
+  const updateStatus = `UPDATE users SET status = "accepted" WHERE uid="${ req.body.userid}";`;
   await query(pool, updateStatus)
     .then(async (result) => {
       res.status(200).send(result);

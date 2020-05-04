@@ -1,8 +1,8 @@
 import React from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-// import Modal from 'react-bootstrap/Modal';
-import { Button, Modal } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+// import Button from 'react-bootstrap/Button';
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -14,30 +14,28 @@ import Checkbox from "@material-ui/core/Checkbox";
 import { Component } from "react";
 import FormControl from "@material-ui/core/FormControl";
 import Env from "../helpers/Env";
-import { TextField } from "@material-ui/core";
+import { TextField, Button, DialogContent, Dialog, DialogTitle } from "@material-ui/core";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { Link } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import { Edit } from '@material-ui/icons';
 import { Delete } from '@material-ui/icons';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+import DateRangeIcon from '@material-ui/icons/DateRange';
+import ScheduleIcon from '@material-ui/icons/Schedule';
 
 
 
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-    fontSize: 14,
+const StyledTableCell = withStyles((theme) => ({}))(TableCell);
+
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
   },
-
-
-
-
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
+}))(TableRow);
 
 
 const classes = makeStyles(theme => ({
@@ -56,8 +54,9 @@ class ProjectTasks extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      role: sessionStorage.getItem('role'),
-      projectid: "",
+      persona: sessionStorage.getItem('persona'),
+      projectid: sessionStorage.getItem('projectid'),
+      userid: sessionStorage.getItem('uid'),
       eventcheck: true,
       usercheck: false,
       name: "",
@@ -96,21 +95,9 @@ class ProjectTasks extends Component {
 
   componentDidMount(props) {
 
-    const { match: { params } } = this.props
-    const data = {
-      id: params.id
-    }
 
-    axios.get(Env.host + "/project-overview/gettasks_fromproject/" + data.id).then((response) => {
-      eventsdata = response.data;
-      console.log(eventsdata)
-    })
-    this.setState({
-      projectid: data.id
-    })
-
-    if (sessionStorage.getItem('persona') !== "admin") {
-      let userid = sessionStorage.getItem('id');
+    if (this.state.persona != "admin") {
+      let userid = this.state.userid
       const data = {
         usergroup: "create task"
       }
@@ -125,11 +112,7 @@ class ProjectTasks extends Component {
       this.setState({
         access: true
       })
-
     }
-
-
-
     this.getevents();
 
   }
@@ -168,7 +151,7 @@ class ProjectTasks extends Component {
     const data = {
 
       userids: temp,
-      projectid: this.state.projects[0].taskid
+      projectid: this.state.projects ? this.state.projects[0].taskid : ""
 
     }
     console.log("in checked items", data)
@@ -248,11 +231,11 @@ class ProjectTasks extends Component {
     });
   };
   getevents = () => {
-    const { match: { params } } = this.props
-    const data = {
-      id: params.id
+    const data1 = {
+      projectid: this.state.projectid,
     }
-    axios.get(Env.host + "/project-overview/gettasks_fromproject/" + data.id).then((response) => {
+
+    axios.get(Env.host + "/project-overview/gettasks_fromproject/" + data1.projectid).then((response) => {
       console.log(response);
       this.setState({
         eventlist: response.data,
@@ -283,7 +266,7 @@ class ProjectTasks extends Component {
       projects: values
     }, () => {
     });
-    console.log(this.state.projects)
+    console.log(values)
   }
 
 
@@ -355,7 +338,7 @@ class ProjectTasks extends Component {
     let editform = null;
     if (this.state.edit) {
       editform = (<Modal show={this.state.edit} onHide={this.handleeditclose}>
-        <Modal.Header closeButton>
+        <Modal.Header >
           <Modal.Title>Edit Task </Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -399,16 +382,14 @@ class ProjectTasks extends Component {
     if (this.state.usercheck) {
       const formdetails = this.state.userdetails.map((userdetails) => {
 
-        projectmodel = <Modal show={this.state.projectshow} onHide={this.handleprojectclose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Add User To Tasks</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
+        projectmodel = <Dialog open={this.state.projectshow} onClose={this.handleprojectclose}>
+          <DialogTitle>Add User To Tasks</DialogTitle>
+          <DialogContent>
             <FormControl className={classes.formControl}>
               <Autocomplete
                 multiple
                 id="tags-standard"
-                options={eventsdata}
+                options={this.state.eventlist}
                 getOptionLabel={each => each.name}
                 onChange={this.handleprojects}
                 renderInput={params => (
@@ -422,16 +403,15 @@ class ProjectTasks extends Component {
                 )}
               />
             </FormControl>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={this.handleprojectclosemodal}>
-              Close
+          </DialogContent>
+          <Button variant="secondary" onClick={this.handleprojectclosemodal}>
+            Close
      </Button>
-            <Button variant="primary" onClick={this.handleprojectclose}>
-              Save Changes
+          <Button variant="primary" onClick={this.handleprojectclose}>
+            Save Changes
      </Button>
-          </Modal.Footer>
-        </Modal>
+
+        </Dialog>
 
         return (
           <TableBody>
@@ -487,40 +467,56 @@ class ProjectTasks extends Component {
 
 
     if (this.state.eventcheck) {
-      details = this.state.eventlist.map((event) => {
+      details = this.state.eventlist.map((el) => {
+        return (<div>
+          <div class="card" style={{ width: "1000px", height: "250px", "margin-top": "10px", "margin-left": "10px" }}>
+            <div class="col-md-1"></div>
+            <div class="col-md-12">
+              <div class="row">
+                <div class="col-md-10">
+                  <div style={{ "margin-top": "10px", "fontSize": "25px" }}><Link to={"/Eventdetails/" + el.taskid} style={{ color: "black" }} >{el.name}</Link></div>
 
-        return (
-<table>
-<tr>
-<td>
-          <div style={{marginLeft: "50px"}} align="center">
-          <div className="row" key = {event.event_name}>	
-          <div className="well" style ={{height:'250px',width:'100%'}}>
-              <h3><div style={{ "margin-top": "10px", "fontSize": "25px" }}><Link to={"/taskdetails/" + event.taskid} style={{ color: "black" }} >{event.name}</Link></div></h3>
-                  <h4><div style={{ "margin-top": "10px", "fontSize": "15px" }}><Link to={"/taskdetails/" + event.taskid} style={{ color: "black" }} >{event.description}</Link></div></h4>
-                  <div class="col-md-10" style={{ marginright: "0px" }}>
-                  {this.state.access == true ? <div>
-                    <IconButton align="center" style={{ fontSize: 20 }} onClick={() => this.handleedit(event.taskid)}><Edit />Edit Task</IconButton>
-                    </div> : ""}
                 </div>
-       <div class="col-md-10" style={{ marginright: "0px" }}>
+                <div class="col-md-1" style={{ marginright: "0px" }}>
                   {this.state.access == true ? <div>
-                    <IconButton style={{ fontSize: 20 }} onClick={() => this.handledelete(event.taskid)}><Delete />Delete Task</IconButton></div> : ""}
+                    <IconButton style={{ fontSize: 30 }} onClick={() => this.handleedit(el.taskid)}><Edit /></IconButton>
+                    <IconButton style={{ fontSize: 30 }} onClick={() => this.handledelete(el.taskid)}><Delete /></IconButton></div> : ""}
+
+
                 </div>
-                 
+              </div>
+
+
+              <div class="row">
+
+                <div class="col-md-3">
+                  <div style={{ "fontSize": "15px" }}>  <DateRangeIcon></DateRangeIcon>{el.date.substr(0, 10)}</div>
+                </div>
+
+                <div class="col-md-2">
+                  <div style={{ "fontSize": "15px" }}>
+
+                    <Link to={"/Taskdetails/" + el.taskid} style={{ color: "black" }}>View Users</Link>
+                  </div>
+
+                </div>
+              </div>
+
+
+
+              <div style={{ "fontSize": "15px", "margin-top": "20px" }}>{el.description}</div>
+
+            </div>
+
+            <div class="col-md-1">
+
+
+
+            </div>
           </div>
-          </div> 
-          </div> 
-          </td>
-          </tr>
-                      </table>
 
-      
-         
-        
-           
-               
-        )
+        </div>
+        );
       })
 
 
@@ -528,11 +524,9 @@ class ProjectTasks extends Component {
 
     }
 
-    addeventbutton = (<Modal show={this.state.addeventshow} onHide={this.handleaddeventclose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Add Task to Project</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
+    addeventbutton = (<Dialog open={this.state.addeventshow} onClose={this.handleaddeventclose}>
+      <DialogTitle>Add Task to Project</DialogTitle>
+      <DialogContent>
         <form>
           <label for="name"> Name:</label>
           <input type="text" name="name" id="nam" value={this.state.name} onChange={this.onChange} class="form-control" required />
@@ -549,16 +543,14 @@ class ProjectTasks extends Component {
         </form>
 
 
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={this.handleaddeventclosemodal}>
-          Close
+      </DialogContent>
+      <Button variant="secondary" onClick={this.handleaddeventclosemodal}>
+        Close
  </Button>
-        <Button variant="primary" onClick={this.handleaddeventclose}>
-          Save Changes
+      <Button variant="primary" onClick={this.handleaddeventclose}>
+        Save Changes
  </Button>
-      </Modal.Footer>
-    </Modal>
+    </Dialog>
 
 
     )
@@ -569,50 +561,53 @@ class ProjectTasks extends Component {
 
 
     return (
-      <div align="center">
-        <div class="non" style={{ "padding-left": "200px", "margin-top": "30px", "font-size": "40px" }}>
-          <button style={{ "font-size": "20px" }}
-            class="btn btn-outline-dark mr-1"
+      <div>
+        <div class="non" style={{ "padding-left": "50px", "margin-top": "30px", "font-size": "40px" }}>
+
+          <Button variant="contained"
+            color="secondary"
+            style={{ margin: "6px" }}
+
             onClick={() => this.handleUsers()}>
             Users
-          </button>
-          {this.state.access == true ?
-            <button disabled={!this.state.enableaddproject}
-              class="btn btn-outline-dark mr-1" style={{ "font-size": "20px" }}
+          </Button>
+
+          {this.state.access === true ?
+            <Button disabled={!this.state.enableaddproject}
+              variant="contained"
+              color="secondary"
+              style={{ margin: "6px" }}
               onClick={() => this.AssignEvent()}
             >
               Assign To Task
-          </button> : ""}
+          </Button> : ""}
 
-          <button style={{ "font-size": "20px" }}
-            class="btn btn-outline-dark mr-1"
+          <Button variant="contained"
+            color="secondary"
+            style={{ margin: "6px" }}
+
             onClick={() => this.handleEvents()}
           >
             Tasks
-          </button>
+          </Button>
           {this.state.access == true ?
-            <button style={{ "font-size": "20px" }}
-              class="btn btn-outline-dark mr-1"
+            <Button variant="contained"
+              color="secondary"
+              style={{ margin: "6px" }}
+
               onClick={() => this.handleaddEvents()}
             >
               Add Task
-          </button> : ""}
+          </Button> : ""}
 
           {editform}
 
         </div>
 
 
-        <div align="center">
-             <br></br>
-             {displaydetails}
-            {details}
-            </div>
-            {addeventbutton}
 
-            
 
-        {/* <div id="textdisplay" class="tabcontent">
+        <div id="textdisplay" class="tabcontent">
           <div class="col-md-2"></div>
           <div class="col-md-9" style={{ "margin-top": "30px" }} >
 
@@ -621,7 +616,7 @@ class ProjectTasks extends Component {
           </div>
 
           {addeventbutton}
-        </div> */}
+        </div>
       </div>
 
     );
@@ -630,4 +625,16 @@ class ProjectTasks extends Component {
 
 
 
+class Popup extends React.Component {
+  render() {
+    return (
+      <div className='popup'>
+        <div className='popup\_inner'>
+          <h1>{this.props.text}</h1>
+          <button onClick={this.props.closePopup}>close me</button>
+        </div>
+      </div>
+    );
+  }
+}
 export default ProjectTasks;

@@ -23,8 +23,8 @@ class Projectmainpage extends Component {
     await axios
       .get(
         Env.host +
-          "/project-create/project_by_id/?projectid=" +
-          this.state.projectid
+        "/project-create/project_by_id/?projectid=" +
+        this.state.projectid
       )
       .then((response) => {
         console.log(response.data);
@@ -42,8 +42,9 @@ class Projectmainpage extends Component {
       { name: "Contacts", path: "/Contactspage" },
       { name: "User Groups", path: "/usergroups" },
       { name: "My Calender", path: "/Mycalender" },
-      { name: "Calender", path: "/Calenderpage" },
-      { name: "Taks", path: "/ProjectTasks" },
+
+      { name: "Tasks", path: "/ProjectTasks" },
+      { name: "Events", path: "/ProjectEvent" },
       { name: "Costumes", path: "/Costumepage" },
       { name: "Documents", path: "/documents" },
     ];

@@ -14,141 +14,125 @@ import { Link } from 'react-router-dom';
 
 
 
+const StyledTableCell = withStyles((theme) => ({}))(TableCell);
 
-const StyledTableCell = withStyles((theme) => ({
-  head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
-    fontSize: 14,
+const StyledTableRow = withStyles((theme) => ({
+  root: {
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default,
+    },
   },
-  body: {
-    fontSize: 14,
-  },
-}))(TableCell);
+}))(TableRow);
 
-
-
-
-
-  
-class Eventdetails extends Component
-{
-    constructor(props)
+class Eventdetails extends Component {
+  constructor(props) {
+    super(props);
+    this.state =
     {
-        super(props);
-        this.state = 
-    {
-        userdetails : [],   
-    
-    }
-    } 
-    componentDidMount(){
-        const { match: { params } } = this.props
-        const data = {
-            id: params.id
-
-        }
-
-      axios.get('http://localhost:4000/project-overview/geteventusers/'+data.id)
-            .then((response) => {
-                        console.log(response.data)
-                       
-                    this.setState({
-                        userdetails : response.data
-                    });
-                });
-              
-    }
-    
-        
-
-  render() 
-  {
-    let displayform=null;
-    let details=null;
-    if(this.state.userdetails.length>0)
-    {
-        details=(  
-
-
-            this.state.userdetails.map(ud=> {
-          return(
-            
-              
-          
-               <TableRow>
-                  <StyledTableCell>
-                    {ud.name}
-                  </StyledTableCell>
-                  <StyledTableCell >{ud.address}</StyledTableCell>
-                  <StyledTableCell >{ud.phonenumber}</StyledTableCell>
-                  <StyledTableCell >{ud.mail}</StyledTableCell>
-                
-                </TableRow>
-              
-          
-      )
-    }));
-        
-
-
-        displayform=  (<div class="paddingleft15">
-        <div class="form-group row" paddingleft>
-
-        <div class="col-lg-10" style={{"marginTop":"20px"}}><h2>  USERS ASSIGNED TO THIS EVENT</h2> </div>
-    
-        </div>
-          
-        <div class="form-group row"  style={{"marginTop":"20px"}}>
-            <div class="col-lg-1"></div>
-            <div class="col-lg-9">
-            <TableContainer component={Paper}>
-     <Table  aria-label="customized table">
-       <TableHead>
-         <TableRow>
-           <StyledTableCell> Name</StyledTableCell>
-           <StyledTableCell> address</StyledTableCell>
-           <StyledTableCell >phonenumber</StyledTableCell>
-           <StyledTableCell >mail</StyledTableCell>
-          
-         </TableRow>
-       </TableHead>
-       <TableBody>
-        {details}
-       </TableBody>
-     </Table>
-   </TableContainer>
-            </div>
-            
-            </div>
-
-</div>
-)
-        
+      userdetails: [],
 
     }
-    else{
-        displayform =  ( <div style={{"marginTop":"20px"}} ><h1>NO USERS ASSIGNED TO THIS EVENT</h1></div>)
-
-    }
-
-     
-return (
-  <div style={{"paddingLeft":"150px"}}>
-
-     
-       {displayform}      
-           
-
- </div>
-
-        
-        
-      
-      );
-    }
-    
   }
+  componentDidMount() {
+    const { match: { params } } = this.props
+    const data = {
+      id: params.id
+
+    }
+
+    axios.get('http://localhost:4000/project-overview/geteventusers/' + data.id)
+      .then((response) => {
+        console.log(response.data)
+
+        this.setState({
+          userdetails: response.data
+        });
+      });
+
+  }
+
+
+
+  render() {
+    let displayform = null;
+    let details = null;
+    if (this.state.userdetails.length > 0) {
+      details = (
+
+
+        this.state.userdetails.map(ud => {
+          return (
+
+
+
+            <TableRow>
+              <StyledTableCell>
+                {ud.name}
+              </StyledTableCell>
+              <StyledTableCell >{ud.address}</StyledTableCell>
+              <StyledTableCell >{ud.phonenumber}</StyledTableCell>
+              <StyledTableCell >{ud.email}</StyledTableCell>
+
+            </TableRow>
+
+
+          )
+        }));
+
+
+      displayform = (
+        <div>
+          <div className="paddingleft15">
+            <div>{this.state.sucessmsg}</div>
+            <div className="form-group">
+              <div className="">
+                <div className="form-group d-flex justify-content-between">
+                  <h2>Assigned Users</h2>
+
+                </div>
+                <TableContainer component={Paper}>
+                  <Table aria-label="customized table">
+                    <TableHead>
+                      <TableRow>
+                        <StyledTableCell> Name</StyledTableCell>
+                        <StyledTableCell> address</StyledTableCell>
+                        <StyledTableCell >phonenumber</StyledTableCell>
+                        <StyledTableCell >mail id</StyledTableCell>
+
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {details}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      )
+
+
+    }
+    else {
+      displayform = (<div style={{ "marginTop": "20px" }} ><h1>NO USERS ASSIGNED TO THIS EVENT</h1></div>)
+
+    }
+
+
+    return (
+      <div style={{ marginTop: "20px" }}>
+        {displayform}
+      </div>
+
+
+
+    );
+  }
+
+}
 
 
 

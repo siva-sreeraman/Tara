@@ -2,13 +2,6 @@ import React, { Fragment } from "react";
 import axios from "axios";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 // import Modal from 'react-bootstrap/Modal';
-import ListItem from "@material-ui/core/ListItem";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import GroupIcon from "@material-ui/icons/Group";
-import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
-import ListItemText from "@material-ui/core/ListItemText";
-import PeopleIcon from "@material-ui/icons/People";
-
 import {  Modal } from "react-bootstrap";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -16,6 +9,12 @@ import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
+import CheckCircleOutlineIcon from '@material-ui/icons/CheckCircleOutline';
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import GroupIcon from "@material-ui/icons/Group";
+import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
+import ListItemText from "@material-ui/core/ListItemText";
 import Paper from "@material-ui/core/Paper";
 import { Component } from "react";
 import { Redirect } from "react-router";
@@ -23,8 +22,6 @@ import { Link } from "react-router-dom";
 import FormControl from "@material-ui/core/FormControl";
 import Env from "../helpers/Env";
 import { TextField,Button } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
-
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { Form, Col } from "react-bootstrap";
@@ -45,6 +42,7 @@ const StyledTableRow = withStyles((theme) => ({
     },
   },
 }))(TableRow);
+
 
 const classes = makeStyles((theme) => ({
   root: {
@@ -71,13 +69,14 @@ const customStyles = {
 var rolesdata = [];
 var projectsdata = [];
 
-class CompanyDB extends Component {
+class AdminRequests extends Component {
   constructor(props) {
     super(props);
     this.state = {
       userdetails: [],
       costumedetails: [],
-      locationdetails: [],
+      userrequests: [],
+      adminrequests:[],
       roles: [],
       show: false,
       pageOfItems: [],
@@ -85,27 +84,29 @@ class CompanyDB extends Component {
       name: "",
       source: "",
       description: "",
-      msgmodal: false,
     };
-    this.handleCostumes = this.handleCostumes.bind(this);
     this.onChangePage = this.onChangePage.bind(this);
+    this.editstatus = this.editstatus.bind(this);
   }
+
+  getpendingrequests = () => {
+      var companyid = window.sessionStorage.getItem("companyId");
+      console.log(companyid)
+    axios.get(Env.host + "/admin/pending-requests/"+companyid).then((response) => {
+      console.log(response.data["userRequests"]);
+      console.log(response.data["adminRequests"]);
+
+      this.setState({
+        userrequests: response.data["userRequests"],
+        adminrequests :response.data["adminRequests"]
+      });
+    });
+  };
 
   componentDidMount() {
     console.log("inside componentDidMount");
-    axios.get(Env.host + "/companydb/allroles").then((response) => {
-      console.log(response);
 
-      rolesdata = response.data;
-    });
-
-    axios.get(Env.host + "/companydb/allprojects").then((response) => {
-      console.log(response);
-
-      projectsdata = response.data;
-    });
-
-    this.getcostumes();
+    this.getpendingrequests();
   }
 
   onChangePage(pageOfItems) {
@@ -113,75 +114,25 @@ class CompanyDB extends Component {
     this.setState({ pageOfItems });
   }
 
-  SubmitCostumes = () => {
-    const data = {
-      name: this.state.name,
-      source: this.state.source,
-      description: this.state.description,
-    };
-    console.log(data);
-    axios
-      .post(Env.host + "/companydb/submitnewcostume", data)
-      .then((response) => {
-        console.log(response);
-        this.getcostumes();
-      });
 
-    this.setState({
-      showmodal: false,
-    });
-  };
-
-  handlenamechange = (e) => {
-    this.setState({
-      name: e.target.value,
-    });
-  };
-
-  handlesourcechange = (e) => {
-    this.setState({
-      source: e.target.value,
-    });
-  };
-
-  handledescriptionchange = (e) => {
-    this.setState({
-      description: e.target.value,
-    });
-  };
-
-  handleclosemodal = () => {
-    this.setState({
-      show: false,
-    });
-  };
-
-  deleteCompanyCostume = (userdetails) => {
+  editstatus = (e,userdetails) => {
     console.log("in dleete", userdetails);
 
     const data = {
-      costumeid: userdetails,
+      userid: userdetails,
     };
-    axios.post(Env.host + "/companydb/deletecostume", data).then((response) => {
-      console.log(response);
-    });
+    axios
+      .put(Env.host + "/admin/approve-requests", data)
+      .then((response) => {
+        console.log(response);
+      });
 
-    this.getcostumes();
+    this.getpendingrequests();
   };
 
   handleModelClose = () => {
     this.setState({
       showmodal: false,
-    });
-  };
-
-  getcostumes = () => {
-    axios.get(Env.host + "/companydb/allcostumes").then((response) => {
-      console.log(response);
-
-      this.setState({
-        costumedetails: response.data,
-      });
     });
   };
 
@@ -202,7 +153,7 @@ class CompanyDB extends Component {
     costumemodal = (
       <Modal show={this.state.showmodal} onHide={this.handleprojectclose}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Costumes</Modal.Title>
+          <Modal.Title>Add Location</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form.Group controlId="exampleForm.ControlInput1">
@@ -216,7 +167,7 @@ class CompanyDB extends Component {
             />
           </Form.Group>
           <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Label>Costume Source</Form.Label>
+            <Form.Label>Costume Address</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter Costume Source"
@@ -226,7 +177,7 @@ class CompanyDB extends Component {
             />
           </Form.Group>
           <Form.Group controlId="exampleForm.ControlInput1">
-            <Form.Label>Costume Description</Form.Label>
+            <Form.Label> Location</Form.Label>
             <Form.Control
               type="text"
               placeholder="Enter Costume Description"
@@ -253,91 +204,111 @@ class CompanyDB extends Component {
       return (
         <TableBody>
           <TableRow>
-            <StyledTableCell> {userdetails.costumename}</StyledTableCell>
-            <StyledTableCell> {userdetails.source}</StyledTableCell>
-            <StyledTableCell> {userdetails.description}</StyledTableCell>
+            <StyledTableCell> {userdetails.name}</StyledTableCell>
             <StyledTableCell>
-              <Link
-                onClick={(e) =>
-                  this.deleteCompanyCostume(userdetails.costumeid)
-                }
-              >
-                <Tooltip
-                  title="Delete Company Costume"
-                  classes={{ tooltip: classes.customWidth }}
-                  placement="right"
-                  arrow
-                >
-                  <span
-                    className="glyphicon glyphicon-trash"
-                    style={{ color: "black" }}
-                  ></span>
-                </Tooltip>
-              </Link>
-
-              <Link align="center" onClick={(e) =>
-                  this.deleteCompanyCostume(userdetails.costumeid)
-                }>
+            <Link className="remove-link-style"   onClick={e => this.editstatus(e,userdetails.uid)}>
             <ListItem button key="Groups">
               <ListItemIcon>
-                <DeleteIcon />{" "}
+                <CheckCircleOutlineIcon />
               </ListItemIcon>
               <ListItemText primary="" />
             </ListItem>
           </Link>
+                </StyledTableCell>
+           
 
-
-              <br></br>
-            </StyledTableCell>
           </TableRow>
         </TableBody>
       );
     });
+
+    const adminformdetails = this.state.adminrequests.map((userdetails) => {
+      return (
+        <TableBody>
+          <TableRow>
+            <StyledTableCell> {userdetails.name}</StyledTableCell>
+            <StyledTableCell>
+        {/* <Button
+                  variant="contained"
+                  color="secondary"
+                
+                >
+                 Update Status
+                </Button> */}
+                <Link className="remove-link-style"   onClick={e => this.editstatus(e,userdetails.uid)}>
+            <ListItem button key="Groups">
+              <ListItemIcon>
+                <CheckCircleOutlineIcon />
+              </ListItemIcon>
+              <ListItemText primary="" />
+            </ListItem>
+          </Link>
+                </StyledTableCell>
+           
+
+          </TableRow>
+        </TableBody>
+      );
+    });
+
     displaydetails = (
       <div>
         <div class="paddingleft15">
         <div className="form-group">
         <div className="">
         <div className="form-group d-flex justify-content-between">
-        <h2>Costumes</h2>
+        <h2>Pending Requests</h2>
 
-        <Button
+        {/* <Button
                   variant="contained"
                   color="secondary"
                   onClick={this.showCostumeModal}
                 >
-                 Add New Costume
-                </Button>
+                 Add New Location
+                </Button> */}
               </div>
               </div>
               <br></br>
+     
               <TableContainer component={Paper}>
                 <Table aria-label="customized table">
                   <TableHead>
                     <TableRow>
+
                       <StyledTableCell> Name</StyledTableCell>
-                      <StyledTableCell>Source</StyledTableCell>
-                      <StyledTableCell>Description</StyledTableCell>
-                      <StyledTableCell>Delete Costume</StyledTableCell>
+                      <StyledTableCell> Update Status </StyledTableCell>
+
                     </TableRow>
                   </TableHead>
+                  <TableHead>
+                    <TableRow>
 
+                     <h5>User Requests</h5>
+
+                    </TableRow>
+                  </TableHead>
                   {formdetails}
+                  <TableHead>
+                    <TableRow>
+
+                     <h5>Admin Requests</h5>
+
+                    </TableRow>
+                  </TableHead>
+                  {adminformdetails}
                 </Table>
               </TableContainer>
             </div>
           </div>
         </div>
-    
     );
     return (
       <div>
-
         <div id="textdisplay" class="tabcontent">
           {displaydetails}
           <div align="center">
             <JwPagination
-              items={this.state.costumedetails}
+              items={this.state.userrequests}
               onChangePage={this.onChangePage}
               styles={customStyles}
             />
@@ -349,4 +320,4 @@ class CompanyDB extends Component {
   }
 }
 
-export default CompanyDB;
+export default AdminRequests;

@@ -16,57 +16,67 @@ class Fullcalender extends Component {
         }
     }
     componentDidMount() {
-        if(sessionStorage.getItem('persona')=="admin")
-        {
-            let id=sessionStorage.getItem('companyid')
-            axios.get(Env.host+"/calender/admin/allevents/"+id).then((response) => {
+        if (sessionStorage.getItem('persona') == "admin") {
+
+
+            axios.get(Env.host + "/calender/admin/allevents/" + sessionStorage.getItem('companyId')).then((response) => {
                 this.setState({
-                       events: response.data
-                    })
+                    events: response.data
                 })
+            })
 
         }
-        else
-        {
-            let id=sessionStorage.getItem('id')
-            axios.get(Env.host+"/calender/allevents/"+id).then((response) => {
+        else {
+            let id = sessionStorage.getItem('uid')
+            axios.get(Env.host + "/calender/allevents/" + id).then((response) => {
                 this.setState({
-                       events: response.data
-                    })
+                    events: response.data
                 })
+            })
 
-            }   
-   
-}
+        }
+
+    }
 
 
 
-  
+
     eventdateChangeHandler(e) {
         this.setState({ eventdate: e.target.value });
     }
     eventnameChangeHandler(e) {
         this.setState({ eventname: e.target.value });
     }
-   
 
- 
+
+
 
     render() {
-        
-         
+
+
         console.log(this.state.events)
         return (
             <div>
-                <div class="col-md-3"></div>
-                <div class="col-md-6" style={{"marginTop":"80px"}}>
+                <div className="paddingleft15">
+                    <div className="form-group">
+                        <div className="">
+                            <div className="form-group d-flex justify-content-between">
+                                <h2>Calendar</h2>
 
-                    <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]} 
-                        events={this.state.events} />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6" style={{ "marginTop": "80px" }}>
+
+                        <FullCalendar defaultView="dayGridMonth" plugins={[dayGridPlugin]}
+                            events={this.state.events} />
+                    </div>
+
+
                 </div>
-             
-                
             </div>
+
 
         );
     }
