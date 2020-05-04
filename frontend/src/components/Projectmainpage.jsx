@@ -47,16 +47,19 @@ class Projectmainpage extends Component {
       { name: "Costumes", path: "/Costumepage" },
       { name: "Documents", path: "/documents" },
     ];
-    // <Link to="/usergroups" style={{ color: "black" }}>
-    //             UserGroups
-    //           </Link>
 
     return (
-      <div className="project-functions d-flex">
-        {projectFunctions?.map((func) => (
-          <ProjectFuncCardView funcName={func.name} funcPath={func.path} />
-        ))}
-      </div>
+      <article>
+        <div className="project-functions d-flex flex-wrap">
+          {projectFunctions?.map((func) => (
+            <ProjectFuncCardView
+              projectId={this.state.projectid}
+              funcName={func.name}
+              funcPath={func.path}
+            />
+          ))}
+        </div>
+      </article>
     );
   }
 }

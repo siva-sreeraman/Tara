@@ -43,15 +43,16 @@ export default function ProjectFunctionCard(props) {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        <Link to={props.funcPath}>
+        <Link
+          to={{
+            pathname: `/file-upload`,
+            projectId: props?.projectId,
+          }}
+        >
           <Button size="small" color="primary">
             {props.funcName}
           </Button>
         </Link>
-
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
       </CardActions>
     </Card>
   );

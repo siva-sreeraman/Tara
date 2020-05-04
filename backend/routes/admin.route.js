@@ -79,6 +79,7 @@ router.put("/approve-requests", async function (req, res) {
     .catch(console.log);
 });
 
+/** Upload from Server */
 router.post("/file-upload", fileUploadController.uploadFile);
 
 router.get("/create-upload-url", fileUploadController.createUploadUrl);

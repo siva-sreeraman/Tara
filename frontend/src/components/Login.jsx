@@ -2,6 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import axios from "axios";
 import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
 import Env from "../helpers/Env";
 import Constants from "../helpers/Constants";
@@ -89,12 +90,12 @@ class Login extends React.Component {
     let redirectVar = null;
     if (this.state.loginFlag) {
       console.log("Register is:::", this.state.loginFlag);
-      redirectVar = <Redirect to="/Projectpage" />;
+      redirectVar = <Redirect to="/my-projects" />;
     }
     return (
-      <div style={{ marginTop: "20px", paddingLeft: "150px" }}>
+      <div className="app-login container">
         {redirectVar}
-        <div className="login-page">
+        <div className="login-page mt-5">
           <div className="row">
             <div className="col-8">
               <section className="jumbotron">
@@ -106,57 +107,62 @@ class Login extends React.Component {
                 </p>
               </section>
             </div>
-            <div className="card login-card">
-              <div className="card-body">
-                {!this.state.loginFlag ? (
-                  <p>{this.state.invalidCredentialsMessage}</p>
-                ) : (
-                  ""
-                )}
-                <div className="student-profile-form">
-                  <Form>
-                    <Form.Group controlId="exampleForm.ControlInput1">
-                      <Form.Label>Email</Form.Label>
-                      <Form.Control
-                        type="email"
-                        placeholder="Email"
-                        name="email"
-                        onChange={this.handleOnChange}
-                      />
-                    </Form.Group>
-                    <Form.Group controlId="exampleForm.ControlInput1">
-                      <Form.Label>Password</Form.Label>
-                      <Form.Control
-                        type="password"
-                        placeholder="password"
-                        name="password"
-                        // onKeyDown={this.onKeyUp}
-                        onChange={this.handleOnChange}
-                      />
-                    </Form.Group>
-                    <Form.Group controlId="exampleForm.ControlSelect1">
-                      <Form.Label>I am</Form.Label>
-                      <Form.Control
-                        as="select"
-                        name="persona"
-                        onChange={this.handleOnChange}
-                      >
-                        <option value={Constants.Role.Admin}>Admin</option>
-                        <option value={Constants.Role.User}>User</option>
-                      </Form.Control>
-                    </Form.Group>
-                  </Form>
-                  <button
-                    onClick={this.submitForm}
-                    className="btn btn-primary btn-login"
-                  >
-                    Login
-                  </button>
-                  {/* <Link className="btn btn-primary btn-login" to="/">
-                  Login
-                </Link> */}
+            <div className="col">
+              <section className="card login-card">
+                <div className="card-body">
+                  {!this.state.loginFlag ? (
+                    <p>{this.state.invalidCredentialsMessage}</p>
+                  ) : (
+                    ""
+                  )}
+                  <div className="student-profile-form">
+                    <Form>
+                      <Form.Group controlId="exampleForm.ControlInput1">
+                        <Form.Label>Email</Form.Label>
+                        <Form.Control
+                          type="email"
+                          placeholder="Email"
+                          name="email"
+                          onChange={this.handleOnChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="exampleForm.ControlInput1">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control
+                          type="password"
+                          placeholder="password"
+                          name="password"
+                          // onKeyDown={this.onKeyUp}
+                          onChange={this.handleOnChange}
+                        />
+                      </Form.Group>
+                      <Form.Group controlId="exampleForm.ControlSelect1">
+                        <Form.Label>I am</Form.Label>
+                        <Form.Control
+                          as="select"
+                          name="persona"
+                          onChange={this.handleOnChange}
+                        >
+                          <option value={Constants.Role.Admin}>Admin</option>
+                          <option value={Constants.Role.User}>User</option>
+                        </Form.Control>
+                      </Form.Group>
+                    </Form>
+                    <button
+                      onClick={this.submitForm}
+                      className="btn btn-primary btn-login"
+                    >
+                      Login
+                    </button>
+                    <Link
+                      className="btn btn-outline-primary ml-3"
+                      to="/sign-up"
+                    >
+                      Sign Up
+                    </Link>
+                  </div>
                 </div>
-              </div>
+              </section>
             </div>
           </div>
         </div>

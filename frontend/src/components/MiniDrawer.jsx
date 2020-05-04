@@ -154,16 +154,21 @@ export default function MiniDrawer(props) {
 
   const handleLogin = async () => {};
 
+  const { from } = props.location?.state || { from: { pathname: "/" } };
+
   let redirectTo = null;
   if (!!props.auth) {
     redirectTo = <Redirect to="/login" />;
+    console.log("redirectTo login");
   } else {
-    redirectTo = <Redirect to="/usergroups" />;
+    console.log("redirectTo from");
+    redirectTo = <Redirect to={from} />;
+    // redirectTo = <Redirect to="usergroups" />;
   }
 
   return (
     <div className={classes.root}>
-      {redirectTo}
+      {/* {redirectTo} */}
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -305,8 +310,6 @@ export default function MiniDrawer(props) {
         <div className="route-container">
           {/* <Route path="/" component={Navbarpage} /> */}
 
-          {/* <Route path="/Registration" component={Registration} /> */}
-          <Route path="/login" component={Login} />
           <Route path="/my-projects" component={MyProjects} />
           <Route path="/su-dashboard" component={SuDashboard} />
           <Route path="/admin-dashboard" component={AdminDashboard} />

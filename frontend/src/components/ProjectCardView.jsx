@@ -27,31 +27,35 @@ export default function MediaCard(props) {
   return (
     <Card className={classes.root}>
       <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image="/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {props.projectName}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
-        </CardContent>
+        <Link
+          to={"/Projectmainpage/" + props.projectId}
+          className="remove-link-style"
+        >
+          <CardMedia
+            className={classes.media}
+            image="/static/images/cards/contemplative-reptile.jpg"
+            title="Contemplative Reptile"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {props.projectName}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              Lizards are a widespread group of squamate reptiles, with over
+              6,000 species, ranging across all continents except Antarctica
+            </Typography>
+          </CardContent>
+        </Link>
       </CardActionArea>
       <CardActions>
-        <Link to={"/Projectmainpage/" + props.projectId}>
+        <Link
+          to={"/Projectmainpage/" + props.projectId}
+          className="remove-link-style"
+        >
           <Button size="small" color="primary">
-            {props.projectName}
+            View Project
           </Button>
         </Link>
-
-        <Button size="small" color="primary">
-          Learn More
-        </Button>
       </CardActions>
     </Card>
   );
