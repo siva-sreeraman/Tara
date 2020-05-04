@@ -44,3 +44,4 @@ Casting directors and recruiters looking to hire the perfect artistic talent and
 Tara: Bringing together Talent and Opportunity in the Performing Arts industries through a common platform.
 
 ![](images/Tara Architecture.PNG)
+
