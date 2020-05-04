@@ -56,7 +56,7 @@ class ProjectTasks extends Component {
     this.state = {
       persona: sessionStorage.getItem('persona'),
       projectid: sessionStorage.getItem('projectid'),
-      userid: sessionStorage.getItem('uid'),
+      userid: sessionStorage.getItem('userid'),
       eventcheck: true,
       usercheck: false,
       name: "",
@@ -235,7 +235,7 @@ class ProjectTasks extends Component {
       projectid: this.state.projectid,
     }
 
-    axios.get(Env.host + "/project-overview/gettasks_fromproject/" + data1.projectid).then((response) => {
+    axios.get(Env.host+"/project-overview/gettasks_fromproject/"+data1.projectid).then((response) => {
       console.log(response);
       this.setState({
         eventlist: response.data,

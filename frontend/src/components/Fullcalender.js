@@ -27,7 +27,7 @@ class Fullcalender extends Component {
 
         }
         else {
-            let id = sessionStorage.getItem('uid')
+            let id = sessionStorage.getItem('userid')
             axios.get(Env.host + "/calender/allevents/" + id).then((response) => {
                 this.setState({
                     events: response.data

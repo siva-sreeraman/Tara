@@ -1,5 +1,6 @@
 import React from "react";
 import axios from 'axios';
+import Env from "../helpers/Env";
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -40,7 +41,7 @@ class Eventdetails extends Component {
 
     }
 
-    axios.get('http://localhost:4000/project-overview/geteventusers/' + data.id)
+    axios.get(Env.host+'/project-overview/geteventusers/'+data.id)
       .then((response) => {
         console.log(response.data)
 

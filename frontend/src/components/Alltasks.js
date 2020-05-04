@@ -41,15 +41,15 @@ class Alltasks extends Component {
     if (sessionStorage.getItem("persona") == "admin") {
       let id = sessionStorage.getItem("companyId");
       axios
-        .get(Env.host + "/calender/admin/alltasks/" + id)
+        .get(Env.host+"/calender/admin/alltasks/"+id)
         .then((response) => {
           this.setState({
             userdetails: response.data,
           });
         });
     } else {
-      let id = sessionStorage.getItem("uid");
-      axios.get(Env.host + "/calender/alltasks/" + id).then((response) => {
+      let id = sessionStorage.getItem("userid");
+      axios.get(Env.host+"/calender/alltasks/"+id).then((response) => {
         this.setState({
           userdetails: response.data,
         });
