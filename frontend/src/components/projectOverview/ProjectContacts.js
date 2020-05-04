@@ -70,6 +70,7 @@ class CrewListing extends Component {
       persona: sessionStorage.getItem('persona'),
       projectid: sessionStorage.getItem('projectid'),
       userid: sessionStorage.getItem('userid'),
+      companyid : sessionStorage.getItem('companyId'),
       access :false
     };
     this.handleOnChange = this.handleOnChange.bind(this);
@@ -330,7 +331,7 @@ class CrewListing extends Component {
       });
     });
 
-    axios.get(Env.host + "/companydb/allusers").then((response) => {
+    axios.get(Env.host + "/companydb/allusersfromcompany/"+this.state.companyid).then((response) => {
       console.log(response);
 
       usersdata = response.data;
