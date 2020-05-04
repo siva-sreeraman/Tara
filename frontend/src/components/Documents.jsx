@@ -10,9 +10,12 @@ class Documents extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      companyId: 2,
-      projectId: 2,
-      folders: ["costumes", "contracts", "finances"],
+      companyId: window.sessionStorage.getItem("companyId"),
+      folders: ["Costumes", "Contracts", "Financing"],
+      persona: sessionStorage.getItem("persona"),
+      projectid: sessionStorage.getItem("projectid"),
+      userid: sessionStorage.getItem("userid"),
+      foldersWithAccessRight: [],
     };
   }
 
@@ -34,7 +37,57 @@ class Documents extends React.Component {
 
   componentDidMount() {
     this.getUserAccessRights();
+    this.setFolderByAccessRights();
   }
+
+  checkAccessRights = async (value) => {
+    if (this.state.persona == "admin") {
+      this.setState({
+        access: true,
+      });
+      return true;
+    } else {
+      const data = {
+        projectid: this.state.projectid,
+        accessright: value,
+        userid: this.state.userid,
+      };
+      await axios
+        .post(Env.host + "/accessright/user/", data)
+        .then((response) => {
+          console.log("is it true", response.data);
+          if (response.data) {
+            this.setState({
+              access: true,
+            });
+            return true;
+          } else {
+            this.setState({
+              access: false,
+            });
+            return false;
+          }
+        });
+    }
+  };
+
+  setFolderByAccessRights = async () => {
+    let foldersWithAccessRight = [];
+    let x = this.state.folders.map((folder) => {
+      if (this.checkAccessRights(folder)) {
+        console.log(
+          "this.checkAccessRights(folder) for folder",
+          folder,
+          this.checkAccessRights(folder)
+        );
+        foldersWithAccessRight.push(folder);
+      }
+    });
+    await this.setState({
+      foldersWithAccessRight: foldersWithAccessRight,
+    });
+    console.log("foldersWithAccessRight:::", foldersWithAccessRight);
+  };
 
   render() {
     const roomKey =
@@ -43,7 +96,7 @@ class Documents extends React.Component {
       <div className="rooms container">
         <h2>Documents</h2>
         <article className="d-flex flext-wrap">
-          {this.state.folders.map((folder) => (
+          {this.state?.foldersWithAccessRight?.map((folder) => (
             // <DocumentCard
             // folder={folder}
             // pathname="/file-upload"
