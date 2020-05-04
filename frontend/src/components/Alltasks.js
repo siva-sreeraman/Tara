@@ -89,9 +89,8 @@ class Alltasks extends Component {
 
                   <div class="col-md-4">
                     <div style={{ "fontSize": "15px" }}>
-                      <Button
-                        variant="contained"
-                        color="secondary"
+                       <Button type="button" variant="outlined" color="primary"
+                       
 
                       >
                         <Link to={"/Taskdetails/" + el.taskid} style={{ color: "black" }}></Link>

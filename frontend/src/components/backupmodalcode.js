@@ -9,7 +9,7 @@ function Example() {
   
     return (
       <>
-        <Button variant="primary" onClick={handleShow}>
+         <Button type="button" variant="outlined" color="primary"  onClick={handleShow}>
           Launch demo modal
         </Button>
   

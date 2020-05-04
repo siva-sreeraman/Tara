@@ -530,9 +530,8 @@ class CrewListing extends Component {
               <div className="form-group d-flex justify-content-between">
                 <h2>Contacts</h2>
                {this.state.access == true ?
-                <Button
-                  variant="contained"
-                  color="secondary"
+                 <Button type="button" variant="outlined" color="primary"
+               
                   onClick={(e) => this.handleShow(e)}
                 >
                   Add Crew

@@ -378,17 +378,16 @@ class Costume extends Component {
               <div className="form-group d-flex justify-content-between">
                 <h1>Costumes</h1>
                {this.state.access ? 
-                <Button
-                  variant="contained"
-                  color="secondary"
+                 <Button type="button" variant="outlined" color="primary"
+                
                   onClick={this.showCostumeModal}
                 > 
                   Add Costume
                 </Button>: ""}
 
-                {this.state.access ?<Button
-                  variant="contained"
-                  color="secondary"
+                {this.state.access ?
+                <Button
+                 
                   onClick={this.showcreateCostumeModal}
                 >
                   Add New Costume

@@ -450,10 +450,8 @@ class CreateProject extends React.Component {
                   >
                     Create Project
                   </button> */}
-                  <Button
-                    type="button"
-                    variant="outlined"
-                    color="primary"
+                   <Button type="button" variant="outlined" color="primary"
+                   
                     onClick={this.createProject}
                   >
                     Create Project
