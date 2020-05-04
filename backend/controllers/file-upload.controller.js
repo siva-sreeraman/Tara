@@ -2,23 +2,15 @@ var AWS = require("aws-sdk");
 
 const upload = require("../services/file-upload.service");
 
-// const TARA_BUCKET_NAME = process.env.TARA_S3_BUCKET;
-// const TARA_AWS_ACCESS_KEY = process.env.TARA_AWS_ACCESS_KEY;
-// const TARA_SECRET_ACCESS_KEY = process.env.TARA_SECRET_ACCESS_KEY;
-// const TARA_S3_REGION = process.env.TARA_S3_REGION;
-
-// const TARA_BUCKET_NAME = "tara-project";
-// const TARA_AWS_ACCESS_KEY = "ASIA23HRT255C4N4U5FT";
-// const TARA_SECRET_ACCESS_KEY = "BcJRUmveIjSfjWAbvzl85pmhg9hAvvVIsgLreQmg";
-// const TARA_S3_REGION = "us-east-1";
-
-const TARA_BUCKET_NAME = "tara-playground";
-const TARA_AWS_ACCESS_KEY = "AKIATVI3TWXJQRZNQ566";
-const TARA_SECRET_ACCESS_KEY = "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";
-const TARA_S3_REGION = "us-west-2";
+const TARA_BUCKET_NAME = process.env.TARA_S3_BUCKET;
+const TARA_AWS_ACCESS_KEY = process.env.TARA_AWS_ACCESS_KEY;
+const TARA_SECRET_ACCESS_KEY = process.env.TARA_SECRET_ACCESS_KEY;
+const TARA_S3_REGION = process.env.TARA_S3_REGION;
 
 const singleUpload = upload.single("file");
 let responseBody = null;
+
+/** Upload from Server */
 const uploadFile = async (req, res) => {
   singleUpload(req, res, async (err) => {
     fileType = req.body.type;
@@ -49,7 +41,7 @@ const createUploadUrl = async (req, res) => {
     Expires: 3600, //time to expire in seconds
 
     Fields: {
-      key: "test",
+      key: req.query.s3Key + "/",
     },
     conditions: [
       // { acl: "private" },
@@ -60,7 +52,7 @@ const createUploadUrl = async (req, res) => {
       // { "Content-Type": "image/png" },
     ],
   };
-  params.Fields.key = "test/" + req.query.filename || "filename";
+  params.Fields.key = params.Fields.key + req.query.filename || "filename";
   s3.createPresignedPost(params, function (err, data) {
     if (err) {
       // console.log("Error", err);

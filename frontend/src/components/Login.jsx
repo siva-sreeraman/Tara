@@ -2,6 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import axios from "axios";
 import { Redirect } from "react-router";
+import { Link } from "react-router-dom";
 
 import Env from "../helpers/Env";
 import Constants from "../helpers/Constants";
@@ -94,7 +95,7 @@ class Login extends React.Component {
     let redirectVar = null;
     if (this.state.loginFlag) {
       console.log("Register is:::", this.state.loginFlag);
-      redirectVar = <Redirect to="/Projectpage" />;
+      redirectVar = <Redirect to="/my-projects" />;
     }
     return (
       <div class="bg-img">

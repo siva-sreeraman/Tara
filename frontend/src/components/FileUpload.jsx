@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import Button from "@material-ui/core/Button";
+import GetAppIcon from "@material-ui/icons/GetApp";
 
 import Env from "../helpers/Env";
 
@@ -13,12 +14,15 @@ class FileUpload extends React.Component {
     };
   }
 
-  componentDidMount() {
+  getFilesInFolder() {
     const url =
-      Env.host + "/admin/get-files?s3Key=" + this.props?.location?.folder;
+      Env.host +
+      "/admin/get-files?s3Key=" +
+      this.props?.location?.projectFolder;
     console.log("URL:::::", url);
     axios.get(url).then(async (response) => {
       console.log(response);
+      response.data.Contents.shift();
       await this.setState({
         files: response.data.Contents,
       });
@@ -26,12 +30,18 @@ class FileUpload extends React.Component {
     });
   }
 
-  uploadFile(formData) {
+  componentDidMount() {
+    this.getFilesInFolder();
+  }
+
+  uploadFile(formData, key) {
     const fileInput = formData.get("file");
     const filename = fileInput.name;
     console.log("filename: " + filename);
     axios
-      .get(Env.host + `/admin/create-upload-url?filename=${filename}`)
+      .get(
+        Env.host + `/admin/create-upload-url?s3Key=${key}&filename=${filename}`
+      )
       .then((result) => {
         this.setState({ createPresignedPostRes: result });
         const fields = result.data.fields;
@@ -42,6 +52,7 @@ class FileUpload extends React.Component {
         }
         _formData.set("file", fileInput);
         axios.post(result.data.url, _formData).then((result) => {
+          this.getFilesInFolder();
           console.log("uploadFile result: " + JSON.stringify(result.data));
           this.setState({ uploadedFileUrl: result.data.imageUrl });
         });
@@ -65,7 +76,7 @@ class FileUpload extends React.Component {
 
     formData.append("file", this.state.selectedFile);
     console.log("formData: ", formData);
-    this.uploadFile(formData);
+    this.uploadFile(formData, this.props?.location?.folder);
   };
 
   onChangeHandlerFileUpload = (event) => {
@@ -98,15 +109,18 @@ class FileUpload extends React.Component {
     });
   };
 
-  getPresignedUrl = () => {
-    if (!this.state.key) {
-      console.error("invalid S3 Key");
-      return;
-    }
+  getFileFromS3(fileKey) {
+    this.getPresignedUrl(fileKey);
+  }
+
+  getPresignedUrl = (fileKey) => {
+    // if (!this.state.key) {
+    //   console.error("invalid S3 Key");
+    //   return;
+    // }
+    console.log("entered signed URL::::");
     axios
-      .get(
-        Env.host + "/admin/get-presigned-url?key=" + encodeURI(this.state.key)
-      )
+      .get(Env.host + "/admin/get-presigned-url?key=" + fileKey)
       .then((result) => {
         this.setState({ presignedUrl: result });
       })
@@ -116,80 +130,58 @@ class FileUpload extends React.Component {
   };
 
   render() {
+    // this.state?.files;
     return (
       <article>
+        <h2 className="text-capitalize">{this.props?.location?.room}</h2>
         {this.state?.files?.map((file) => (
           <div class="card w-50">
             <div class="card-body">
-              <h5 class="card-title">{file.Key}</h5>
-              <p class="card-text">
-                With supporting text below as a natural lead-in to additional
-                content.
-              </p>
-              {/* <a href="#" class="btn btn-primary">
-                {file}
-              </a> */}
-              <Link
-                className="btn btn-sm btn-outline-primary"
-                to={{
-                  pathname: `/file-upload`,
-                  file: file,
+              <h5 class="card-title">
+                {file.Key.split(this.props?.location?.room + "/").pop()}
+              </h5>
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={() => {
+                  this.getPresignedUrl(file.Key);
                 }}
               >
-                {file.Key}
-              </Link>
+                <GetAppIcon />
+              </Button>
             </div>
           </div>
         ))}
         <h2>File Upload</h2>
         <section>
           <React.Fragment>
-            <input
-              type="file"
-              accept=".jpg,.jpeg,.png"
-              name="filetoupload"
-              className="btn btn-outline-default"
-              onChange={this.onChangeHandlerFileUpload}
-            />
-            <button
-              type="button"
-              className="btn btn-outline-primary"
+            <Button variant="contained" color="secondary" component="label">
+              Choose File
+              <input
+                type="file"
+                accept=".jpg,.jpeg,.png"
+                name="filetoupload"
+                style={{ display: "none" }}
+                onChange={this.onChangeHandlerFileUpload}
+              />
+            </Button>{" "}
+            <Button
+              variant="contained"
+              color="secondary"
               onClick={this.fileUploadHandler}
             >
               Upload
-            </button>
+            </Button>
           </React.Fragment>
         </section>
-        {!!this.state?.uploadedFileUrl ? (
+        {/* {!!this.state?.uploadedFileUrl ? (
           <a href={this.state?.uploadedFileUrl} target="_blank">
             Uploaded File URL: {this.state?.uploadedFileUrl}
           </a>
         ) : (
           ""
-        )}
-        <pre>
-          {JSON.stringify(this.state?.createPresignedPostRes?.data, null, 2)}
-        </pre>
-        <section>
-          <React.Fragment>
-            <div className="form-group">
-              <input
-                className="form-control"
-                type="text"
-                name="key"
-                placeholder="Enter S3 key"
-                onChange={this.handleOnChange}
-              />
-            </div>
-            <button
-              type="button"
-              className="btn btn-outline-primary"
-              onClick={this.getPresignedUrl}
-            >
-              Get Presigned URL
-            </button>
-          </React.Fragment>
-        </section>
+        )} */}
+        Heres the download link
         {!!this.state?.presignedUrl?.data ? (
           <React.Fragment>
             <figure>
