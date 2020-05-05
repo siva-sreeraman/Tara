@@ -32,14 +32,15 @@ const AWS = require('aws-sdk');
 
 const s3 = new AWS.S3({
 
+ 
 
+ 
 
   accessKeyId: process.env.PROFILE_TARA_AWS_ACCESS_KEY,
   secretAccessKey: process.env.PROFILE_TARA_SECRET_ACCESS_KEY,
 
 
 });
-console.log(s3)
 
 
 router.post('/admin/:id', async (req, res) => {
@@ -108,11 +109,11 @@ router.post('/uploadpic/admin/:id', upload.single('profilepic'), async (request,
     console.log(process.env)
     if (request.file) {
       const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
-
+      // console.log(fileContent)
       const params = {
        
-       Bucket: process.env.TARA_BUCKET_NAME,
-   
+       Bucket: process.env.PROFILE_TARA_BUCKET_NAME,
+        //Bucket: 'softwareengineeringbucket',
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -146,8 +147,10 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
     console.log(request.body)
     if (request.file) {
       const fileContent = fs.readFileSync(`./public/profilepic/${request.file.originalname}${path.extname(request.file.originalname)}`);
+      // console.log(fileContent)
       const params = {
-         Bucket: process.env.PROFILE_TARA_BUCKET_NAME ,
+        Bucket: process.env.PROFILE_TARA_BUCKET_NAME,
+       //Bucket: 'softwareengineeringbucket',
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
