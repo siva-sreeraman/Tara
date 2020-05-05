@@ -113,7 +113,7 @@ router.post('/uploadpic/admin/:id', upload.single('profilepic'), async (request,
       const params = {
        
        Bucket: process.env.PROFILE_TARA_BUCKET_NAME,
-        //Bucket: 'softwareengineeringbucket',
+    
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
@@ -150,7 +150,7 @@ router.post('/uploadpic/user/:id', upload.single('profilepic'), async (request, 
       // console.log(fileContent)
       const params = {
         Bucket: process.env.PROFILE_TARA_BUCKET_NAME,
-       //Bucket: 'softwareengineeringbucket',
+      
         Key: `${request.file.originalname}${path.extname(request.file.originalname)}`,
         Body: fileContent,
         ContentType: request.file.mimetype,
