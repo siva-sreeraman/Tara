@@ -151,6 +151,7 @@ export default function MiniDrawer(props) {
       .signOut()
       .then(() => {
         window.sessionStorage.removeItem("auth");
+        window.sessionStorage.clear();
       });
   };
 
